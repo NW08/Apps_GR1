@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonAvatar,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -11,9 +19,10 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
     IonToolbar,
     IonTitle,
     IonContent,
-    ExploreContainerComponent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonAvatar,
   ],
 })
-export class Tab1Page {
-  constructor() {}
-}
+export class Tab1Page {}
