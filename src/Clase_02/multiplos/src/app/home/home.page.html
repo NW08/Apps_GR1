@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Ortiz Josué - GR1</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="contador">
+  <div class="label">
+    <h2>Valores Primos</h2>
+
+    <h3>Múltiplos 2</h3>
+    <h1>{{ one }}</h1>
+
+    <h3>Múltiplos 3</h3>
+    <h1>{{ two }}</h1>
+
+    <h3>Múltiplos 5</h3>
+    <h1>{{ three }}</h1>
+
+    <h3>Múltiplos 7</h3>
+    <h1>{{ four }}</h1>
+
+    <h3>Múltiplos 10</h3>
+    <h1>{{ five }}</h1>
+
+    <div class="numbers-title">
+      Últimos números generados
+    </div>
+
+    <div class="numbers">
+      <span *ngFor="let number of numbers">
+        {{ number }}
+      </span>
+    </div>
+
+    <ion-button class="primos" (click)="primos()">
+      Generar
+    </ion-button>
+
+    <ion-button class="reiniciar" (click)="reiniciar()">
+      Reiniciar
+    </ion-button>
+  </div>
+</ion-content>
