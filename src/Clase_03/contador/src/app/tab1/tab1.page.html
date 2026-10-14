@@ -1,0 +1,145 @@
+<ion-header [translucent]="true" class="ion-no-border minimal-header">
+  <ion-toolbar class="minimal-toolbar">
+    <ion-title class="minimal-title">Panel de Control</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="minimal-content">
+  <div class="content-wrapper">
+    
+    <!-- Encabezado de la página -->
+    <header class="header-intro">
+      <span class="badge-subtitle">Clase 03 · Control & Estado</span>
+      <h1 class="main-heading">Registro de Usuario</h1>
+      <p class="intro-description">
+        Ingresa tu información y configura el valor numérico del contador para transferir los datos al resumen.
+      </p>
+    </header>
+
+    <!-- Tarjeta del Formulario -->
+    <section class="minimal-card">
+      <div class="card-header-row">
+        <span class="card-caption">Paso 01</span>
+        <h2 class="card-title">Datos Personales</h2>
+      </div>
+
+      <div class="field-item">
+        <label class="field-label" for="campo-nombre">
+          <ion-icon name="person-outline"></ion-icon>
+          <span>Nombre Completo</span>
+        </label>
+        <div class="field-input-box">
+          <ion-input
+            id="campo-nombre"
+            type="text"
+            placeholder="Escribe tu nombre"
+            [(ngModel)]="nombre_usuario"
+            class="clean-input"
+          ></ion-input>
+        </div>
+      </div>
+
+      <div class="field-item">
+        <label class="field-label" for="campo-correo">
+          <ion-icon name="mail-outline"></ion-icon>
+          <span>Correo Electrónico</span>
+        </label>
+        <div class="field-input-box">
+          <ion-input
+            id="campo-correo"
+            type="email"
+            placeholder="ejemplo@correo.com"
+            [(ngModel)]="correo_electronico"
+            class="clean-input"
+          ></ion-input>
+        </div>
+      </div>
+
+      <div class="field-item">
+        <label class="field-label" for="campo-paralelo">
+          <ion-icon name="school-outline"></ion-icon>
+          <span>Paralelo Académico</span>
+        </label>
+        <div class="field-input-box">
+          <ion-input
+            id="campo-paralelo"
+            type="number"
+            placeholder="Ejemplo: 1 o 2"
+            [(ngModel)]="numero_paralelo"
+            class="clean-input"
+          ></ion-input>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tarjeta del Contador -->
+    <section class="minimal-card">
+      <div class="card-header-row">
+        <span class="card-caption">Paso 02</span>
+        <h2 class="card-title">Contador Numérico</h2>
+      </div>
+
+      <!-- Pantalla minimalista del valor -->
+      <div class="counter-display">
+        <span class="counter-tag">Valor Actual</span>
+        <div class="counter-value">{{ valor_contador }}</div>
+      </div>
+
+      <!-- Controles de incremento / decremento -->
+      <div class="counter-button-grid">
+        <button
+          type="button"
+          class="btn-counter btn-decrement"
+          [disabled]="valor_contador === 0"
+          (click)="disminuir_contador()"
+          aria-label="Disminuir contador"
+        >
+          <ion-icon name="remove-outline"></ion-icon>
+          <span>Disminuir</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-counter btn-increment"
+          (click)="aumentar_contador()"
+          aria-label="Aumentar contador"
+        >
+          <ion-icon name="add-outline"></ion-icon>
+          <span>Aumentar</span>
+        </button>
+      </div>
+
+      <!-- Botón de reinicio -->
+      <button
+        type="button"
+        class="btn-secondary-reset"
+        (click)="reiniciar_contador()"
+        [disabled]="valor_contador === 0"
+      >
+        <ion-icon name="refresh-outline"></ion-icon>
+        <span>Reiniciar Contador</span>
+      </button>
+    </section>
+
+    <!-- Alerta en caso de validación fallida -->
+    @if (mensaje_alerta) {
+      <div class="alert-container" role="alert">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span class="alert-text">{{ mensaje_alerta }}</span>
+      </div>
+    }
+
+    <!-- Botón de acción principal para enviar -->
+    <div class="submit-action-area">
+      <button
+        type="button"
+        class="btn-primary-submit"
+        (click)="enviar_resumen()"
+      >
+        <span>Enviar al Resumen</span>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </button>
+    </div>
+
+  </div>
+</ion-content>

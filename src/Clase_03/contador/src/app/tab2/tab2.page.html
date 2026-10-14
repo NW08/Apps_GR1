@@ -1,0 +1,121 @@
+<ion-header [translucent]="true" class="ion-no-border minimal-header">
+  <ion-toolbar class="minimal-toolbar">
+    <ion-title class="minimal-title">Resumen de Datos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="minimal-content">
+  <div class="content-wrapper">
+
+    @if (servicio_datos.datos_enviados()) {
+      <!-- Encabezado de la página -->
+      <header class="header-intro">
+        <span class="badge-subtitle">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+          Sincronizado
+        </span>
+        <h1 class="main-heading">Ficha de Usuario</h1>
+        <p class="intro-description">
+          Los datos han sido recibidos y sincronizados en tiempo real mediante el servicio de estado.
+        </p>
+      </header>
+
+      <!-- Tarjeta Minimalista del Resumen -->
+      <section class="minimal-card">
+        
+        <!-- Identificación del usuario -->
+        <div class="user-profile-header">
+          <div class="avatar-box">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="user-meta">
+            <span class="user-role-tag">Usuario Registrado</span>
+            <h2 class="user-display-name">{{ servicio_datos.nombre_usuario() }}</h2>
+          </div>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <!-- Lista de campos recibidos -->
+        <div class="data-grid">
+          
+          <div class="data-item">
+            <div class="data-label">
+              <ion-icon name="mail-outline"></ion-icon>
+              <span>Correo Electrónico</span>
+            </div>
+            <div class="data-value">
+              {{ servicio_datos.correo_electronico() || 'Sin registrar' }}
+            </div>
+          </div>
+
+          <div class="data-item">
+            <div class="data-label">
+              <ion-icon name="school-outline"></ion-icon>
+              <span>Paralelo Académico</span>
+            </div>
+            <div class="data-value">
+              Paralelo {{ servicio_datos.numero_paralelo() || '0' }}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Métrica de contador transferida -->
+        <div class="stat-highlight-box">
+          <div class="stat-header">
+            <ion-icon name="calculator-outline"></ion-icon>
+            <span class="stat-caption">Valor Registrado del Contador</span>
+          </div>
+          <div class="stat-big-number">
+            {{ servicio_datos.valor_contador() }}
+          </div>
+          <span class="stat-footnote">Métrica transferida reactivamente con Signals</span>
+        </div>
+
+      </section>
+
+      <!-- Botones de Acción -->
+      <div class="action-grid">
+        <button
+          type="button"
+          class="btn-primary-action"
+          (click)="regresar_a_registro()"
+        >
+          <ion-icon name="arrow-back-outline"></ion-icon>
+          <span>Modificar Datos</span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-outline-action"
+          (click)="limpiar_y_volver()"
+        >
+          <ion-icon name="refresh-outline"></ion-icon>
+          <span>Reiniciar Todo</span>
+        </button>
+      </div>
+
+    } @else {
+      <!-- Estado Vacío Elegante (Empty State) -->
+      <div class="empty-state-box">
+        <div class="empty-icon-circle">
+          <ion-icon name="document-text-outline"></ion-icon>
+        </div>
+        <h2 class="empty-title">Sin Información Registrada</h2>
+        <p class="empty-text">
+          Aún no se ha transferido ningún dato. Ingresa a la primera pestaña, completa el formulario y presiona el botón de envío para visualizar tu información aquí.
+        </p>
+        <button
+          type="button"
+          class="btn-primary-action"
+          (click)="regresar_a_registro()"
+        >
+          <ion-icon name="arrow-back-outline"></ion-icon>
+          <span>Ir al Registro</span>
+        </button>
+      </div>
+    }
+
+  </div>
+</ion-content>

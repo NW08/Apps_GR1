@@ -1,0 +1,31 @@
+.minimal-tab-bar {
+  --background: #ffffff;
+  --border: 1px solid #e2e8f0;
+  --color: #64748b;
+  --color-selected: #0f172a;
+  border-top: 1px solid #e2e8f0;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.02);
+  height: 56px;
+}
+
+.minimal-tab-button {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: all 0.15s ease;
+
+  ion-icon {
+    font-size: 1.25rem;
+    margin-bottom: 2px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .minimal-tab-bar {
+    --background: #18181b;
+    --border: 1px solid #27272a;
+    --color: #71717a;
+    --color-selected: #f4f4f5;
+    border-top: 1px solid #27272a;
+  }
+}
