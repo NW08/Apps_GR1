@@ -9,10 +9,11 @@ ejecutarlo.
 
 ## Proyectos
 
-| #   | Nombre                                 | Descripción                                | Tecnologías      |
-| --- | -------------------------------------- | ------------------------------------------ | ---------------- |
-| 1   | [`CV Ionic`](./src/Clase_01)           | CV Interactivo para dispositivos móviles   | NodeJS, Ionic    |
-| 2   | [`Múltiplos & Primos`](./src/Clase_02) | App que genera números primos consecutivos | Ionic, Capacitor |
+| #   | Nombre                                 | Descripción                                       | Tecnologías        |
+| --- | -------------------------------------- | ------------------------------------------------- | ------------------ |
+| 1   | [`CV Ionic`](./src/Clase_01)           | CV Interactivo para dispositivos móviles.         | NodeJS, Ionic      |
+| 2   | [`Múltiplos & Primos`](./src/Clase_02) | App que genera números primos consecutivos.       | Ionic, Capacitor   |
+| 3   | [`Interacción Tabs`](./src/Clase_03)   | Registro de información entre pestañas reactivas. | Capacitor, Angular |
 
 ---
 
