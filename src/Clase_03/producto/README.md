@@ -1,4 +1,4 @@
-# Ionic: Registro de Compra y Pago (Deber) || `CLASE 03 (08|10|2026)`
+# Deber: Registro de Compra y Pago || `CLASE 03 (08|10|2026)`
 
 Aplicación móvil desarrollada con **Ionic**, **Angular (Standalone Components)** y **Capacitor** para gestionar la compra de un producto y el cálculo de su liquidación de pago. Implementa validación estricta de formularios, cálculos reactivos mediante **Angular Signals**, íconos personalizados por pestaña, soporte de assets con `@capacitor/assets` y pantalla de bienvenida con imagen.
 
