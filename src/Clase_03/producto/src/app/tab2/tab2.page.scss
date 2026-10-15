@@ -1,11 +1,12 @@
 :host {
   display: block;
+  background-color: #f8fafc;
 }
 
 .contenedor-compra {
   max-width: 520px;
   margin: 0 auto;
-  padding: 1.25rem 1rem 3rem 1rem;
+  padding: 1.25rem 1rem 3.5rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 1.35rem;
@@ -21,7 +22,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--ion-color-step-600, #64748b);
+    color: #64748b;
   }
 
   h1 {
@@ -29,25 +30,26 @@
     font-weight: 800;
     letter-spacing: -0.03em;
     margin: 0;
-    color: var(--ion-text-color, #0f172a);
+    color: #0f172a;
   }
 
   p {
     font-size: 0.9rem;
     line-height: 1.5;
     margin: 0;
-    color: var(--ion-color-step-600, #64748b);
+    color: #64748b;
   }
 }
 
 .tarjeta-formulario {
-  background: var(--ion-color-step-50, #ffffff);
-  border: 1px solid var(--ion-color-step-150, #e2e8f0);
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 1.35rem;
   display: flex;
   flex-direction: column;
   gap: 1.15rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .campo-grupo {
@@ -62,34 +64,34 @@
   gap: 0.45rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--ion-color-step-700, #475569);
+  color: #475569;
 
   ion-icon {
     font-size: 0.95rem;
-    color: var(--ion-color-step-500, #64748b);
+    color: #64748b;
   }
 }
 
 .caja-input {
-  background: var(--ion-color-step-100, #f8fafc);
-  border: 1px solid var(--ion-color-step-200, #e2e8f0);
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 9px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
   &:focus-within {
-    border-color: var(--ion-text-color, #0f172a);
+    border-color: #0f172a;
     box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.08);
   }
 
   &.con-error {
     border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.03);
+    background-color: #fef2f2;
   }
 }
 
 .input-limpio {
-  --color: var(--ion-text-color, #0f172a);
-  --placeholder-color: var(--ion-color-step-400, #94a3b8);
+  --color: #0f172a;
+  --placeholder-color: #94a3b8;
   --padding-start: 0.85rem;
   --padding-end: 0.85rem;
   --padding-top: 0.65rem;
@@ -112,8 +114,8 @@
 }
 
 .tarjeta-subtotal {
-  background: var(--ion-color-step-100, #f8fafc);
-  border: 1px solid var(--ion-color-step-200, #e2e8f0);
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 1.15rem 1.25rem;
   display: flex;
@@ -132,12 +134,12 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--ion-color-step-600, #64748b);
+    color: #64748b;
   }
 
   .subtotal-detalle {
     font-size: 0.75rem;
-    color: var(--ion-color-step-500, #94a3b8);
+    color: #94a3b8;
   }
 }
 
@@ -145,7 +147,7 @@
   font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--ion-text-color, #0f172a);
+  color: #0f172a;
   font-variant-numeric: tabular-nums;
 }
 
@@ -166,11 +168,12 @@
   border-radius: 10px;
   font-size: 0.95rem;
   font-weight: 600;
-  background: var(--ion-text-color, #0f172a);
-  color: var(--ion-background-color, #ffffff);
+  background-color: #0f172a;
+  color: #ffffff;
   border: none;
   cursor: pointer;
   transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
 
   ion-icon {
     font-size: 1.1rem;
@@ -197,9 +200,9 @@
   border-radius: 9px;
   font-size: 0.85rem;
   font-weight: 500;
-  background: transparent;
-  color: var(--ion-color-step-600, #64748b);
-  border: 1px dashed var(--ion-color-step-300, #cbd5e1);
+  background-color: transparent;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
   cursor: pointer;
   transition: all 0.15s ease;
 
@@ -208,7 +211,7 @@
   }
 
   &:hover {
-    color: var(--ion-text-color, #0f172a);
-    border-color: var(--ion-color-step-600, #64748b);
+    color: #0f172a;
+    border-color: #64748b;
   }
 }

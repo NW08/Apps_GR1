@@ -8,24 +8,21 @@
   <div class="contenedor-inicio">
     <div class="marco-imagen">
       @if (!imagen_fallida) {
-        <img
-          src="assets/images/inicio.jpg"
-          alt="Pantalla de inicio"
-          class="imagen-portada"
-          (error)="al_fallar_imagen()"
-        />
+      <img src="assets/images/inicio.png" alt="Pantalla de inicio" class="imagen-portada"
+        (error)="al_fallar_imagen()" />
       } @else {
-        <div class="placeholder-imagen">
-          <ion-icon name="image-outline"></ion-icon>
-          <span>assets/images/inicio.jpg</span>
-        </div>
+      <div class="placeholder-imagen">
+        <ion-icon name="image-outline"></ion-icon>
+        <span>assets/images/inicio.png</span>
+      </div>
       }
     </div>
 
     <div class="encabezado">
       <span class="etiqueta">Punto de Venta</span>
       <h1>Gestión de Compras y Pagos</h1>
-      <p>Registra compras de productos, calcula subtotales, aplica descuentos y determina cambios o saldos pendientes de manera inmediata.</p>
+      <p>Registra compras de productos, calcula subtotales, aplica descuentos y determina cambios o saldos pendientes de
+        manera inmediata.</p>
     </div>
 
     <div class="cuadricula-caracteristicas">

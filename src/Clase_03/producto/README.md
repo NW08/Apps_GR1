@@ -93,22 +93,22 @@ A continuación se presentan los espacios para las capturas de pantalla del fluj
 
 ### 1. Pantalla de Inicio y Pestaña de Compra
 
-|                  Pantalla de Inicio                  |                  Pestaña de Compra                  |
-| :--------------------------------------------------: | :-------------------------------------------------: |
-| ![Pantalla de Inicio](assets/01_pantalla_inicio.png) | ![Pestaña de Compra](assets/02_pantalla_compra.png) |
+|                  Pantalla de Inicio                   |                  Pestaña de Compra                   |
+| :---------------------------------------------------: | :--------------------------------------------------: |
+| ![Pantalla de Inicio](assets/01_pantalla_inicio.jpeg) | ![Pestaña de Compra](assets/02_pantalla_compra.jpeg) |
 
 ---
 
 ### 2. Validaciones de Formulario y Pestaña de Pago
 
-|                    Validaciones en Compra                    |         Liquidación y Descuento en Pago         |
-| :----------------------------------------------------------: | :---------------------------------------------: |
-| ![Validaciones en Compra](assets/03_validaciones_compra.png) | ![Pestaña de Pago](assets/04_pantalla_pago.png) |
+|                    Validaciones en Compra                     |         Liquidación y Descuento en Pago          |
+| :-----------------------------------------------------------: | :----------------------------------------------: |
+| ![Validaciones en Compra](assets/03_validaciones_compra.jpeg) | ![Pestaña de Pago](assets/04_pantalla_pago.jpeg) |
 
 ---
 
 ### 3. Resultados de Pago: Saldo Pendiente y Cambio Entregado
 
-|         Saldo Pendiente (Pago Incompleto)         |          Cambio a Entregar (Pago Cubierto)          |
-| :-----------------------------------------------: | :-------------------------------------------------: |
-| ![Saldo Pendiente](assets/05_saldo_pendiente.png) | ![Cambio Entregado](assets/06_cambio_entregado.png) |
+|         Saldo Pendiente (Pago Incompleto)          |          Cambio a Entregar (Pago Cubierto)           |
+| :------------------------------------------------: | :--------------------------------------------------: |
+| ![Saldo Pendiente](assets/05_saldo_pendiente.jpeg) | ![Cambio Entregado](assets/06_cambio_entregado.jpeg) |
