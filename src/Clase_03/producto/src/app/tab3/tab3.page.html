@@ -1,0 +1,168 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Pago</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="contenedor-pago">
+
+    @if (servicio_compra.compra_registrada()) {
+      <div class="encabezado">
+        <span class="etiqueta">Paso 2 de 2</span>
+        <h1>Liquidación y Pago</h1>
+        <p>Aplica el descuento acordado y registra el dinero recibido para determinar el cambio o saldo pendiente.</p>
+      </div>
+
+      <section class="tarjeta-resumen-producto">
+        <div class="resumen-fila-principal">
+          <div>
+            <span class="etiqueta-sub">Producto Adquirido</span>
+            <h2>{{ servicio_compra.nombre_producto() }}</h2>
+          </div>
+          <div class="insignia-cantidad">
+            {{ servicio_compra.cantidad() }} unid.
+          </div>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="resumen-detalle">
+          <div class="detalle-col">
+            <span>Precio Unitario</span>
+            <strong>${{ servicio_compra.precio_unitario().toFixed(2) }}</strong>
+          </div>
+          <div class="detalle-col alineado-derecha">
+            <span>Subtotal Recibido</span>
+            <strong class="texto-subtotal">${{ servicio_compra.subtotal().toFixed(2) }}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="tarjeta-formulario">
+        <div class="campo-grupo">
+          <label class="etiqueta-campo" for="descuento-porcentual">
+            <ion-icon name="trending-down-outline"></ion-icon>
+            <span>Descuento Porcentual (0% - 100%)</span>
+          </label>
+          <div class="caja-input" [class.con-error]="error_descuento">
+            <ion-input
+              id="descuento-porcentual"
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              placeholder="Ej. 10"
+              [(ngModel)]="descuento_input"
+              (ionInput)="limpiar_error('descuento'); procesar_calculo()"
+              class="input-limpio"
+            ></ion-input>
+          </div>
+          @if (error_descuento) {
+            <div class="mensaje-error" role="alert">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>{{ error_descuento }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="campo-grupo">
+          <label class="etiqueta-campo" for="dinero-entregado">
+            <ion-icon name="wallet-outline"></ion-icon>
+            <span>Dinero Entregado por el Cliente ($)</span>
+          </label>
+          <div class="caja-input" [class.con-error]="error_dinero">
+            <ion-input
+              id="dinero-entregado"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="Ej. 100.00"
+              [(ngModel)]="dinero_input"
+              (ionInput)="limpiar_error('dinero'); procesar_calculo()"
+              class="input-limpio"
+            ></ion-input>
+          </div>
+          @if (error_dinero) {
+            <div class="mensaje-error" role="alert">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>{{ error_dinero }}</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="tarjeta-desglose">
+        <div class="desglose-fila">
+          <span>Subtotal</span>
+          <strong>${{ servicio_compra.subtotal().toFixed(2) }}</strong>
+        </div>
+
+        <div class="desglose-fila">
+          <span>Descuento ({{ servicio_compra.descuento_porcentaje() }}%)</span>
+          <span class="monto-descuento">-${{ servicio_compra.monto_descuento().toFixed(2) }}</span>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="desglose-fila total">
+          <span>Total Final</span>
+          <strong>${{ servicio_compra.total_final().toFixed(2) }}</strong>
+        </div>
+
+        <div class="desglose-fila">
+          <span>Dinero Entregado</span>
+          <span>${{ servicio_compra.dinero_recibido().toFixed(2) }}</span>
+        </div>
+      </section>
+
+      @if (servicio_compra.pago_completado()) {
+        <div class="resultado-caja resultado-exito">
+          <div class="resultado-cabecera">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <span>Pago Cubierto · Cambio a Entregar</span>
+          </div>
+          <div class="resultado-valor">
+            ${{ servicio_compra.cambio().toFixed(2) }}
+          </div>
+        </div>
+      } @else {
+        <div class="resultado-caja resultado-pendiente">
+          <div class="resultado-cabecera">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>Pago Incompleto · Saldo Pendiente</span>
+          </div>
+          <div class="resultado-valor">
+            ${{ servicio_compra.saldo_pendiente().toFixed(2) }}
+          </div>
+        </div>
+      }
+
+      <div class="grupo-botones">
+        <button type="button" class="boton-primario" (click)="nueva_compra()">
+          <ion-icon name="refresh-outline"></ion-icon>
+          <span>Registrar Nueva Compra</span>
+        </button>
+
+        <button type="button" class="boton-secundario" (click)="ir_a_compra()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+          <span>Modificar Compra Actual</span>
+        </button>
+      </div>
+
+    } @else {
+      <div class="estado-vacio">
+        <div class="icono-vacio">
+          <ion-icon name="receipt-outline"></ion-icon>
+        </div>
+        <h2>Sin Compra Registrada</h2>
+        <p>Aún no se ha registrado ningún producto. Dirígete a la pestaña de Compra para iniciar una transacción.</p>
+        <button type="button" class="boton-primario" (click)="ir_a_compra()">
+          <ion-icon name="cart-outline"></ion-icon>
+          <span>Ir a Compra</span>
+        </button>
+      </div>
+    }
+
+  </div>
+</ion-content>

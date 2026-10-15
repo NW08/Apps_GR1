@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="contenedor-inicio">
+    <div class="marco-imagen">
+      @if (!imagen_fallida) {
+        <img
+          src="assets/images/inicio.jpg"
+          alt="Pantalla de inicio"
+          class="imagen-portada"
+          (error)="al_fallar_imagen()"
+        />
+      } @else {
+        <div class="placeholder-imagen">
+          <ion-icon name="image-outline"></ion-icon>
+          <span>assets/images/inicio.jpg</span>
+        </div>
+      }
+    </div>
+
+    <div class="encabezado">
+      <span class="etiqueta">Punto de Venta</span>
+      <h1>Gestión de Compras y Pagos</h1>
+      <p>Registra compras de productos, calcula subtotales, aplica descuentos y determina cambios o saldos pendientes de manera inmediata.</p>
+    </div>
+
+    <div class="cuadricula-caracteristicas">
+      <div class="tarjeta-info">
+        <ion-icon name="cart-outline"></ion-icon>
+        <div>
+          <h3>Registro de Compra</h3>
+          <p>Ingreso de producto, cantidad y precio unitario con validación estricta.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-info">
+        <ion-icon name="card-outline"></ion-icon>
+        <div>
+          <h3>Cálculo de Pagos</h3>
+          <p>Descuentos porcentuales, cálculo del total y verificación del dinero recibido.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="area-accion">
+      <button type="button" class="boton-iniciar" (click)="ir_a_compra()">
+        <span>Ir a Registrar Compra</span>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </button>
+    </div>
+  </div>
+</ion-content>

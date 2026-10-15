@@ -6,7 +6,7 @@
 
 <ion-content [fullscreen]="true" class="minimal-content">
   <div class="content-wrapper">
-    
+
     <!-- Encabezado de la página -->
     <header class="header-intro">
       <span class="badge-subtitle">Clase 03 · Control & Estado</span>
@@ -29,13 +29,8 @@
           <span>Nombre Completo</span>
         </label>
         <div class="field-input-box">
-          <ion-input
-            id="campo-nombre"
-            type="text"
-            placeholder="Escribe tu nombre"
-            [(ngModel)]="nombre_usuario"
-            class="clean-input"
-          ></ion-input>
+          <ion-input id="campo-nombre" type="text" placeholder="Escribe tu nombre" [(ngModel)]="nombre_usuario"
+            class="clean-input"></ion-input>
         </div>
       </div>
 
@@ -45,13 +40,8 @@
           <span>Correo Electrónico</span>
         </label>
         <div class="field-input-box">
-          <ion-input
-            id="campo-correo"
-            type="email"
-            placeholder="ejemplo@correo.com"
-            [(ngModel)]="correo_electronico"
-            class="clean-input"
-          ></ion-input>
+          <ion-input id="campo-correo" type="email" placeholder="ejemplo@correo.com" [(ngModel)]="correo_electronico"
+            class="clean-input"></ion-input>
         </div>
       </div>
 
@@ -61,13 +51,8 @@
           <span>Paralelo Académico</span>
         </label>
         <div class="field-input-box">
-          <ion-input
-            id="campo-paralelo"
-            type="number"
-            placeholder="Ejemplo: 1 o 2"
-            [(ngModel)]="numero_paralelo"
-            class="clean-input"
-          ></ion-input>
+          <ion-input id="campo-paralelo" type="number" placeholder="Ejemplo: 1 o 2" [(ngModel)]="numero_paralelo"
+            class="clean-input"></ion-input>
         </div>
       </div>
     </section>
@@ -87,35 +72,22 @@
 
       <!-- Controles de incremento / decremento -->
       <div class="counter-button-grid">
-        <button
-          type="button"
-          class="btn-counter btn-decrement"
-          [disabled]="valor_contador === 0"
-          (click)="disminuir_contador()"
-          aria-label="Disminuir contador"
-        >
+        <button type="button" class="btn-counter btn-decrement" [disabled]="valor_contador === 0"
+          (click)="disminuir_contador()" aria-label="Disminuir contador">
           <ion-icon name="remove-outline"></ion-icon>
           <span>Disminuir</span>
         </button>
 
-        <button
-          type="button"
-          class="btn-counter btn-increment"
-          (click)="aumentar_contador()"
-          aria-label="Aumentar contador"
-        >
+        <button type="button" class="btn-counter btn-increment" (click)="aumentar_contador()"
+          aria-label="Aumentar contador">
           <ion-icon name="add-outline"></ion-icon>
           <span>Aumentar</span>
         </button>
       </div>
 
       <!-- Botón de reinicio -->
-      <button
-        type="button"
-        class="btn-secondary-reset"
-        (click)="reiniciar_contador()"
-        [disabled]="valor_contador === 0"
-      >
+      <button type="button" class="btn-secondary-reset" (click)="reiniciar_contador()"
+        [disabled]="valor_contador === 0">
         <ion-icon name="refresh-outline"></ion-icon>
         <span>Reiniciar Contador</span>
       </button>
@@ -123,19 +95,15 @@
 
     <!-- Alerta en caso de validación fallida -->
     @if (mensaje_alerta) {
-      <div class="alert-container" role="alert">
-        <ion-icon name="alert-circle-outline"></ion-icon>
-        <span class="alert-text">{{ mensaje_alerta }}</span>
-      </div>
+    <div class="alert-container" role="alert">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span class="alert-text">{{ mensaje_alerta }}</span>
+    </div>
     }
 
     <!-- Botón de acción principal para enviar -->
     <div class="submit-action-area">
-      <button
-        type="button"
-        class="btn-primary-submit"
-        (click)="enviar_resumen()"
-      >
+      <button type="button" class="btn-primary-submit" (click)="enviar_resumen()">
         <span>Enviar al Resumen</span>
         <ion-icon name="arrow-forward-outline"></ion-icon>
       </button>

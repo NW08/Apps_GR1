@@ -1,0 +1,112 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Compra</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="contenedor-compra">
+    <div class="encabezado">
+      <span class="etiqueta">Paso 1 de 2</span>
+      <h1>Registrar Producto</h1>
+      <p>Ingresa los detalles del producto adquirido para calcular el subtotal de la compra.</p>
+    </div>
+
+    <section class="tarjeta-formulario">
+      <div class="campo-grupo">
+        <label class="etiqueta-campo" for="nombre-producto">
+          <ion-icon name="pricetag-outline"></ion-icon>
+          <span>Nombre del Producto *</span>
+        </label>
+        <div class="caja-input" [class.con-error]="error_nombre">
+          <ion-input
+            id="nombre-producto"
+            type="text"
+            placeholder="Ej. Teclado Mecánico"
+            [(ngModel)]="nombre_producto"
+            (ionInput)="limpiar_error('nombre')"
+            class="input-limpio"
+          ></ion-input>
+        </div>
+        @if (error_nombre) {
+          <div class="mensaje-error" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ error_nombre }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="campo-grupo">
+        <label class="etiqueta-campo" for="cantidad-producto">
+          <ion-icon name="layers-outline"></ion-icon>
+          <span>Cantidad (entero mayor a 0) *</span>
+        </label>
+        <div class="caja-input" [class.con-error]="error_cantidad">
+          <ion-input
+            id="cantidad-producto"
+            type="number"
+            min="1"
+            step="1"
+            placeholder="Ej. 2"
+            [(ngModel)]="cantidad"
+            (ionInput)="limpiar_error('cantidad')"
+            class="input-limpio"
+          ></ion-input>
+        </div>
+        @if (error_cantidad) {
+          <div class="mensaje-error" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ error_cantidad }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="campo-grupo">
+        <label class="etiqueta-campo" for="precio-unitario">
+          <ion-icon name="cash-outline"></ion-icon>
+          <span>Precio Unitario ($) *</span>
+        </label>
+        <div class="caja-input" [class.con-error]="error_precio">
+          <ion-input
+            id="precio-unitario"
+            type="number"
+            min="0.01"
+            step="0.01"
+            placeholder="Ej. 45.50"
+            [(ngModel)]="precio_unitario"
+            (ionInput)="limpiar_error('precio')"
+            class="input-limpio"
+          ></ion-input>
+        </div>
+        @if (error_precio) {
+          <div class="mensaje-error" role="alert">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ error_precio }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    <div class="tarjeta-subtotal">
+      <div class="subtotal-info">
+        <span class="subtotal-titulo">Subtotal Estimado</span>
+        <span class="subtotal-detalle">Calculado en base a cantidad y precio</span>
+      </div>
+      <div class="subtotal-monto">
+        ${{ subtotal_previo.toFixed(2) }}
+      </div>
+    </div>
+
+    <div class="grupo-botones">
+      <button type="button" class="boton-primario" (click)="validar_y_enviar()">
+        <span>Continuar al Pago</span>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </button>
+
+      <button type="button" class="boton-secundario" (click)="limpiar_formulario()">
+        <ion-icon name="refresh-outline"></ion-icon>
+        <span>Limpiar Campos</span>
+      </button>
+    </div>
+  </div>
+</ion-content>

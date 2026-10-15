@@ -1,0 +1,214 @@
+:host {
+  display: block;
+}
+
+.contenedor-compra {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  .etiqueta {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ion-color-step-600, #64748b);
+  }
+
+  h1 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--ion-text-color, #0f172a);
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--ion-color-step-600, #64748b);
+  }
+}
+
+.tarjeta-formulario {
+  background: var(--ion-color-step-50, #ffffff);
+  border: 1px solid var(--ion-color-step-150, #e2e8f0);
+  border-radius: 14px;
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.etiqueta-campo {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ion-color-step-700, #475569);
+
+  ion-icon {
+    font-size: 0.95rem;
+    color: var(--ion-color-step-500, #64748b);
+  }
+}
+
+.caja-input {
+  background: var(--ion-color-step-100, #f8fafc);
+  border: 1px solid var(--ion-color-step-200, #e2e8f0);
+  border-radius: 9px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:focus-within {
+    border-color: var(--ion-text-color, #0f172a);
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.08);
+  }
+
+  &.con-error {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.03);
+  }
+}
+
+.input-limpio {
+  --color: var(--ion-text-color, #0f172a);
+  --placeholder-color: var(--ion-color-step-400, #94a3b8);
+  --padding-start: 0.85rem;
+  --padding-end: 0.85rem;
+  --padding-top: 0.65rem;
+  --padding-bottom: 0.65rem;
+  font-size: 0.92rem;
+}
+
+.mensaje-error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: #ef4444;
+  line-height: 1.3;
+
+  ion-icon {
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+}
+
+.tarjeta-subtotal {
+  background: var(--ion-color-step-100, #f8fafc);
+  border: 1px solid var(--ion-color-step-200, #e2e8f0);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.subtotal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  .subtotal-titulo {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ion-color-step-600, #64748b);
+  }
+
+  .subtotal-detalle {
+    font-size: 0.75rem;
+    color: var(--ion-color-step-500, #94a3b8);
+  }
+}
+
+.subtotal-monto {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ion-text-color, #0f172a);
+  font-variant-numeric: tabular-nums;
+}
+
+.grupo-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.boton-primario {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: var(--ion-text-color, #0f172a);
+  color: var(--ion-background-color, #ffffff);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+}
+
+.boton-secundario {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1rem;
+  border-radius: 9px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--ion-color-step-600, #64748b);
+  border: 1px dashed var(--ion-color-step-300, #cbd5e1);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  ion-icon {
+    font-size: 0.95rem;
+  }
+
+  &:hover {
+    color: var(--ion-text-color, #0f172a);
+    border-color: var(--ion-color-step-600, #64748b);
+  }
+}

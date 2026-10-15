@@ -29,7 +29,16 @@ Thumbs.db
 
 # Projects
 /src/Clase_01/node_modules
+/src/Clase_01/CV/node_modules
 /src/Clase_02/node_modules
 /src/Clase_02/multiplos/android
+/src/Clase_02/multiplos/node_modules
 /src/Clase_03/node_modules
 /src/Clase_03/contador/android
+/src/Clase_03/contador/node_modules
+/src/Clase_03/producto/android
+/src/Clase_03/producto/assets
+/src/Clase_03/producto/node_modules
+/src/Clase_04/node_modules
+/src/Clase_04/photo-gallery/android
+/src/Clase_04/photo-gallery/node_modules
