@@ -1,39 +1,73 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/incidencias"></ion-back-button>
     </ion-buttons>
-    <ion-title>Nueva Incidencia</ion-title>
+    <ion-title>Nueva incidencia</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Fotografía de la Incidencia</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <app-foto [(foto)]="foto"></app-foto>
-    </ion-card-content>
-  </ion-card>
+  <ion-list>
+    <ion-item>
+      <ion-select label="Tipo *" labelPlacement="floating" interface="action-sheet" placeholder="Selecciona"
+        [(ngModel)]="tipo">
+        @for (t of tipos; track t.valor) {
+        <ion-select-option [value]="t.valor">{{ t.texto }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Ubicación Geográfica</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <app-ubicacion [(latitud)]="latitud" [(longitud)]="longitud"></app-ubicacion>
-    </ion-card-content>
-  </ion-card>
+    <ion-item>
+      <ion-textarea label="Descripción *" labelPlacement="floating" [autoGrow]="true" [counter]="true" [maxlength]="300"
+        [(ngModel)]="descripcion"></ion-textarea>
+    </ion-item>
 
-  @if (latitud() !== null && longitud() !== null) {
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Condición Meteorológica en la Zona</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <app-clima [latitud]="latitud()" [longitud]="longitud()"></app-clima>
-      </ion-card-content>
-    </ion-card>
+    <ion-item>
+      <ion-input label="Dirección *" labelPlacement="floating" placeholder="Av. 10 de Agosto y Colón"
+        [(ngModel)]="direccion"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input label="Sector *" labelPlacement="floating" placeholder="La Mariscal" [(ngModel)]="sector"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <h2 class="seccion">Prioridad *</h2>
+  <ion-segment [(ngModel)]="prioridad">
+    <ion-segment-button value="baja"><ion-label>Baja</ion-label></ion-segment-button>
+    <ion-segment-button value="media"><ion-label>Media</ion-label></ion-segment-button>
+    <ion-segment-button value="alta"><ion-label>Alta</ion-label></ion-segment-button>
+  </ion-segment>
+
+  <h2 class="seccion">Fotografía {{ fotoObligatoria() ? '*' : '' }}</h2>
+  <app-foto [(foto)]="foto" [obligatoria]="fotoObligatoria()"></app-foto>
+
+  <h2 class="seccion">Ubicación {{ ubicacionObligatoria() ? '*' : '' }}</h2>
+  <app-ubicacion [(latitud)]="latitud" [(longitud)]="longitud" [obligatoria]="ubicacionObligatoria()"></app-ubicacion>
+
+  <h2 class="seccion">Condiciones meteorológicas</h2>
+  @if (tieneCoordenadas()) {
+  <app-clima [latitud]="latitud()" [longitud]="longitud()" (consultado)="onClima($event)"
+    (fallo)="onClimaFallo()"></app-clima>
+  } @else {
+  <ion-note>Sin coordenadas no se puede consultar el clima. Para este tipo puedes guardar solo con la
+    dirección.</ion-note>
   }
+
+  @if (intentado() && errores().length) {
+  <div class="errores">
+    @for (e of errores(); track e) {
+    <ion-note color="danger">• {{ e }}</ion-note>
+    }
+  </div>
+  }
+
+  <ion-button expand="block" size="large" class="ion-margin-top" (click)="guardar()" [disabled]="guardando()">
+    @if (guardando()) {
+    <ion-spinner name="crescent"></ion-spinner>&nbsp;{{ paso() }}
+    } @else {
+    Guardar incidencia
+    }
+  </ion-button>
 </ion-content>

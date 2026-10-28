@@ -61,6 +61,7 @@ export class ClimaComponent implements OnInit {
   longitud = input<number | null>(null);
 
   consultado = output<Clima | null>();
+  fallo = output<void>();
 
   private climaService = inject(ClimaService);
   private cdr = inject(ChangeDetectorRef);
@@ -137,6 +138,7 @@ export class ClimaComponent implements OnInit {
         this.cargando.set(false);
         this.error.set('No se pudo obtener el estado del clima.');
         this.consultado.emit(null);
+        this.fallo.emit();
         this.cdr.markForCheck();
       },
     });

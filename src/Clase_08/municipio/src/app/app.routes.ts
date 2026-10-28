@@ -19,11 +19,19 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/incidencias/incidencias.page').then((m) => m.IncidenciasPage),
   },
   {
+    path: 'incidencias/:id',
+    loadComponent: () => import('./pages/detalle/detalle.page').then((m) => m.DetallePage),
+  },
+  {
     path: 'seguimiento',
     loadComponent: () => import('./pages/seguimiento/seguimiento.page').then((m) => m.SeguimientoPage),
   },
   {
     path: 'detalle',
+    loadComponent: () => import('./pages/detalle/detalle.page').then((m) => m.DetallePage),
+  },
+  {
+    path: 'detalle/:id',
     loadComponent: () => import('./pages/detalle/detalle.page').then((m) => m.DetallePage),
   },
   {
