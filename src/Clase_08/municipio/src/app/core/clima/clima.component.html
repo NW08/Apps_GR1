@@ -1,0 +1,33 @@
+@if (cargando) {
+  <div class="clima-centro">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Consultando clima en el sector...</p>
+  </div>
+} @else if (error) {
+  <div class="clima-error">
+    <p>{{ mensajeError }}</p>
+  </div>
+} @else if (clima) {
+  <ion-card class="clima-card">
+    <ion-card-header>
+      <div class="clima-header">
+        <ion-card-title>{{ clima.temperatura | number: '1.0-1' }} °C</ion-card-title>
+        @if (esLluviaFuerte) {
+          <ion-badge color="danger">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            Alerta de lluvia
+          </ion-badge>
+        }
+      </div>
+      <ion-card-subtitle>{{ clima.descripcion }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Precipitación: {{ clima.precipitacion }} mm</p>
+      @if (esLluviaFuerte) {
+        <ion-text color="danger">
+          <p><strong>Alerta:</strong> Lluvia intensa detectada (≥ {{ umbralLluvia }} mm). Puede comprometer la atención de la incidencia.</p>
+        </ion-text>
+      }
+    </ion-card-content>
+  </ion-card>
+}

@@ -1,0 +1,37 @@
+.clima-centro {
+  text-align: center;
+  padding: 12px;
+  color: var(--ion-color-medium);
+
+  p {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+}
+
+.clima-error {
+  text-align: center;
+  padding: 8px;
+  font-size: 12px;
+  color: var(--ion-color-medium);
+}
+
+.clima-card {
+  margin: 8px 0;
+  border-radius: 12px;
+  box-shadow: none;
+  border: 1px solid var(--ion-color-light-shade, #e0e0e0);
+}
+
+.clima-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  ion-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+  }
+}
