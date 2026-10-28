@@ -1,0 +1,7 @@
+{
+  "name": "municipio",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
