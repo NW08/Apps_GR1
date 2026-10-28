@@ -1,13 +1,39 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>registro</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/incidencias"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nueva Incidencia</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">registro</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Fotografía de la Incidencia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-foto [(foto)]="foto"></app-foto>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Ubicación Geográfica</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <app-ubicacion [(latitud)]="latitud" [(longitud)]="longitud"></app-ubicacion>
+    </ion-card-content>
+  </ion-card>
+
+  @if (latitud() !== null && longitud() !== null) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Condición Meteorológica en la Zona</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <app-clima [latitud]="latitud()" [longitud]="longitud()"></app-clima>
+      </ion-card-content>
+    </ion-card>
+  }
 </ion-content>

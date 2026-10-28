@@ -1,10 +1,13 @@
 import {
   Component,
-  Input,
   OnInit,
-  OnChanges,
-  SimpleChanges,
+  computed,
+  effect,
   inject,
+  input,
+  output,
+  signal,
+  untracked,
   ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -18,6 +21,7 @@ import {
   IonBadge,
   IonText,
   IonIcon,
+  IonButton,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -26,6 +30,7 @@ import {
   cloudyOutline,
   thunderstormOutline,
   alertCircleOutline,
+  warningOutline,
 } from 'ionicons/icons';
 import { ClimaService, Clima } from '../services/clima.service';
 import { coordenadasValidas } from '../utils/coordenadas';
@@ -48,25 +53,26 @@ import { UMBRAL_LLUVIA_MM } from '../config';
     IonBadge,
     IonText,
     IonIcon,
+    IonButton,
   ],
 })
-export class ClimaComponent implements OnInit, OnChanges {
-  @Input() lat?: number | null;
-  @Input() lon?: number | null;
+export class ClimaComponent implements OnInit {
+  latitud = input<number | null>(null);
+  longitud = input<number | null>(null);
+
+  consultado = output<Clima | null>();
 
   private climaService = inject(ClimaService);
   private cdr = inject(ChangeDetectorRef);
 
-  clima: Clima | null = null;
-  cargando = false;
-  error = false;
-  mensajeError = '';
+  clima = signal<Clima | null>(null);
+  cargando = signal(false);
+  error = signal<string | null>(null);
 
+  seq = 0;
   readonly umbralLluvia = UMBRAL_LLUVIA_MM;
 
-  get esLluviaFuerte(): boolean {
-    return (this.clima?.precipitacion ?? 0) >= this.umbralLluvia;
-  }
+  esLluviaFuerte = computed(() => (this.clima()?.precipitacion ?? 0) >= this.umbralLluvia);
 
   constructor() {
     addIcons({
@@ -75,45 +81,62 @@ export class ClimaComponent implements OnInit, OnChanges {
       cloudyOutline,
       thunderstormOutline,
       alertCircleOutline,
+      warningOutline,
+    });
+
+    // Si cambian las coordenadas, el clima mostrado se reinicia y se re-consulta si son válidas
+    effect(() => {
+      const lat = this.latitud();
+      const lon = this.longitud();
+      untracked(() => {
+        this.seq++;
+        this.clima.set(null);
+        this.error.set(null);
+        this.cargando.set(false);
+        this.consultado.emit(null);
+        if (coordenadasValidas(lat, lon)) {
+          this.cargar();
+        }
+      });
     });
   }
 
   ngOnInit() {
-    this.cargar();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['lat'] || changes['lon']) {
+    if (coordenadasValidas(this.latitud(), this.longitud())) {
       this.cargar();
     }
   }
 
   cargar() {
-    if (!coordenadasValidas(this.lat, this.lon)) {
-      this.clima = null;
-      this.cargando = false;
-      this.error = false;
-      this.mensajeError = '';
+    const lat = this.latitud();
+    const lon = this.longitud();
+    if (!coordenadasValidas(lat, lon)) {
+      this.clima.set(null);
+      this.cargando.set(false);
+      this.error.set(null);
       this.cdr.markForCheck();
       return;
     }
 
-    this.cargando = true;
-    this.error = false;
-    this.mensajeError = '';
+    const currentSeq = ++this.seq;
+    this.cargando.set(true);
+    this.error.set(null);
     this.cdr.markForCheck();
 
-    this.climaService.getClima(this.lat as number, this.lon as number).subscribe({
+    this.climaService.getClima(lat as number, lon as number).subscribe({
       next: (data) => {
-        this.clima = data;
-        this.cargando = false;
+        if (this.seq !== currentSeq) return;
+        this.clima.set(data);
+        this.cargando.set(false);
+        this.consultado.emit(data);
         this.cdr.markForCheck();
       },
       error: () => {
-        this.clima = null;
-        this.cargando = false;
-        this.error = true;
-        this.mensajeError = 'No se pudo obtener el estado del clima.';
+        if (this.seq !== currentSeq) return;
+        this.clima.set(null);
+        this.cargando.set(false);
+        this.error.set('No se pudo obtener el estado del clima.');
+        this.consultado.emit(null);
         this.cdr.markForCheck();
       },
     });
