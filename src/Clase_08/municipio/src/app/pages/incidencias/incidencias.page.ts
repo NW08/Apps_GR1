@@ -4,7 +4,7 @@ import { DatePipe } from '@angular/common';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonList, IonItem, IonLabel,
   IonThumbnail, IonBadge, IonSpinner, IonButton, IonIcon, IonInfiniteScroll,
-  IonInfiniteScrollContent, InfiniteScrollCustomEvent,
+  IonInfiniteScrollContent, IonRefresher, IonRefresherContent, InfiniteScrollCustomEvent,
 } from '@ionic/angular';
 import { IncidenciasService } from '../../core/services/incidencias.service';
 import { Incidencia, Estado } from '../../core/models/incidencia.model';
@@ -21,7 +21,7 @@ import { SeguimientoService } from '../../core/services/seguimiento.service';
   imports: [
     RouterLink, DatePipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,
     IonList, IonItem, IonLabel, IonThumbnail, IonBadge, IonSpinner, IonButton,
-    IonIcon, IonInfiniteScroll, IonInfiniteScrollContent,
+    IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent,
   ],
 })
 export class IncidenciasPage implements OnInit {
@@ -46,16 +46,28 @@ export class IncidenciasPage implements OnInit {
   };
 
   ngOnInit() {
-    this.cargar();
+    this.recargar();
+  }
+
+  ionViewWillEnter() {
+    this.recargar();
+  }
+
+  recargar(ev?: any) {
+    this.page = 1;
+    this.items = [];
+    this.fin = false;
+    this.error = false;
+    this.cargar(ev);
   }
 
   colorEstado(e: Estado): string {
     return e === 'pendiente' ? 'warning' : e === 'en_proceso' ? 'primary' : 'success';
   }
 
-  cargar(ev?: InfiniteScrollCustomEvent) {
+  cargar(ev?: any) {
     if (this.cargando || this.fin || this.error) {
-      ev?.target.complete();
+      ev?.target?.complete?.();
       return;
     }
     this.cargando = true;
@@ -70,19 +82,18 @@ export class IncidenciasPage implements OnInit {
         }
         this.cargando = false;
         this.cdr.markForCheck();
-        ev?.target.complete();
+        ev?.target?.complete?.();
       },
       error: () => {
         this.error = true;
         this.cargando = false;
         this.cdr.markForCheck();
-        ev?.target.complete();
+        ev?.target?.complete?.();
       },
     });
   }
 
   reintentar() {
-    this.error = false;
-    this.cargar();
+    this.recargar();
   }
 }

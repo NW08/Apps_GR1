@@ -9,6 +9,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   @if (cargando && items.length === 0) {
   <div class="centro"><ion-spinner></ion-spinner></div>
   }

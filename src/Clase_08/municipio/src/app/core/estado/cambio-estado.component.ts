@@ -115,7 +115,7 @@ export class CambioEstadoComponent {
         this.svc.actualizar({
           ...this.incidencia(),
           estado: destino,
-          observacion: destino === 'resuelta' ? obs : this.incidencia().observacion ?? null,
+          observacion: destino === 'resuelta' ? obs : this.incidencia().observacion ?? '',
         } as Incidencia)
       );
       this.destino.set(null);

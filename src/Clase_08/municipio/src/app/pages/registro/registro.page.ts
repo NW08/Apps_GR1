@@ -182,7 +182,8 @@ export class RegistroPage {
         }),
       );
 
-      await this.aviso(`Incidencia ${creada.codigo} registrada.`, 'success');
+      const cod = creada?.codigo ?? '';
+      await this.aviso(`Incidencia ${cod ? cod + ' ' : ''}registrada con éxito.`, 'success');
       await this.borrador.descartar();
       this.limpiar();
       this.router.navigate(['/incidencias'], { replaceUrl: true });

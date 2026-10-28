@@ -9,12 +9,13 @@ ejecutarlo.
 
 ## Proyectos
 
-| #   | Nombre                                        | Descripción                                       | Tecnologías        |
-| --- | --------------------------------------------- | ------------------------------------------------- | ------------------ |
-| 4   | [`Compras & Pagos`](./src/Clase_03/producto/) | Simulación de compras y pagos de productos.       | Assets, Capacitor  |
-| 3   | [`Interacción Tabs`](./src/Clase_03)          | Registro de información entre pestañas reactivas. | Capacitor, Angular |
-| 2   | [`Múltiplos & Primos`](./src/Clase_02)        | App que genera números primos consecutivos.       | Ionic, Capacitor   |
-| 1   | [`CV Ionic`](./src/Clase_01)                  | CV Interactivo para dispositivos móviles.         | NodeJS, Ionic      |
+| #   | Nombre                                        | Descripción                                                  | Tecnologías                                                |
+| --- | --------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| 5   | [`UrbanInspect`](./src/Clase_08/municipio/)   | Reporte, monitoreo y seguimiento de incidencias municipales. | Ionic, Angular, Capacitor, MockAPI, Cloudinary, Open-Meteo |
+| 4   | [`Compras & Pagos`](./src/Clase_03/producto/) | Simulación de compras y pagos de productos.                  | Assets, Capacitor                                          |
+| 3   | [`Interacción Tabs`](./src/Clase_03)          | Registro de información entre pestañas reactivas.            | Capacitor, Angular                                         |
+| 2   | [`Múltiplos & Primos`](./src/Clase_02)        | App que genera números primos consecutivos.                  | Ionic, Capacitor                                           |
+| 1   | [`CV Ionic`](./src/Clase_01)                  | CV Interactivo para dispositivos móviles.                    | NodeJS, Ionic                                              |
 
 ---
 
