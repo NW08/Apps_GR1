@@ -1,13 +1,55 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>seguimiento</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/incidencias"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Seguimiento</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">seguimiento</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  @if (cargando) {
+  <div class="centro"><ion-spinner></ion-spinner></div>
+  }
+
+  @if (error) {
+  <div class="centro">
+    <p>No se pudo consultar las incidencias marcadas.</p>
+    <ion-button (click)="cargar()">Reintentar</ion-button>
+  </div>
+  }
+
+  @if (!cargando && !error && items.length === 0) {
+  <div class="centro">
+    <p>No tienes incidencias marcadas para seguimiento.</p>
+  </div>
+  }
+
+  @if (!cargando && items.length > 0) {
+  <ion-list>
+    @for (i of items; track i.id) {
+    <ion-item>
+      <ion-thumbnail slot="start" [class.sin-foto]="!i.fotoUrl">
+        @if (i.fotoUrl) {
+        <img [src]="i.fotoUrl" [alt]="i.codigo" />
+        } @else {
+        <span>Sin foto</span>
+        }
+      </ion-thumbnail>
+      <ion-label class="ion-text-wrap">
+        <h2>{{ i.codigo }} · {{ i.tipo }}</h2>
+        <p>{{ i.descripcion }}</p>
+        <p>{{ i.direccion }} — {{ i.sector }}</p>
+        <p>{{ i.fecha | date: 'dd/MM/yyyy' }}</p>
+      </ion-label>
+      <ion-badge slot="end" [color]="colorEstado(i.estado)">
+        {{ etiquetaEstado[i.estado] }}
+      </ion-badge>
+      <ion-button slot="end" fill="clear" aria-label="Quitar de seguimiento" (click)="quitar(i)">
+        <ion-icon slot="icon-only" name="star"></ion-icon>
+      </ion-button>
+    </ion-item>
+    }
+  </ion-list>
+  }
 </ion-content>

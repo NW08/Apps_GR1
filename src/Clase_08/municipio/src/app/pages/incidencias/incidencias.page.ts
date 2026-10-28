@@ -1,13 +1,17 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel,
-  IonThumbnail, IonBadge, IonSpinner, IonButton, IonInfiniteScroll,
-  IonInfiniteScrollContent, InfiniteScrollCustomEvent
+  IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonList, IonItem, IonLabel,
+  IonThumbnail, IonBadge, IonSpinner, IonButton, IonIcon, IonInfiniteScroll,
+  IonInfiniteScrollContent, InfiniteScrollCustomEvent,
 } from '@ionic/angular';
 import { IncidenciasService } from '../../core/services/incidencias.service';
 import { Incidencia, Estado } from '../../core/models/incidencia.model';
 import { PAGE_SIZE } from '../../core/config';
+import { addIcons } from 'ionicons';
+import { star, starOutline } from 'ionicons/icons';
+import { SeguimientoService } from '../../core/services/seguimiento.service';
 
 @Component({
   selector: 'app-incidencias',
@@ -15,14 +19,19 @@ import { PAGE_SIZE } from '../../core/config';
   styleUrls: ['./incidencias.page.scss'],
   standalone: true,
   imports: [
-    DatePipe, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem,
-    IonLabel, IonThumbnail, IonBadge, IonSpinner, IonButton, IonInfiniteScroll,
-    IonInfiniteScrollContent,
+    RouterLink, DatePipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,
+    IonList, IonItem, IonLabel, IonThumbnail, IonBadge, IonSpinner, IonButton,
+    IonIcon, IonInfiniteScroll, IonInfiniteScrollContent,
   ],
 })
 export class IncidenciasPage implements OnInit {
   private svc = inject(IncidenciasService);
   private cdr = inject(ChangeDetectorRef);
+  seg = inject(SeguimientoService);
+
+  constructor() {
+    addIcons({ star, starOutline });
+  }
 
   items: Incidencia[] = [];
   page = 1;

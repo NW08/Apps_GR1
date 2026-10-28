@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, of, throwError } from 'rxjs';
+import { Observable, catchError, of, throwError, map } from 'rxjs';
 import { API_URL } from '../config';
 import { Incidencia } from '../models/incidencia.model';
 
@@ -20,4 +20,14 @@ export class IncidenciasService {
         )
       );
   }
+
+  getPorCodigo(codigo: string): Observable<Incidencia | null> {
+  return this.http.get<Incidencia[]>(this.url, { params: { codigo } }).pipe(
+    // MockAPI filtra por coincidencia parcial: se exige coincidencia exacta
+    map((lista) => lista.find((i) => i.codigo === codigo) ?? null),
+    catchError((err: HttpErrorResponse) =>
+      err.status === 404 ? of(null) : throwError(() => err)
+    )
+  );
+}
 }

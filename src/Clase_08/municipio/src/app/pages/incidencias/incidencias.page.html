@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Incidencias</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/seguimiento">Seguimiento</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -42,6 +45,12 @@
       <ion-badge slot="end" [color]="colorEstado(i.estado)">
         {{ etiquetaEstado[i.estado] }}
       </ion-badge>
+
+      <ion-button slot="end" fill="clear"
+        [attr.aria-label]="seg.esMarcado(i.codigo) ? 'Quitar de seguimiento' : 'Marcar para seguimiento'"
+        (click)="seg.alternar(i.codigo)">
+        <ion-icon slot="icon-only" [name]="seg.esMarcado(i.codigo) ? 'star' : 'star-outline'"></ion-icon>
+      </ion-button>
     </ion-item>
     }
   </ion-list>
