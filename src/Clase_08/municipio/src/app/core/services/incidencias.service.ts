@@ -41,6 +41,10 @@ export class IncidenciasService {
   actualizar(data: Incidencia): Observable<Incidencia> {
     return this.http.put<Incidencia>(`${this.url}/${data.id}`, data);
   }
+
+  resumen(): Observable<Incidencia[]> {
+    return this.http.get<Incidencia[]>(this.url);
+  }
 }
 
 export { IncidenciasService as IncidenciaService };

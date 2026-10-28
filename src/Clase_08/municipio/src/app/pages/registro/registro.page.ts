@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -22,9 +22,11 @@ import {
   IonNote,
   IonSpinner,
   ToastController,
+  AlertController,
 } from '@ionic/angular';
 import { IncidenciasService } from '../../core/services/incidencias.service';
 import { ImagenService } from '../../core/services/imagen.service';
+import { BorradorService, Borrador } from '../../core/services/borrador.service';
 import { coordenadasValidas } from '../../core/utils/coordenadas';
 import { FotoComponent } from '../../core/foto/foto.component';
 import { UbicacionComponent } from '../../core/ubicacion/ubicacion.component';
@@ -122,17 +124,14 @@ export class RegistroPage {
   errores = computed(() => {
     const e: string[] = [];
     if (!this.tipo()) e.push('Selecciona el tipo de incidencia.');
-    if ((this.descripcion() ?? '').trim().length < 10)
-      e.push('La descripción debe tener al menos 10 caracteres.');
+    if ((this.descripcion() ?? '').trim().length < 10) e.push('La descripción debe tener al menos 10 caracteres.');
     if (!(this.direccion() ?? '').trim()) e.push('Ingresa la dirección.');
     if (!(this.sector() ?? '').trim()) e.push('Ingresa el sector.');
     if (!this.prioridad()) e.push('Selecciona la prioridad.');
-    if (this.fotoObligatoria() && !this.foto())
-      e.push('La prioridad alta exige una fotografía.');
+    if (this.fotoObligatoria() && !this.foto()) e.push('La prioridad alta exige una fotografía.');
     if (this.ubicacionObligatoria() && !this.tieneCoordenadas())
       e.push('Para un bache la ubicación es obligatoria (GPS o coordenadas manuales).');
-    if (this.tieneCoordenadas() && !this.climaRevisado())
-      e.push('Consulta el clima antes de guardar.');
+    if (this.tieneCoordenadas() && !this.climaRevisado()) e.push('Consulta el clima antes de guardar.');
     return e;
   });
 
@@ -160,10 +159,7 @@ export class RegistroPage {
         try {
           fotoUrl = await this.imagenes.subir(foto);
         } catch {
-          await this.aviso(
-            'No se pudo subir la fotografía. Revisa la conexión e inténtalo de nuevo.',
-            'danger'
-          );
+          await this.aviso('No se pudo subir la fotografía. Revisa la conexión e inténtalo de nuevo.', 'danger');
           return;
         }
       }
@@ -183,16 +179,17 @@ export class RegistroPage {
           latitud: (this.tieneCoordenadas() ? this.latitud() : null) as any,
           longitud: (this.tieneCoordenadas() ? this.longitud() : null) as any,
           observacion: '',
-        })
+        }),
       );
 
       await this.aviso(`Incidencia ${creada.codigo} registrada.`, 'success');
+      await this.borrador.descartar();
       this.limpiar();
       this.router.navigate(['/incidencias'], { replaceUrl: true });
     } catch {
       await this.aviso(
         'No se pudo guardar en el servicio de oficina. Tus datos siguen en el formulario; inténtalo de nuevo.',
-        'danger'
+        'danger',
       );
     } finally {
       this.guardando.set(false);
@@ -216,5 +213,102 @@ export class RegistroPage {
   private async aviso(message: string, color: string) {
     const t = await this.toast.create({ message, color, duration: 3000, position: 'bottom' });
     await t.present();
+  }
+
+  private borrador = inject(BorradorService);
+  private alert = inject(AlertController);
+
+  private autoguardado = signal(false);
+
+  constructor() {
+    // Autoguardado de campos y coordenadas
+    effect(() => {
+      const datos = {
+        tipo: this.tipo() ?? '',
+        descripcion: this.descripcion() ?? '',
+        direccion: this.direccion() ?? '',
+        sector: this.sector() ?? '',
+        prioridad: this.prioridad() ?? '',
+        latitud: this.latitud(),
+        longitud: this.longitud(),
+      };
+      if (!this.autoguardado()) return;
+
+      const vacio =
+        !datos.tipo &&
+        !datos.descripcion.trim() &&
+        !datos.direccion.trim() &&
+        !datos.sector.trim() &&
+        !datos.prioridad &&
+        datos.latitud === null;
+
+      void this.borrador.guardarDatos(vacio ? null : { ...datos, guardadoEn: new Date().toISOString() });
+    });
+
+    // Autoguardado de la foto (clave separada)
+    effect(() => {
+      const foto = this.foto();
+      if (!this.autoguardado()) return;
+      void this.borrador.guardarFoto(foto);
+    });
+  }
+
+  async ionViewWillEnter() {
+    if (this.autoguardado()) return; // esta instancia ya decidió sobre el borrador
+
+    const b = await this.borrador.obtener();
+    if (!b) {
+      this.autoguardado.set(true);
+      return;
+    }
+
+    const cuando = b.datos.guardadoEn ? ` (guardado el ${new Date(b.datos.guardadoEn).toLocaleString('es-EC')})` : '';
+
+    const a = await this.alert.create({
+      header: 'Registro sin terminar',
+      message: `Hay un registro incompleto${cuando}. ¿Deseas continuarlo o descartarlo?`,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Descartar',
+          role: 'destructive',
+          handler: () => {
+            void this.descartarBorrador();
+          },
+        },
+        {
+          text: 'Continuar',
+          handler: () => {
+            void this.restaurar(b.datos, b.foto);
+          },
+        },
+      ],
+    });
+    await a.present();
+  }
+
+  private async restaurar(d: Borrador, foto: string | null) {
+    this.tipo.set(d.tipo as any);
+    this.descripcion.set(d.descripcion);
+    this.direccion.set(d.direccion);
+    this.sector.set(d.sector);
+    this.prioridad.set(d.prioridad as any);
+    this.latitud.set(d.latitud);
+    this.longitud.set(d.longitud);
+    this.foto.set(foto);
+    this.climaRevisado.set(false); // el clima no se recupera: se vuelve a consultar
+    this.autoguardado.set(true);
+
+    if (d.latitud !== null) {
+      await this.aviso('Registro recuperado. Vuelve a consultar el clima antes de guardar.', 'primary');
+    } else {
+      await this.aviso('Registro recuperado.', 'primary');
+    }
+  }
+
+  private async descartarBorrador() {
+    await this.borrador.descartar();
+    this.limpiar();
+    this.autoguardado.set(true);
   }
 }
