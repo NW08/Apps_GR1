@@ -1,0 +1,17 @@
+.centro {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+ion-thumbnail {
+  --size: 72px;
+
+  &.sin-foto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ion-color-light);
+    font-size: 11px;
+    color: var(--ion-color-medium);
+  }
+}
