@@ -10,37 +10,52 @@
 *.tar.gz
 *.rar
 
-# IntelliJ IDEA
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular & Ionic build output / caches
+.angular/
+www/
+dist/
+out-tsc/
+.ionic/
+
+# Mobile platforms
+android/
+ios/
+.gradle/
+local.properties
+
+# Test coverage & reports
+coverage/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# IDEs and editors
 .idea/
 *.iml
 *.iws
 *.ipr
 out/
-
-# macOS
-.DS_Store
-
-# Windows
-Thumbs.db
-
-# VSCode
 .vscode/
 *.code-workspace
+.history/
+*.sublime-project
+*.sublime-workspace
 
-# Projects
-/src/Clase_01/node_modules
-/src/Clase_01/CV/node_modules
-/src/Clase_02/node_modules
-/src/Clase_02/multiplos/android
-/src/Clase_02/multiplos/node_modules
-/src/Clase_03/node_modules
-/src/Clase_03/contador/android
-/src/Clase_03/contador/node_modules
-/src/Clase_03/producto/android
-/src/Clase_03/producto/node_modules
-/src/Clase_04/node_modules
-/src/Clase_04/photo-gallery/android
-/src/Clase_04/photo-gallery/node_modules
-/src/Clase_08/node_modules
-/src/Clase_08/municipio/android
-/src/Clase_08/municipio/node_modules
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Leftover gitkeep
+/.gitkeep
