@@ -1,7 +1,0 @@
-{
-  "name": "multiplos",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

@@ -1,7 +1,0 @@
-{
-  "name": "producto",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
