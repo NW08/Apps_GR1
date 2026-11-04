@@ -1,0 +1,41 @@
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85%;
+}
+
+.welcome-card {
+  max-width: 480px;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  margin: 0 auto;
+
+  .image-wrapper {
+    width: 100%;
+    background: #392854;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+  }
+
+  .welcome-image {
+    max-height: 240px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+
+  ion-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  ion-card-subtitle {
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+}
