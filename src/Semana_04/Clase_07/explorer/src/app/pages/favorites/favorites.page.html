@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Favoritos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @for (book of favorites(); track book.id) {
+    <app-book-card [book]="book" />
+  } @empty {
+    <div class="state">
+      <ion-icon name="heart-outline"></ion-icon>
+      <p>Aún no tienes libros favoritos.</p>
+    </div>
+  }
+</ion-content>

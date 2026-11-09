@@ -1,0 +1,32 @@
+@let b = book();
+<ion-card [routerLink]="['/book', b.id]">
+  <div class="row">
+    <div class="cover">
+      @if (b.coverId) {
+        <img [src]="books.coverUrl(b.coverId)" [alt]="b.title" loading="lazy" />
+      } @else {
+        <ion-icon name="book-outline"></ion-icon>
+      }
+    </div>
+
+    <div class="info">
+      <h2>{{ b.title }}</h2>
+      <p>{{ b.authors.length ? b.authors.slice(0, 2).join(', ') : 'Autor desconocido' }}</p>
+      <small>
+        {{ b.year ?? 's/f' }}
+        @if (b.editions) {
+          · {{ b.editions }} {{ b.editions === 1 ? 'edición' : 'ediciones' }}
+        }
+      </small>
+    </div>
+
+    <ion-button
+      fill="clear"
+      [color]="favorites.isFavorite(b.id) ? 'danger' : 'medium'"
+      [attr.aria-label]="favorites.isFavorite(b.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+      (click)="toggleFavorite($event)"
+    >
+      <ion-icon slot="icon-only" [name]="favorites.isFavorite(b.id) ? 'heart' : 'heart-outline'"></ion-icon>
+    </ion-button>
+  </div>
+</ion-card>

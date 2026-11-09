@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>API Explorer</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/favorites" aria-label="Favoritos">
+        <ion-icon slot="icon-only" name="heart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Buscar libros o autores"
+      [debounce]="500"
+      (ionInput)="onSearch($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [value]="sort()" (ionChange)="onSort($event)">
+      <ion-segment-button value="relevance"><ion-label>Relevancia</ion-label></ion-segment-button>
+      <ion-segment-button value="new"><ion-label>Recientes</ion-label></ion-segment-button>
+      <ion-segment-button value="old"><ion-label>Antiguos</ion-label></ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (books().length) {
+    <p class="summary">{{ total() }} resultados para «{{ query() }}»</p>
+
+    @for (book of books(); track book.id) {
+      <app-book-card [book]="book" />
+    }
+  } @else if (loading()) {
+    <div class="state">
+      <ion-spinner></ion-spinner>
+      <p>Cargando libros…</p>
+    </div>
+  } @else if (error()) {
+    <div class="state">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>No se pudo conectar con Open Library.</p>
+      <ion-button fill="outline" (click)="retry()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  } @else {
+    <div class="state">
+      <ion-icon name="search-outline"></ion-icon>
+      <p>Sin resultados para «{{ query() }}».</p>
+    </div>
+  }
+
+  <!-- Error al cargar una página siguiente: se conserva la lista y se ofrece reintento -->
+  @if (error() && books().length) {
+    <div class="state compact">
+      <p>Error al cargar más resultados.</p>
+      <ion-button size="small" fill="outline" (click)="retry()">Reintentar</ion-button>
+    </div>
+  }
+
+  <ion-infinite-scroll [disabled]="!hasMore() || error() || !books().length" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content loadingText="Cargando más…"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  @if (!hasMore() && books().length) {
+    <p class="summary">No hay más resultados</p>
+  }
+</ion-content>

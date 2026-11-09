@@ -10,6 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio `README.md` d
 
 | #   | Proyecto                                                | Descripción                                                           | Tecnologías                                                         |
 | --- | ------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 8   | [`API Explorer`](./src/Semana_04/Clase_07/)             | Explorador de libros con Open Library: búsqueda, filtros, infinite scrolling, detalle y favoritos persistentes. | Ionic, Angular Standalone, Open Library API, RxJS                  |
 | 7   | [`PokéAPP`](./src/Semana_04/Clase_06/)                  | Búsqueda y detalles con PokéAPI, galería multimedia, sonidos, GIFs y comparación entre personajes. | Ionic, Angular Standalone, PokéAPI REST v2, RxJS                   |
 | 6   | [`GPS`](./src/Semana_03/Clase_05/)    | Captura de ubicación GPS, cálculo de rutas con waypoints y exportación de reportes en TXT. | Ionic, Angular Standalone, HTML5 Geolocation API |
 | 5   | [`Galería de Fotos`](./src/Semana_03/Clase_04/)         | Captura, persistencia, visualización en galería y eliminación interactiva de fotos con cámara. | Ionic, Angular Signals, Capacitor (Camera, Filesystem, Preferences) |

@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ book()?.title ?? 'Detalle' }}</ion-title>
+    @if (book(); as b) {
+      <ion-buttons slot="end">
+        <ion-button
+          [attr.aria-label]="favorites.isFavorite(b.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+          (click)="toggleFavorite()"
+        >
+          <ion-icon slot="icon-only" [name]="favorites.isFavorite(b.id) ? 'heart' : 'heart-outline'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading()) {
+    <div class="state">
+      <ion-spinner></ion-spinner>
+      <p>Cargando detalle…</p>
+    </div>
+  } @else if (error()) {
+    <div class="state">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>No se pudo cargar el libro.</p>
+      <ion-button fill="outline" (click)="load()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  } @else {
+    @if (book(); as b) {
+      <div class="cover">
+        @if (b.coverId) {
+          <img [src]="books.coverUrl(b.coverId, 'L')" [alt]="b.title" />
+        } @else {
+          <ion-icon name="book-outline"></ion-icon>
+        }
+      </div>
+
+      <h1>{{ b.title }}</h1>
+      <p class="meta">
+        {{ b.authors.length ? b.authors.join(', ') : 'Autor desconocido' }}
+        @if (b.year) {
+          · {{ b.year }}
+        }
+      </p>
+
+      <h3>Descripción</h3>
+      <p class="description">{{ b.description || 'Sin descripción disponible.' }}</p>
+
+      @if (b.subjects.length) {
+        <h3>Temas</h3>
+        @for (subject of b.subjects; track subject) {
+          <ion-chip [outline]="true">{{ subject }}</ion-chip>
+        }
+      }
+
+      <ion-button
+        expand="block"
+        fill="clear"
+        [href]="'https://openlibrary.org/works/' + b.id"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Ver en Open Library
+        <ion-icon slot="end" name="open-outline"></ion-icon>
+      </ion-button>
+    }
+  }
+</ion-content>
+
