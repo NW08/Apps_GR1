@@ -10,7 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio `README.md` d
 
 | #   | Proyecto                                                | Descripción                                                           | Tecnologías                                                         |
 | --- | ------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 5   | [`Galería de Fotos`](./src/Semana_03/Clase_04/)         | Captura, persistencia y visualización de fotos con cámara y galería.  | Ionic, Angular Signals, Capacitor (Camera, Filesystem, Preferences) |
+| 5   | [`Galería de Fotos`](./src/Semana_03/Clase_04/)         | Captura, persistencia, visualización en galería y eliminación interactiva de fotos con cámara. | Ionic, Angular Signals, Capacitor (Camera, Filesystem, Preferences) |
 | 4   | [`Compras & Pagos`](./src/Semana_02/Clase_03/producto/) | Simulación de compras y cálculo de liquidación de pagos de productos. | Ionic, Angular Signals, Capacitor Assets                            |
 | 3   | [`Interacción Tabs`](./src/Semana_02/Clase_03/)         | Contador dinámico y gestión de estado reactivo entre pestañas.        | Ionic, Angular Signals, Capacitor                                   |
 | 2   | [`Múltiplos & Primos`](./src/Semana_02/Clase_02/)       | Cálculo dinámico de múltiplos y generación de números primos.         | Ionic, Angular Standalone, Capacitor                                |

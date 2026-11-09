@@ -24,6 +24,14 @@
       <ion-col size="6" size-md="4" size-lg="3">
         <div class="photo-card" (click)="showActionSheet(photo, position)">
           <ion-img [src]="photo.webviewPath" [alt]="'Foto ' + (position + 1)" class="gallery-image"></ion-img>
+          <button
+            type="button"
+            class="delete-badge"
+            aria-label="Eliminar foto"
+            (click)="$event.stopPropagation(); showActionSheet(photo, position)"
+          >
+            <ion-icon name="trash"></ion-icon>
+          </button>
         </div>
       </ion-col>
       }
@@ -31,7 +39,7 @@
   </ion-grid>
   }
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
     <ion-fab-button color="primary" (click)="addPhotoToGallery()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>

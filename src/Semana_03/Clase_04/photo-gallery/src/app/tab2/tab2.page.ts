@@ -16,7 +16,7 @@ import {
 
 import { addIcons } from 'ionicons';
 import { camera, trash, close, cameraOutline } from 'ionicons/icons';
-import { PhotoService, userPhoto } from '../services/photo.service';
+import { PhotoService, UserPhoto } from '../services/photo.service';
 
 @Component({
   selector: 'app-tab2',
@@ -53,7 +53,7 @@ export class Tab2Page implements OnInit {
     this.photoService.addNewToGallery();
   }
 
-  public async showActionSheet(photo: userPhoto, position: number) {
+  public async showActionSheet(photo: UserPhoto, position: number) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones de la foto',
       buttons: [
