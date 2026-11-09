@@ -18,23 +18,6 @@ Cada carpeta corresponde a un proyecto independiente con su propio `README.md` d
 
 ---
 
-## Estructura de Directorios (Rango Activo)
-
-```text
-Apps_GR1/
-├── src/
-│   ├── Semana_01/
-│   │   └── Clase_01/         # CV Interactivo con Ionic
-│   ├── Semana_02/
-│   │   ├── Clase_02/         # Múltiplos y números primos
-│   │   └── Clase_03/         # Interacción de pestañas (Contador) & Proyecto Compras y Pagos
-│   └── Semana_03/
-│       └── Clase_04/         # Galería de fotos con Capacitor (Cámara, Filesystem, Preferences)
-└── README.md
-```
-
----
-
 ## Autor
 
 Desarrollado por:
