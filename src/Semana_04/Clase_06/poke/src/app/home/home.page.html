@@ -1,0 +1,448 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-avatar class="header-logo">
+        <img src="assets/icono.png" alt="Logo Pokémon" />
+      </ion-avatar>
+    </ion-buttons>
+    <ion-title>PokéAPP</ion-title>
+    @if (thisPokemon && seccionActiva === 'pokedex') {
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarDetalle()" aria-label="Cerrar detalle">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    }
+  </ion-toolbar>
+
+  <ion-toolbar color="danger">
+    <ion-segment [value]="seccionActiva" (ionChange)="cambiarSeccion($event)">
+      <ion-segment-button value="pokedex">
+        <ion-label>Pokédex</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="comparar">
+        <ion-label>Comparar & Batalla</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  @if (seccionActiva === 'pokedex') {
+  <ion-toolbar color="danger">
+    <ion-searchbar
+      placeholder="Busca por nombre o ID (ej. Pikachu o 25)"
+      [debounce]="700"
+      (ionInput)="buscarPokemon($event)"
+      animated="true"
+      color="light"
+    >
+    </ion-searchbar>
+  </ion-toolbar>
+  }
+</ion-header>
+
+<ion-content color="light">
+  @if (seccionActiva === 'pokedex') { @if (isLoading) {
+  <div class="center-content">
+    <ion-spinner name="crescent" color="danger"></ion-spinner>
+    <p>Consultando la Pokédex...</p>
+  </div>
+  } @else if (errorMessage) {
+  <div class="center-content">
+    <ion-icon name="alert-circle-outline" color="medium" size="large"></ion-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
+  } @else if (thisPokemon) {
+  <div class="detail-container">
+    <ion-card class="pokemon-card">
+      <!-- Contenedor de la Imagen Principal o GIF animado (Nivel 2) -->
+      <div class="image-bg">
+        <img
+          [src]="showingGif && thisPokemon.gif ? thisPokemon.gif : selectedImage"
+          [alt]="thisPokemon.name"
+          class="pokemon-image"
+        />
+      </div>
+
+      <div class="media-actions">
+        @if (thisPokemon.gif) {
+        <ion-button
+          size="small"
+          [fill]="showingGif ? 'solid' : 'outline'"
+          color="tertiary"
+          shape="round"
+          (click)="alternarGif()"
+        >
+          <ion-icon name="videocam-outline" slot="start"></ion-icon>
+          {{ showingGif ? 'Ver Ilustración' : 'Ver GIF / Animación' }}
+        </ion-button>
+        } @if (thisPokemon.cry) {
+        <ion-button size="small" fill="solid" color="danger" shape="round" (click)="reproducirSonido()">
+          <ion-icon name="volume-high" slot="start"></ion-icon>
+          Reproducir Sonido
+        </ion-button>
+        }
+      </div>
+
+      <!-- Galería interactiva con al menos 5 imágenes (Nivel 2) -->
+      @if (thisPokemon.gallery.length > 0) {
+      <div class="gallery-section">
+        <h4 class="section-subtitle">
+          <ion-icon name="images-outline"></ion-icon> Galería ({{ thisPokemon.gallery.length }} imágenes)
+        </h4>
+        <p class="gallery-hint">Selecciona cualquier miniatura para agrandarla:</p>
+        <div class="gallery-grid">
+          @for (item of thisPokemon.gallery; track item.url) {
+          <button
+            type="button"
+            class="gallery-item"
+            [class.active]="selectedImage === item.url && !showingGif"
+            (click)="seleccionarImagenGaleria(item.url)"
+          >
+            <img [src]="item.url" [alt]="item.label" />
+            <span class="gallery-label">{{ item.label }}</span>
+          </button>
+          }
+        </div>
+      </div>
+      }
+
+      <ion-card-header class="ion-text-center">
+        <ion-card-subtitle>#{{ thisPokemon.id | number: '3.0-0' }}</ion-card-subtitle>
+        <ion-card-title class="ion-text-capitalize title-name">{{ thisPokemon.name }}</ion-card-title>
+
+        <div class="types-container">
+          @for (tipo of thisPokemon.types; track tipo) {
+          <ion-badge color="danger" class="ion-text-capitalize type-badge"> {{ tipo }} </ion-badge>
+          }
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p class="description-text">{{ thisPokemon.description }}</p>
+
+        <ion-row class="ion-text-center measures-row ion-margin-bottom">
+          <ion-col>
+            <strong>{{ thisPokemon.weight }} kg</strong><br />
+            <ion-text color="medium"><small>Peso</small></ion-text>
+          </ion-col>
+          <ion-col>
+            <strong>{{ thisPokemon.height }} m</strong><br />
+            <ion-text color="medium"><small>Altura</small></ion-text>
+          </ion-col>
+        </ion-row>
+
+        <h3 class="stats-title">Estadísticas Base</h3>
+        @for (stat of thisPokemon.stats; track stat.name) {
+        <div class="stat-row">
+          <div class="stat-label ion-text-capitalize">{{ stat.name.replace('-', ' ') }}</div>
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-bar">
+            <ion-progress-bar
+              [value]="stat.normalized"
+              [color]="stat.value > 80 ? 'success' : stat.value > 49 ? 'warning' : 'danger'"
+            >
+            </ion-progress-bar>
+          </div>
+        </div>
+        }
+      </ion-card-content>
+    </ion-card>
+  </div>
+  } @else {
+  <!-- Pantalla inicial / recomendados -->
+  <div class="home-intro">
+    <div class="welcome-banner ion-text-center">
+      <img src="assets/icon-only.png" alt="Logo de inicio" class="welcome-logo" />
+      <h2>¡Bienvenido a la PokéAPP!</h2>
+      <p>Busca un Pokémon por su nombre o ID, o elige uno de la lista:</p>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        @for (p of pokemonList; track p.name) {
+        <ion-col size="6" size-md="4" size-lg="3">
+          <ion-card button (click)="verDetalleDeLista(p.name)" class="list-card">
+            <ion-card-content class="ion-text-center ion-text-capitalize">
+              <ion-icon name="sparkles-outline" color="danger"></ion-icon>
+              <strong> {{ p.name }}</strong>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  </div>
+  } }
+
+  <!-- SECCIÓN COMPARAR & BATALLA (Nivel 3) -->
+  @if (seccionActiva === 'comparar') {
+  <div class="battle-container">
+    <div class="battle-header ion-text-center">
+      <h2>Comparador de Pokémon</h2>
+      <p>Selecciona 2 personajes para comparar sus atributos y simular su combate.</p>
+    </div>
+
+    <div class="quick-picks ion-text-center">
+      <ion-text color="medium"><small>Sugerencias rápidas:</small></ion-text>
+      <div class="chips-row">
+        @for (sug of sugerenciasPelea; track sug) {
+        <ion-chip button class="pick-badge" (click)="!luchador1 ? cargarLuchador(1, sug) : cargarLuchador(2, sug)">
+          <ion-label>+ {{ sug }}</ion-label>
+        </ion-chip>
+        }
+      </div>
+    </div>
+
+    <ion-row class="fighters-row">
+      <!-- PERSONAJE 1 -->
+      <ion-col size="12" size-md="6">
+        <ion-card class="fighter-card" [class.winner-card]="ganador === luchador1">
+          <ion-card-header class="ion-text-center">
+            <ion-badge color="danger">Personaje 1</ion-badge>
+            <ion-searchbar
+              placeholder="Nombre o ID (ej. charizard)"
+              [debounce]="600"
+              (ionInput)="cargarLuchador(1, $any($event.target).value || '')"
+              [value]="luchador1?.name || ''"
+            >
+            </ion-searchbar>
+          </ion-card-header>
+
+          <ion-card-content class="ion-text-center">
+            @if (cargandoLuchador1) {
+            <ion-spinner name="crescent" color="danger"></ion-spinner>
+            } @else if (luchador1) {
+            <img [src]="luchador1.image" [alt]="luchador1.name" class="fighter-sprite" />
+            <h3 class="ion-text-capitalize fighter-name">{{ luchador1.name }}</h3>
+
+            <div class="fighter-types ion-margin-bottom">
+              @for (t of luchador1.types; track t) {
+              <ion-badge color="danger" class="ion-text-capitalize">{{ t }}</ion-badge>
+              }
+            </div>
+
+            <div class="fighter-stats">
+              <p>
+                <span><ion-icon name="heart-outline" color="danger"></ion-icon> HP:</span>
+                <strong>{{ luchador1.hp }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="flame-outline" color="warning"></ion-icon> Ataque:</span>
+                <strong>{{ luchador1.attack }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="shield-outline" color="primary"></ion-icon> Defensa:</span>
+                <strong>{{ luchador1.defense }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="flash-outline" color="tertiary"></ion-icon> Atq. Esp:</span>
+                <strong>{{ luchador1.specialAttack }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="shield-outline" color="secondary"></ion-icon> Def. Esp:</span>
+                <strong>{{ luchador1.specialDefense }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="speedometer-outline" color="success"></ion-icon> Velocidad:</span>
+                <strong>{{ luchador1.speed }}</strong>
+              </p>
+              <p class="total-row">
+                <span><ion-icon name="stats-chart-outline"></ion-icon> <strong>Total Stats:</strong></span>
+                <ion-badge color="dark">{{ luchador1.totalStats }}</ion-badge>
+              </p>
+            </div>
+            } @else {
+            <div class="empty-fighter">
+              <p>Escribe un nombre o toca una sugerencia arriba.</p>
+            </div>
+            }
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- PERSONAJE 2 -->
+      <ion-col size="12" size-md="6">
+        <ion-card class="fighter-card" [class.winner-card]="ganador === luchador2">
+          <ion-card-header class="ion-text-center">
+            <ion-badge color="tertiary">Personaje 2</ion-badge>
+            <ion-searchbar
+              placeholder="Nombre o ID (ej. blastoise)"
+              [debounce]="600"
+              (ionInput)="cargarLuchador(2, $any($event.target).value || '')"
+              [value]="luchador2?.name || ''"
+            >
+            </ion-searchbar>
+          </ion-card-header>
+
+          <ion-card-content class="ion-text-center">
+            @if (cargandoLuchador2) {
+            <ion-spinner name="crescent" color="tertiary"></ion-spinner>
+            } @else if (luchador2) {
+            <img [src]="luchador2.image" [alt]="luchador2.name" class="fighter-sprite" />
+            <h3 class="ion-text-capitalize fighter-name">{{ luchador2.name }}</h3>
+
+            <div class="fighter-types ion-margin-bottom">
+              @for (t of luchador2.types; track t) {
+              <ion-badge color="tertiary" class="ion-text-capitalize">{{ t }}</ion-badge>
+              }
+            </div>
+
+            <div class="fighter-stats">
+              <p>
+                <span><ion-icon name="heart-outline" color="danger"></ion-icon> HP:</span>
+                <strong>{{ luchador2.hp }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="flame-outline" color="warning"></ion-icon> Ataque:</span>
+                <strong>{{ luchador2.attack }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="shield-outline" color="primary"></ion-icon> Defensa:</span>
+                <strong>{{ luchador2.defense }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="flash-outline" color="tertiary"></ion-icon> Atq. Esp:</span>
+                <strong>{{ luchador2.specialAttack }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="shield-outline" color="secondary"></ion-icon> Def. Esp:</span>
+                <strong>{{ luchador2.specialDefense }}</strong>
+              </p>
+              <p>
+                <span><ion-icon name="speedometer-outline" color="success"></ion-icon> Velocidad:</span>
+                <strong>{{ luchador2.speed }}</strong>
+              </p>
+              <p class="total-row">
+                <span><ion-icon name="stats-chart-outline"></ion-icon> <strong>Total Stats:</strong></span>
+                <ion-badge color="dark">{{ luchador2.totalStats }}</ion-badge>
+              </p>
+            </div>
+            } @else {
+            <div class="empty-fighter">
+              <p>Escribe un nombre o toca una sugerencia arriba.</p>
+            </div>
+            }
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- TABLA COMPARATIVA DIRECTA (Nivel 3) -->
+    @if (luchador1 && luchador2) {
+    <ion-card class="comparison-card">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title> <ion-icon name="swap-horizontal-outline"></ion-icon> Cuadro Comparativo </ion-card-title>
+        <ion-card-subtitle> {{ luchador1.name | uppercase }} vs {{ luchador2.name | uppercase }} </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="comp-row header">
+          <span>{{ luchador1.name | uppercase }}</span>
+          <strong>Métrica</strong>
+          <span>{{ luchador2.name | uppercase }}</span>
+        </div>
+
+        <div class="comp-row">
+          <span [class.winner]="luchador1.hp > luchador2.hp">{{ luchador1.hp }}</span>
+          <span class="metric">HP</span>
+          <span [class.winner]="luchador2.hp > luchador1.hp">{{ luchador2.hp }}</span>
+        </div>
+
+        <div class="comp-row">
+          <span [class.winner]="luchador1.attack > luchador2.attack">{{ luchador1.attack }}</span>
+          <span class="metric">Ataque</span>
+          <span [class.winner]="luchador2.attack > luchador1.attack">{{ luchador2.attack }}</span>
+        </div>
+
+        <div class="comp-row">
+          <span [class.winner]="luchador1.defense > luchador2.defense">{{ luchador1.defense }}</span>
+          <span class="metric">Defensa</span>
+          <span [class.winner]="luchador2.defense > luchador1.defense">{{ luchador2.defense }}</span>
+        </div>
+
+        <div class="comp-row">
+          <span [class.winner]="luchador1.specialAttack > luchador2.specialAttack">{{ luchador1.specialAttack }}</span>
+          <span class="metric">Atq. Esp.</span>
+          <span [class.winner]="luchador2.specialAttack > luchador1.specialAttack">{{ luchador2.specialAttack }}</span>
+        </div>
+
+        <div class="comp-row">
+          <span [class.winner]="luchador1.specialDefense > luchador2.specialDefense"
+            >{{ luchador1.specialDefense }}</span
+          >
+          <span class="metric">Def. Esp.</span>
+          <span [class.winner]="luchador2.specialDefense > luchador1.specialDefense"
+            >{{ luchador2.specialDefense }}</span
+          >
+        </div>
+
+        <div class="comp-row">
+          <span [class.winner]="luchador1.speed > luchador2.speed">{{ luchador1.speed }}</span>
+          <span class="metric">Velocidad</span>
+          <span [class.winner]="luchador2.speed > luchador1.speed">{{ luchador2.speed }}</span>
+        </div>
+
+        <div class="comp-row highlight">
+          <span [class.winner]="luchador1.totalStats > luchador2.totalStats"
+            ><strong>{{ luchador1.totalStats }}</strong></span
+          >
+          <span class="metric"><strong>Poder Base Total</strong></span>
+          <span [class.winner]="luchador2.totalStats > luchador1.totalStats"
+            ><strong>{{ luchador2.totalStats }}</strong></span
+          >
+        </div>
+
+        <div class="comp-row">
+          <span>{{ luchador1.weight }} kg</span>
+          <span class="metric">Peso</span>
+          <span>{{ luchador2.weight }} kg</span>
+        </div>
+
+        <div class="comp-row">
+          <span>{{ luchador1.height }} m</span>
+          <span class="metric">Altura</span>
+          <span>{{ luchador2.height }} m</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    }
+
+    <!-- Acciones de Batalla -->
+    <div class="battle-actions ion-text-center ion-padding">
+      <ion-button
+        expand="block"
+        size="large"
+        color="warning"
+        shape="round"
+        [disabled]="!luchador1 || !luchador2 || peleando"
+        (click)="iniciarPelea()"
+      >
+        <ion-icon name="flash-outline" slot="start"></ion-icon>
+        {{ peleando ? '¡Combatiendo en la arena...!' : '¡Simular Pelea!' }}
+      </ion-button>
+
+      @if (luchador1 || luchador2) {
+      <ion-button fill="clear" color="medium" size="small" (click)="reiniciarPelea()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Reiniciar Comparador
+      </ion-button>
+      }
+    </div>
+
+    <!-- Anuncio del Vencedor -->
+    @if (resultadoBatalla) {
+    <ion-card class="winner-announcement ion-text-center">
+      <ion-card-content>
+        <ion-icon name="trophy-outline" color="warning" class="trophy-icon"></ion-icon>
+        <h2>{{ resultadoBatalla }}</h2>
+        @if (ganador?.cry) {
+        <ion-button size="small" color="success" shape="round" (click)="reproducirSonido(ganador?.cry)">
+          <ion-icon name="volume-high" slot="start"></ion-icon>
+          Grito de Victoria
+        </ion-button>
+        }
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+  }
+</ion-content>
