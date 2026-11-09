@@ -1,13 +1,104 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>detalle</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/incidencias" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ incidencia()?.codigo ?? 'Detalle' }}</ion-title>
+    @if (incidencia(); as i) {
+      <ion-buttons slot="end">
+        <ion-button
+          [attr.aria-label]="seg.esMarcado(i.codigo) ? 'Quitar de seguimiento' : 'Marcar para seguimiento'"
+          (click)="seg.alternar(i.codigo)"
+        >
+          <ion-icon slot="icon-only" [name]="seg.esMarcado(i.codigo) ? 'star' : 'star-outline'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">detalle</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (incidencia(); as i) {
+    <!-- Foto o ícono del tipo -->
+    <div class="portada">
+      @if (i.fotoUrl) {
+        <img [src]="i.fotoUrl" [alt]="'Foto de ' + i.codigo" />
+      } @else {
+        <ion-icon [name]="icono(i)"></ion-icon>
+        <span>Sin fotografía</span>
+      }
+    </div>
+
+    <section class="bloque">
+      <div class="chips">
+        <ion-badge [color]="colorEstado(i)">{{ etiquetaEstado(i) }}</ion-badge>
+        <ion-badge [color]="colorPrioridad(i)">Prioridad {{ etiquetaPrioridad(i) }}</ion-badge>
+      </div>
+      <h1>{{ tipo(i) }}</h1>
+      <p class="descripcion">{{ i.descripcion }}</p>
+
+      <div class="dato">
+        <ion-icon name="location-outline"></ion-icon>
+        <div>
+          <strong>{{ i.direccion }}</strong>
+          <small>{{ i.sector }}</small>
+        </div>
+      </div>
+      <div class="dato">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <div>
+          <strong>{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</strong>
+          <small>Fecha de registro</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2 class="seccion">Ubicación</h2>
+      @if (coords(); as c) {
+        <iframe class="mapa" [src]="mapaEmbebido()" title="Mapa de la incidencia" loading="lazy"></iframe>
+        <div class="coords">
+          <small>{{ c.lat }}, {{ c.lon }}</small>
+          <ion-button size="small" fill="clear" [href]="enlaceMapa()" target="_blank" rel="noopener noreferrer">
+            <ion-icon slot="start" name="navigate-outline"></ion-icon>
+            Cómo llegar
+          </ion-button>
+        </div>
+      } @else {
+        <p class="vacio">
+          <ion-icon name="map-outline"></ion-icon>
+          Registrada solo con dirección, sin coordenadas.
+        </p>
+      }
+    </section>
+
+    @if (coords(); as c) {
+      <section class="bloque">
+        <h2 class="seccion">Clima actual en el sitio</h2>
+        <app-clima [latitud]="c.lat" [longitud]="c.lon"></app-clima>
+      </section>
+    }
+
+    <section class="bloque">
+      <app-cambio-estado [incidencia]="i" (actualizada)="onActualizada($event)"></app-cambio-estado>
+    </section>
+  } @else if (cargando()) {
+    <div class="estado">
+      <ion-spinner></ion-spinner>
+      <p>Cargando incidencia…</p>
+    </div>
+  } @else if (error()) {
+    <div class="estado">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>No se pudo cargar la incidencia.</p>
+      <ion-button fill="outline" (click)="cargar()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  }
 </ion-content>

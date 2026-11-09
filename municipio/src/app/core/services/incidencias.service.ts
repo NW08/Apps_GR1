@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, of, throwError, map } from 'rxjs';
+import { Observable, catchError, of, throwError, map, tap } from 'rxjs';
 import { API_URL } from '../config';
 import { Incidencia } from '../models/incidencia.model';
 
@@ -8,6 +8,10 @@ import { Incidencia } from '../models/incidencia.model';
 export class IncidenciasService {
   private http = inject(HttpClient);
   private url = `${API_URL}/incidencias`;
+
+  /** Aumenta con cada alta o cambio de estado: las páginas saben cuándo sus datos quedaron obsoletos. */
+  private _version = signal(0);
+  readonly version = this._version.asReadonly();
 
   getPagina(page: number, limit: number): Observable<Incidencia[]> {
     return this.http
@@ -31,19 +35,29 @@ export class IncidenciasService {
   }
 
   getPorId(id: string): Observable<Incidencia> {
-    return this.http.get<Incidencia>(`${this.url}/${id}`);
+    return this.http.get<Incidencia>(`${this.url}/${encodeURIComponent(id)}`);
   }
 
   crear(data: Omit<Incidencia, 'id'>): Observable<Incidencia> {
-    return this.http.post<Incidencia>(this.url, data);
+    return this.http.post<Incidencia>(this.url, data).pipe(tap(() => this.marcarCambio()));
   }
 
   actualizar(data: Incidencia): Observable<Incidencia> {
-    return this.http.put<Incidencia>(`${this.url}/${data.id}`, data);
+    return this.http
+      .put<Incidencia>(`${this.url}/${data.id}`, data)
+      .pipe(tap(() => this.marcarCambio()));
   }
 
   resumen(): Observable<Incidencia[]> {
-    return this.http.get<Incidencia[]>(this.url);
+    return this.http.get<Incidencia[]>(this.url).pipe(
+      catchError((err: HttpErrorResponse) =>
+        err.status === 404 ? of([]) : throwError(() => err)
+      )
+    );
+  }
+
+  private marcarCambio() {
+    this._version.update((v) => v + 1);
   }
 }
 

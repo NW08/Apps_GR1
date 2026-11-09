@@ -9,8 +9,6 @@ import {
   IonContent,
   IonButtons,
   IonBackButton,
-  IonList,
-  IonItem,
   IonInput,
   IonTextarea,
   IonSelect,
@@ -31,17 +29,12 @@ import { coordenadasValidas } from '../../core/utils/coordenadas';
 import { FotoComponent } from '../../core/foto/foto.component';
 import { UbicacionComponent } from '../../core/ubicacion/ubicacion.component';
 import { ClimaComponent } from '../../core/clima/clima.component';
+import { Prioridad, TipoIncidencia } from '../../core/models/incidencia.model';
+import { ETIQUETA_TIPO } from '../../core/utils/estados';
 
-type Tipo = 'luminaria' | 'bache' | 'senalizacion' | 'alcantarilla' | 'parque';
-type Prioridad = 'baja' | 'media' | 'alta';
+type Tipo = TipoIncidencia;
 
-const TIPOS: { valor: Tipo; texto: string }[] = [
-  { valor: 'luminaria', texto: 'Luminaria dañada' },
-  { valor: 'bache', texto: 'Bache' },
-  { valor: 'senalizacion', texto: 'Señalización deteriorada' },
-  { valor: 'alcantarilla', texto: 'Alcantarilla obstruida' },
-  { valor: 'parque', texto: 'Daño en parque' },
-];
+const TIPOS = (Object.keys(ETIQUETA_TIPO) as Tipo[]).map((valor) => ({ valor, texto: ETIQUETA_TIPO[valor] }));
 
 @Component({
   selector: 'app-registro',
@@ -55,8 +48,6 @@ const TIPOS: { valor: Tipo; texto: string }[] = [
     IonContent,
     IonButtons,
     IonBackButton,
-    IonList,
-    IonItem,
     IonInput,
     IonTextarea,
     IonSelect,
@@ -73,20 +64,29 @@ const TIPOS: { valor: Tipo; texto: string }[] = [
   ],
   styles: [
     `
-      .seccion {
-        font-size: 1.05rem;
-        font-weight: 600;
-        margin: 20px 0 8px;
-      }
       .errores {
-        margin: 16px 0;
+        margin: 12px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: rgba(var(--ion-color-danger-rgb), 0.08);
       }
       .errores ion-note {
         display: block;
         margin: 4px 0;
       }
-      ion-segment {
-        margin-bottom: 8px;
+      .campos ion-select,
+      .campos ion-textarea,
+      .campos ion-input {
+        margin-bottom: 12px;
+      }
+      .etiqueta {
+        display: block;
+        margin: 4px 0 8px;
+        font-size: 14px;
+        color: var(--ion-color-medium);
+      }
+      .acciones {
+        padding: 4px 12px 24px;
       }
     `,
   ],

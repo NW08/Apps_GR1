@@ -1,9 +1,13 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text=""></ion-back-button>
+    </ion-buttons>
     <ion-title>Incidencias</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/seguimiento">Seguimiento</ion-button>
-      <ion-button routerLink="/registro" fill="solid" color="primary">Nueva</ion-button>
+      <ion-button routerLink="/seguimiento" aria-label="Seguimiento">
+        <ion-icon slot="icon-only" name="star"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,68 +16,52 @@
   <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  @if (cargando && items.length === 0) {
-  <div class="centro"><ion-spinner></ion-spinner></div>
-  }
 
-  @if (error && items.length === 0) {
-  <div class="centro">
-    <p>No se pudo consultar las incidencias.</p>
-    <ion-button (click)="reintentar()">Reintentar</ion-button>
-  </div>
-  }
-
-  @if (!cargando && !error && items.length === 0) {
-  <div class="centro">
-    <p>No hay incidencias registradas.</p>
-  </div>
-  }
-
-  @if (items.length > 0) {
-  <ion-list>
-    @for (i of items; track i.id) {
-    <ion-item>
-      <ion-thumbnail slot="start" [class.sin-foto]="!i.fotoUrl">
-        @if (i.fotoUrl) {
-        <img [src]="i.fotoUrl" [alt]="i.codigo" />
-        } @else {
-        <span>Sin foto</span>
-        }
-      </ion-thumbnail>
-      <ion-label class="ion-text-wrap">
-        <h2>{{ i.codigo }} · {{ i.tipo }}</h2>
-        <p>{{ i.descripcion }}</p>
-        <p>{{ i.direccion }} — {{ i.sector }}</p>
-        <p>{{ i.fecha | date: 'dd/MM/yyyy' }}</p>
-      </ion-label>
-      <ion-badge slot="end" [color]="colorEstado(i.estado)">
-        {{ etiquetaEstado[i.estado] }}
-      </ion-badge>
-
-      <ion-button slot="end" fill="clear"
-        [attr.aria-label]="seg.esMarcado(i.codigo) ? 'Quitar de seguimiento' : 'Marcar para seguimiento'"
-        (click)="seg.alternar(i.codigo)">
-        <ion-icon slot="icon-only" [name]="seg.esMarcado(i.codigo) ? 'star' : 'star-outline'"></ion-icon>
-      </ion-button>
-    </ion-item>
+  @if (items().length) {
+    @for (i of items(); track i.id) {
+      <app-incidencia-item [incidencia]="i" />
     }
-  </ion-list>
+  } @else if (cargando()) {
+    <div class="estado">
+      <ion-spinner></ion-spinner>
+      <p>Cargando incidencias…</p>
+    </div>
+  } @else if (error()) {
+    <div class="estado">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>No se pudo consultar las incidencias.</p>
+      <ion-button fill="outline" (click)="reintentar()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  } @else {
+    <div class="estado">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <p>No hay incidencias registradas.</p>
+      <ion-button routerLink="/registro">Registrar la primera</ion-button>
+    </div>
   }
 
-  @if (error && items.length > 0) {
-  <div class="centro">
-    <p>No se pudieron cargar más incidencias.</p>
-    <ion-button (click)="reintentar()">Reintentar</ion-button>
-  </div>
+  <!-- Falla una página siguiente: la lista se conserva y se reintenta la misma página -->
+  @if (error() && items().length) {
+    <div class="estado compacto">
+      <p>No se pudieron cargar más incidencias.</p>
+      <ion-button size="small" fill="outline" (click)="reintentar()">Reintentar</ion-button>
+    </div>
   }
 
-  @if (fin && items.length > 0) {
-  <p class="centro">No hay más incidencias.</p>
+  @if (fin() && items().length) {
+    <p class="nota-fin">No hay más incidencias.</p>
   }
 
-  @if (items.length > 0) {
-  <ion-infinite-scroll (ionInfinite)="cargar($event)" [disabled]="fin || error || cargando">
-    <ion-infinite-scroll-content loadingText="Cargando más..."></ion-infinite-scroll-content>
+  <ion-infinite-scroll [disabled]="fin() || error() || !items().length" (ionInfinite)="masItems($event)">
+    <ion-infinite-scroll-content loadingText="Cargando más…"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button routerLink="/registro" aria-label="Nueva incidencia">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

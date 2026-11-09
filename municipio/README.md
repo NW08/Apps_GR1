@@ -1,4 +1,4 @@
-# Prueba: UrbanInspect - Gestión de Incidencias || `CLASE 08 (28|10|2026)`
+# UrbanInspect - Gestión de Incidencias (Prueba Corregida) || `SEMANA 05 - CLASE 09 (29|10|2026)`
 
 Aplicación móvil desarrollada con **Ionic**, **Angular (Standalone Components)** y **Capacitor** para el reporte, registro, geolocalización, inspección climática y control del ciclo de vida de incidencias de infraestructura urbana en el Distrito Metropolitano de Quito (DMQ). Implementa validación reactiva de formularios con **Angular Signals**, captura de fotografías con subida a la nube en **Cloudinary**, geolocalización por hardware y entrada manual, consulta meteorológica en vivo con **Open-Meteo**, autoguardado de borradores y seguimiento local con `@capacitor/preferences`.
 
@@ -23,7 +23,7 @@ Aplicación móvil desarrollada con **Ionic**, **Angular (Standalone Components)
 1. **Navega al directorio del proyecto**
 
 ```bash
-cd src/Clase_08/municipio
+cd src/Semana_05/Clase_09/municipio   # en la rama prueba_uno_mejorada: cd municipio
 ```
 
 2. **Instala las dependencias**

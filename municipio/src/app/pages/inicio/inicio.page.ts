@@ -1,72 +1,50 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import {
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCard,
-  IonCardContent,
   IonButton,
   IonIcon,
   IonSpinner,
-  IonNote,
   IonRefresher,
   IonRefresherContent,
+  RefresherCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { addCircleOutline, listOutline, bookmarkOutline } from 'ionicons/icons';
+import {
+  addCircleOutline,
+  chevronForward,
+  cloudOfflineOutline,
+  listOutline,
+  refreshOutline,
+  starOutline,
+} from 'ionicons/icons';
 import { Incidencia } from '../../core/models/incidencia.model';
 import { IncidenciasService } from '../../core/services/incidencias.service';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
+  styleUrls: ['./inicio.page.scss'],
   standalone: true,
   imports: [
+    RouterLink,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonCard,
-    IonCardContent,
     IonButton,
     IonIcon,
     IonSpinner,
-    IonNote,
     IonRefresher,
     IonRefresherContent,
-  ],
-  styles: [
-    `
-      .num {
-        font-size: 2.2rem;
-        font-weight: 700;
-        line-height: 1.1;
-      }
-      .etq {
-        font-size: 0.95rem;
-      }
-      ion-card {
-        margin: 4px;
-        text-align: center;
-      }
-      .acciones ion-button {
-        margin-top: 10px;
-      }
-    `,
   ],
 })
 export class InicioPage {
   private svc = inject(IncidenciasService);
-  private router = inject(Router);
 
   datos = signal<Incidencia[] | null>(null);
   cargando = signal(false);
@@ -84,8 +62,14 @@ export class InicioPage {
     };
   });
 
+  /** Porcentaje de incidencias resueltas, para la barra de avance. */
+  avance = computed(() => {
+    const { total, resueltas } = this.indicadores();
+    return total ? Math.round((resueltas / total) * 100) : 0;
+  });
+
   constructor() {
-    addIcons({ addCircleOutline, listOutline, bookmarkOutline });
+    addIcons({ addCircleOutline, listOutline, starOutline, chevronForward, cloudOfflineOutline, refreshOutline });
   }
 
   // Se recarga cada vez que se vuelve al inicio: refleja altas y cambios de estado
@@ -93,7 +77,7 @@ export class InicioPage {
     void this.cargar();
   }
 
-  async cargar(ev?: Event) {
+  async cargar(ev?: RefresherCustomEvent) {
     this.cargando.set(true);
     this.error.set(false);
     try {
@@ -102,11 +86,7 @@ export class InicioPage {
       this.error.set(true);
     } finally {
       this.cargando.set(false);
-      (ev?.target as any)?.complete?.();
+      ev?.target.complete();
     }
-  }
-
-  ir(ruta: string) {
-    this.router.navigate([ruta]); // ajusta si usas /tabs/...
   }
 }

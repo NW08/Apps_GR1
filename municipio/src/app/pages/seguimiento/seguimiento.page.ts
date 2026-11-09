@@ -1,43 +1,63 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { finalize, forkJoin } from 'rxjs';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton,
-  IonList, IonItem, IonLabel, IonThumbnail, IonBadge, IonSpinner, IonButton, IonIcon,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButtons,
+  IonBackButton,
+  IonSpinner,
+  IonButton,
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent,
+  RefresherCustomEvent,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { star } from 'ionicons/icons';
+import { cloudOfflineOutline, refreshOutline, starOutline } from 'ionicons/icons';
 import { IncidenciasService } from '../../core/services/incidencias.service';
 import { SeguimientoService } from '../../core/services/seguimiento.service';
-import { Incidencia, Estado } from '../../core/models/incidencia.model';
+import { Incidencia } from '../../core/models/incidencia.model';
+import { IncidenciaItemComponent } from '../../core/incidencia-item/incidencia-item.component';
 
 @Component({
   selector: 'app-seguimiento',
   templateUrl: './seguimiento.page.html',
-  styleUrls: ['./seguimiento.page.scss'],
   standalone: true,
   imports: [
-    DatePipe, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton,
-    IonList, IonItem, IonLabel, IonThumbnail, IonBadge, IonSpinner, IonButton, IonIcon,
+    RouterLink,
+    IncidenciaItemComponent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButtons,
+    IonBackButton,
+    IonSpinner,
+    IonButton,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent,
   ],
 })
 export class SeguimientoPage {
   private svc = inject(IncidenciasService);
   private seg = inject(SeguimientoService);
-  private cdr = inject(ChangeDetectorRef);
 
-  items: Incidencia[] = [];
-  cargando = false;
-  error = false;
+  private items = signal<Incidencia[]>([]);
+  cargando = signal(false);
+  error = signal(false);
 
-  etiquetaEstado: Record<Estado, string> = {
-    pendiente: 'Pendiente',
-    en_proceso: 'En proceso',
-    resuelta: 'Resuelta',
-  };
+  /** Al desmarcar la estrella en una tarjeta, desaparece de inmediato de esta lista. */
+  visibles = computed(() => {
+    const codigos = this.seg.codigos();
+    return this.items().filter((i) => codigos.includes(i.codigo));
+  });
 
   constructor() {
-    addIcons({ star });
+    addIcons({ starOutline, cloudOfflineOutline, refreshOutline });
   }
 
   // Se ejecuta cada vez que se entra a la página
@@ -46,39 +66,26 @@ export class SeguimientoPage {
     this.cargar();
   }
 
-  colorEstado(e: Estado): string {
-    return e === 'pendiente' ? 'warning' : e === 'en_proceso' ? 'primary' : 'success';
-  }
-
-  cargar() {
+  cargar(ev?: RefresherCustomEvent) {
     const codigos = this.seg.codigos();
-    this.error = false;
+    this.error.set(false);
     if (codigos.length === 0) {
-      this.items = [];
-      this.cargando = false;
-      this.cdr.markForCheck();
+      this.items.set([]);
+      ev?.target.complete();
       return;
     }
-    this.cargando = true;
-    this.cdr.markForCheck();
+    this.cargando.set(true);
 
-    forkJoin(codigos.map((c) => this.svc.getPorCodigo(c))).subscribe({
-      next: (res) => {
-        this.items = res.filter((x): x is Incidencia => x !== null);
-        this.cargando = false;
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.error = true;
-        this.cargando = false;
-        this.cdr.markForCheck();
-      },
-    });
-  }
-
-  async quitar(i: Incidencia) {
-    await this.seg.alternar(i.codigo);
-    this.items = this.items.filter((x) => x.codigo !== i.codigo);
-    this.cdr.markForCheck();
+    forkJoin(codigos.map((c) => this.svc.getPorCodigo(c)))
+      .pipe(
+        finalize(() => {
+          this.cargando.set(false);
+          ev?.target.complete();
+        })
+      )
+      .subscribe({
+        next: (res) => this.items.set(res.filter((x): x is Incidencia => x !== null)),
+        error: () => this.error.set(true),
+      });
   }
 }

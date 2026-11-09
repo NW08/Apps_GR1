@@ -1,36 +1,52 @@
 import { Component, inject, input, model, signal } from '@angular/core';
-import { IonButton, IonNote } from '@ionic/angular';
+import { IonButton, IonIcon, IonNote } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { cameraOutline, trashOutline } from 'ionicons/icons';
 import { FotoService } from '../services/foto.service';
 
 @Component({
   selector: 'app-foto',
   standalone: true,
-  imports: [IonButton, IonNote],
+  imports: [IonButton, IonIcon, IonNote],
   template: `
     @if (foto(); as src) {
       <img [src]="src" alt="Fotografía de la incidencia" class="preview" />
-    } @else if (obligatoria()) {
-      <ion-note color="danger">La fotografía es obligatoria para esta incidencia.</ion-note>
     } @else {
-      <ion-note>La fotografía es opcional.</ion-note>
+      <button type="button" class="vacia" [class.obligatoria]="obligatoria()" (click)="capturar()"
+              [disabled]="capturando()">
+        <ion-icon name="camera-outline"></ion-icon>
+        <span>{{ obligatoria() ? 'La fotografía es obligatoria para prioridad alta' : 'Fotografía opcional' }}</span>
+      </button>
     }
 
-    <ion-button expand="block" (click)="capturar()" [disabled]="capturando()">
-      {{ foto() ? 'Retomar foto' : 'Tomar foto' }}
-    </ion-button>
-
-    @if (foto()) {
-      <ion-button expand="block" fill="clear" color="medium" (click)="foto.set(null)">
-        Quitar foto
+    <div class="botones">
+      <ion-button expand="block" (click)="capturar()" [disabled]="capturando()">
+        <ion-icon slot="start" name="camera-outline"></ion-icon>
+        {{ foto() ? 'Retomar foto' : 'Tomar foto' }}
       </ion-button>
-    }
+      @if (foto()) {
+        <ion-button expand="block" fill="outline" color="medium" (click)="foto.set(null)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Quitar
+        </ion-button>
+      }
+    </div>
 
     @if (mensaje()) {
       <ion-note color="danger" class="msg">{{ mensaje() }}</ion-note>
     }
   `,
   styles: [`
-    .preview { width: 100%; max-height: 280px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+    .preview { width: 100%; max-height: 260px; object-fit: cover; border-radius: 10px; display: block; }
+    .vacia {
+      width: 100%; padding: 24px 12px; border-radius: 10px; border: 2px dashed var(--ion-color-medium-tint);
+      background: var(--ion-color-light); color: var(--ion-color-medium); font: inherit;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .vacia.obligatoria { border-color: var(--ion-color-danger); color: var(--ion-color-danger); }
+    .vacia ion-icon { font-size: 36px; }
+    .botones { display: flex; gap: 8px; margin-top: 8px; }
+    .botones ion-button { flex: 1; margin: 0; }
     .msg { display: block; margin-top: 8px; }
   `],
 })
@@ -42,6 +58,10 @@ export class FotoComponent {
 
   capturando = signal(false);
   mensaje = signal<string | null>(null);
+
+  constructor() {
+    addIcons({ cameraOutline, trashOutline });
+  }
 
   async capturar() {
     this.mensaje.set(null);

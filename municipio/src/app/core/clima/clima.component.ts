@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   computed,
   effect,
   inject,
@@ -56,7 +55,9 @@ import { UMBRAL_LLUVIA_MM } from '../config';
     IonButton,
   ],
 })
-export class ClimaComponent implements OnInit {
+// El effect del constructor ya consulta al iniciar y cada vez que cambian las coordenadas
+// (antes ngOnInit hacía una segunda petición duplicada).
+export class ClimaComponent {
   latitud = input<number | null>(null);
   longitud = input<number | null>(null);
 
@@ -100,12 +101,6 @@ export class ClimaComponent implements OnInit {
         }
       });
     });
-  }
-
-  ngOnInit() {
-    if (coordenadasValidas(this.latitud(), this.longitud())) {
-      this.cargar();
-    }
   }
 
   cargar() {
