@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Incidencias</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/seguimiento" aria-label="Seguimiento">
+        <ion-icon slot="icon-only" name="star"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (items().length) {
+    @for (i of items(); track i.id) {
+      <app-incidencia-item [incidencia]="i" />
+    }
+  } @else if (cargando()) {
+    <div class="estado">
+      <ion-spinner></ion-spinner>
+      <p>Cargando incidencias…</p>
+    </div>
+  } @else if (error()) {
+    <div class="estado">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>No se pudo consultar las incidencias.</p>
+      <ion-button fill="outline" (click)="reintentar()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  } @else {
+    <div class="estado">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <p>No hay incidencias registradas.</p>
+      <ion-button routerLink="/registro">Registrar la primera</ion-button>
+    </div>
+  }
+
+  <!-- Falla una página siguiente: la lista se conserva y se reintenta la misma página -->
+  @if (error() && items().length) {
+    <div class="estado compacto">
+      <p>No se pudieron cargar más incidencias.</p>
+      <ion-button size="small" fill="outline" (click)="reintentar()">Reintentar</ion-button>
+    </div>
+  }
+
+  @if (fin() && items().length) {
+    <p class="nota-fin">No hay más incidencias.</p>
+  }
+
+  <ion-infinite-scroll [disabled]="fin() || error() || !items().length" (ionInfinite)="masItems($event)">
+    <ion-infinite-scroll-content loadingText="Cargando más…"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button routerLink="/registro" aria-label="Nueva incidencia">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
