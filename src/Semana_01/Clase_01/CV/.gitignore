@@ -23,6 +23,13 @@ log.txt
 /platforms
 /plugins
 
+# Mobile platforms
+/android
+/ios
+/.gradle
+local.properties
+*.apk
+
 # Compiled output
 /dist
 /tmp

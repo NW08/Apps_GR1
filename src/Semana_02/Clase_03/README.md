@@ -1,6 +1,8 @@
-# Ionic & Android Studio || `CLASE 03 (08|10|2026)`
+# Ionic & Android Studio || `SEMANA 02 - CLASE 03 (08|10|2026)`
 
 Se realizó este proyecto como práctica formativa en la materia de Desarrollo de Aplicaciones Móviles mediante **Ionic**, **Angular** y **Capacitor**, implementando una aplicación interactiva centrada en el registro de información de usuario, el control de un contador numérico dinámico y la gestión reactiva de estado global entre pestañas mediante **Angular Signals** y un servicio centralizado (`DatosService`), bajo una estética minimalista en tonalidades blanco, negro y gris adaptable a dispositivos móviles.
+
+> **Nota:** Esta sesión incluye además el proyecto autónomo de compra y liquidación de productos ubicado en [`./producto`](./producto/README.md).
 
 ---
 
@@ -25,14 +27,14 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 ```bash
 git clone https://github.com/NW08/Apps_GR1.git
-cd Apps_GR1/src/Clase_03
+cd Apps_GR1/src/Semana_02/Clase_03
 ```
 
-_(o `cd src/Clase_03` si ya estás dentro del repositorio)_
+_(o `cd src/Semana_02/Clase_03` si ya estás dentro del repositorio)_
 
 2. **Instala Ionic CLI (dependencias raíz)**
 
-En la carpeta raíz `Clase_03`, ejecuta la primera instalación para tener Ionic CLI disponible:
+En la carpeta `src/Semana_02/Clase_03`, ejecuta la primera instalación para tener Ionic CLI disponible:
 
 ```bash
 npm install
@@ -64,7 +66,16 @@ ionic serve
 
 ---
 
-## Vista General del Proyecto
+## Proyectos en Esta Clase
+
+| Proyecto | Carpeta | Descripción |
+| --- | --- | --- |
+| **Interacción Tabs (Contador)** | [`./contador`](./contador/) | Práctica de clase: contador reactivo y sincronización de datos con Signals. |
+| **Compras & Pagos** | [`./producto`](./producto/README.md) | Deber formativo: simulación completa de compra y liquidación de pago. |
+
+---
+
+## Vista General del Proyecto (Contador)
 
 Esta aplicación móvil presenta una interfaz interactiva y minimalista desarrollada con **Ionic Framework** y **Angular (Standalone Components) / TypeScript**. La arquitectura está estructurada en torno a un servicio reactivo singleton que comparte estado global entre dos vistas principales (Registro y Resumen):
 

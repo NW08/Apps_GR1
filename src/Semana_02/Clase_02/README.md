@@ -1,4 +1,4 @@
-# Ionic & Android Studio || `CLASE 02 (07|10|2026)`
+# Ionic & Android Studio || `SEMANA 02 - CLASE 02 (07|10|2026)`
 
 Se realizó este proyecto como práctica formativa en la materia de Desarrollo de Aplicaciones Móviles mediante **Ionic**, **Angular** y **Capacitor**, implementando una aplicación interactiva para el cálculo simultáneo de múltiplos (2, 3, 5, 7 y 10) y la generación secuencial de números primos con historial dinámico y función de reinicio, adaptable a dispositivos móviles.
 
@@ -25,14 +25,14 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 ```bash
 git clone https://github.com/NW08/Apps_GR1.git
-cd Apps_GR1/src/Clase_02
+cd Apps_GR1/src/Semana_02/Clase_02
 ```
 
-*(o `cd src/Clase_02` si ya estás dentro del repositorio)*
+_(o `cd src/Semana_02/Clase_02` si ya estás dentro del repositorio)_
 
 2. **Instala Ionic CLI (dependencias raíz)**
 
-En la carpeta raíz `Clase_02`, ejecuta la primera instalación para tener Ionic CLI disponible:
+En la carpeta `src/Semana_02/Clase_02`, ejecuta la primera instalación para tener Ionic CLI disponible:
 
 ```bash
 npm install
@@ -68,13 +68,13 @@ ionic serve
 
 Esta aplicación móvil presenta una interfaz interactiva desarrollada con **Ionic Framework** y **Angular (Standalone Components) / TypeScript**. La arquitectura está estructurada en torno a una vista principal que gestiona el cálculo numérico, la lista de historial de primos y la presentación reactiva de los resultados:
 
-| Componente / Archivo | Responsabilidad                                                                                                                      |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `home.page.ts`       | Lógica de cálculo: métodos `multiples()` (múltiplos de 2, 3, 5, 7 y 10), `logic()` (detección de primos) y gestión del arreglo `numbers` |
+| Componente / Archivo | Responsabilidad                                                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `home.page.ts`       | Lógica de cálculo: métodos `multiples()` (múltiplos de 2, 3, 5, 7 y 10), `logic()` (detección de primos) y gestión del arreglo `numbers`        |
 | `home.page.html`     | Estructura visual con barra de título (`ion-toolbar`), secciones por múltiplo, contenedor de historial de primos (`*ngFor`) y botones de acción |
-| `home.page.scss`     | Diseño visual personalizado: contenedor con sombra, insignias para el historial numérico (`.numbers span`) y respuesta táctil en botones |
-| `app.routes.ts`      | Configuración de enrutamiento principal y redirección hacia la vista `home`                                                          |
-| `global.scss`        | Configuración visual global y soporte para modo oscuro automático del sistema                                                        |
+| `home.page.scss`     | Diseño visual personalizado: contenedor con sombra, insignias para el historial numérico (`.numbers span`) y respuesta táctil en botones        |
+| `app.routes.ts`      | Configuración de enrutamiento principal y redirección hacia la vista `home`                                                                     |
+| `global.scss`        | Configuración visual global y soporte para modo oscuro automático del sistema                                                                   |
 
 ---
 

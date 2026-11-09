@@ -1,4 +1,4 @@
-# Deber: Registro de Compra y Pago || `CLASE 03 (08|10|2026)`
+# Deber: Registro de Compra y Pago || `SEMANA 02 - CLASE 03 (08|10|2026)`
 
 Aplicación móvil desarrollada con **Ionic**, **Angular (Standalone Components)** y **Capacitor** para gestionar la compra de un producto y el cálculo de su liquidación de pago. Implementa validación estricta de formularios, cálculos reactivos mediante **Angular Signals**, íconos personalizados por pestaña, soporte de assets con `@capacitor/assets` y pantalla de bienvenida con imagen.
 
@@ -22,8 +22,10 @@ Aplicación móvil desarrollada con **Ionic**, **Angular (Standalone Components)
 1. **Navega al directorio del proyecto**
 
 ```bash
-cd src/Clase_03/producto
+cd Apps_GR1/src/Semana_02/Clase_03/producto
 ```
+
+_(o `cd src/Semana_02/Clase_03/producto` si ya estás dentro del repositorio)_
 
 2. **Instala las dependencias**
 
@@ -71,7 +73,6 @@ ionic serve
 ## Reglas y Validaciones Implementadas
 
 - **Pestaña Compra:**
-
   - **Nombre del producto:** Obligatorio (no se permiten campos vacíos ni únicamente espacios).
   - **Cantidad:** Número entero estrictamente mayor que cero (`Number.isInteger(cant) && cant > 0`).
   - **Precio unitario:** Valor numérico mayor que cero (`precio > 0`).

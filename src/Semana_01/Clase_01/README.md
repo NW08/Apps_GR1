@@ -1,4 +1,4 @@
-# CV con Ionic || `CLASE 01 (01|10|2026)`
+# CV con Ionic || `SEMANA 01 - CLASE 01 (01|10|2026)`
 
 Se realizó este proyecto como práctica formativa en la materia de Desarrollo de Aplicaciones Móviles mediante **Ionic** y **NodeJS**, estructurando una hoja de vida interactiva adaptable a dispositivos móviles.
 
@@ -25,13 +25,14 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 ```bash
 git clone https://github.com/NW08/Apps_GR1.git
-cd Apps_GR1/src/Clase_01
+cd Apps_GR1/src/Semana_01/Clase_01
 ```
-*(o `cd src/Clase_01` si ya estás dentro del repositorio)*
+
+_(o `cd src/Semana_01/Clase_01` si ya estás dentro del repositorio)_
 
 2. **Instala Ionic CLI (dependencias raíz)**
 
-En la carpeta raíz `Clase_01`, ejecuta la primera instalación para tener Ionic CLI disponible:
+En la carpeta `src/Semana_01/Clase_01`, ejecuta la primera instalación para tener Ionic CLI disponible:
 
 ```bash
 npm install
