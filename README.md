@@ -6,7 +6,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio `README.md` d
 
 ---
 
-## Proyectos Independientes (Semana 01 – Semana 03 Clase 04)
+## Proyectos
 
 | #   | Proyecto                                                | Descripción                                                           | Tecnologías                                                         |
 | --- | ------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
