@@ -1,4 +1,4 @@
-# Ionic & Android Studio || `SEMANA 05 - CLASE 08 (28|10|2026)`
+# UrbanInspect|| `SEMANA 05 - CLASE 08 (28|10|2026)`
 
 Se realizó este proyecto como práctica y evaluación en la materia de Desarrollo de Aplicaciones Móviles mediante **Ionic**, **Angular (Standalone Components)** y **Capacitor**, implementando la solución **UrbanInspect**: una aplicación móvil para el reporte, consulta, geolocalización, verificación meteorológica, cambio de estado y seguimiento de incidencias de infraestructura urbana en el Distrito Metropolitano de Quito (DMQ). La aplicación integra servicios nativos del dispositivo (cámara, geolocalización y persistencia en preferencias) junto con servicios en la nube (MockAPI, Cloudinary y Open-Meteo) bajo una arquitectura reactiva zoneless y modo claro forzado.
 
