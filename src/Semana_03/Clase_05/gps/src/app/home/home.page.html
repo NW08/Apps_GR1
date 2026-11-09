@@ -1,0 +1,166 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>GPS & Rutas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding content-wrapper">
+  <div class="main-container">
+
+    <!-- SECCIÓN 1: POSICIÓN GPS -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="title-with-icon">
+          <ion-icon name="location-outline"></ion-icon>
+          <h2>1. Mi Posición GPS</h2>
+        </div>
+        <ion-button
+          size="small"
+          fill="clear"
+          color="dark"
+          (click)="obtenerUbicacionActual()"
+          [disabled]="isLoadingGps()"
+        >
+          <ion-icon slot="start" name="locate-outline"></ion-icon>
+          {{ isLoadingGps() ? 'Obteniendo...' : 'Actualizar' }}
+        </ion-button>
+      </div>
+
+      <div class="coords-display">
+        <div class="coord-field">
+          <span class="coord-tag">Lat:</span>
+          <code>{{ latitude() !== null ? latitude() : -0.2025464 }}</code>
+        </div>
+        <div class="coord-field">
+          <span class="coord-tag">Lng:</span>
+          <code>{{ longitude() !== null ? longitude() : -78.4941719 }}</code>
+        </div>
+      </div>
+
+      @if (gpsMensaje()) {
+        <p class="status-note">{{ gpsMensaje() }}</p>
+      }
+
+      <!-- 1.- Hipervínculo a la posición GPS -->
+      <div class="link-block">
+        <span class="field-label">Hipervínculo a Google Maps:</span>
+        <a
+          [href]="ubicacionGpsUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="maps-url"
+        >
+          {{ ubicacionGpsUrl() }}
+        </a>
+      </div>
+
+      <!-- 3.- Botón para guardar ubicación en txt -->
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="dark"
+        class="action-btn"
+        (click)="guardarUbicacionTxt()"
+      >
+        <ion-icon slot="start" name="download-outline"></ion-icon>
+        Guardar ubicación en TXT
+      </ion-button>
+    </section>
+
+    <!-- SECCIÓN 2: RUTA HACIA UN SITIO DE INTERÉS -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="title-with-icon">
+          <ion-icon name="navigate-outline"></ion-icon>
+          <h2>2. Ruta a Sitio de Interés</h2>
+        </div>
+      </div>
+
+      <!-- Accesos directos a sitios de interés -->
+      <div class="preset-selector">
+        <span class="field-label">Destinos rápidos:</span>
+        <div class="preset-chips">
+          @for (preset of presetsRuta; track preset.nombre) {
+            <button
+              type="button"
+              class="chip-btn"
+              (click)="seleccionarPreset(preset)"
+            >
+              {{ preset.nombre }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Parámetros de ruta -->
+      <div class="route-inputs">
+        <div class="input-row">
+          <div class="input-header">
+            <label class="field-label" for="input-origen">Origen (lat,lng):</label>
+            <button type="button" class="text-action-btn" (click)="usarGpsComoOrigen()">
+              Usar mi GPS
+            </button>
+          </div>
+          <input
+            id="input-origen"
+            type="text"
+            class="minimal-input"
+            [value]="origen()"
+            (input)="origen.set($any($event.target).value)"
+            placeholder="-0.180653,-78.467838"
+          />
+        </div>
+
+        <div class="input-row">
+          <label class="field-label" for="input-destino">Destino (lat,lng):</label>
+          <input
+            id="input-destino"
+            type="text"
+            class="minimal-input"
+            [value]="destino()"
+            (input)="destino.set($any($event.target).value)"
+            placeholder="-0.229415,-78.524581"
+          />
+        </div>
+
+        <div class="input-row">
+          <label class="field-label" for="input-waypoints">Puntos de paso / Waypoints (separados por |):</label>
+          <input
+            id="input-waypoints"
+            type="text"
+            class="minimal-input"
+            [value]="waypoints()"
+            (input)="waypoints.set($any($event.target).value)"
+            placeholder="-0.201452,-78.498124|-0.220164,-78.512328"
+          />
+        </div>
+      </div>
+
+      <!-- 2.- Hipervínculo que muestra la ruta -->
+      <div class="link-block">
+        <span class="field-label">Hipervínculo de la ruta:</span>
+        <a
+          [href]="rutaGpsUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="maps-url"
+        >
+          {{ rutaGpsUrl() }}
+        </a>
+      </div>
+
+      <!-- 4.- Botón para guardar ruta en txt -->
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="dark"
+        class="action-btn"
+        (click)="guardarRutaTxt()"
+      >
+        <ion-icon slot="start" name="download-outline"></ion-icon>
+        Guardar ruta en TXT
+      </ion-button>
+    </section>
+
+  </div>
+</ion-content>

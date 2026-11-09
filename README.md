@@ -10,6 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio `README.md` d
 
 | #   | Proyecto                                                | Descripción                                                           | Tecnologías                                                         |
 | --- | ------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 6   | [`Geolocalización & GPS`](./src/Semana_03/Clase_05/)    | Captura de ubicación GPS, cálculo de rutas con waypoints y exportación de reportes en TXT. | Ionic, Angular Standalone, HTML5 Geolocation API |
 | 5   | [`Galería de Fotos`](./src/Semana_03/Clase_04/)         | Captura, persistencia, visualización en galería y eliminación interactiva de fotos con cámara. | Ionic, Angular Signals, Capacitor (Camera, Filesystem, Preferences) |
 | 4   | [`Compras & Pagos`](./src/Semana_02/Clase_03/producto/) | Simulación de compras y cálculo de liquidación de pagos de productos. | Ionic, Angular Signals, Capacitor Assets                            |
 | 3   | [`Interacción Tabs`](./src/Semana_02/Clase_03/)         | Contador dinámico y gestión de estado reactivo entre pestañas.        | Ionic, Angular Signals, Capacitor                                   |
