@@ -28,13 +28,11 @@
 
   <div class="page-container">
 
-    <!-- SPINNER DE CARGA -->
     <div *ngIf="cargando" class="loading-state">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p class="loading-text">Consultando candidatos en Cloud Firestore...</p>
+      <p class="loading-text">Consultando candidatos ...</p>
     </div>
 
-    <!-- LISTADO DE CANDIDATOS -->
     <ng-container *ngIf="!cargando">
 
       <div class="stats-header">
@@ -43,7 +41,6 @@
         </span>
       </div>
 
-      <!-- ESTADO VACÍO -->
       <div *ngIf="candidatosFiltrados.length === 0" class="empty-state">
         <div class="empty-icon-wrap">
           <ion-icon name="people-outline"></ion-icon>
@@ -105,7 +102,6 @@
 
   </div>
 
-  <!-- MODAL DE DETALLE COMPLETO -->
   <ion-modal [isOpen]="modalDetalleAbierto" (didDismiss)="cerrarDetalle()" class="detail-modal">
     <ng-template>
       <ion-header class="ion-no-border">
@@ -137,7 +133,6 @@
             </div>
           </div>
 
-          <!-- DETALLES ORGANIZADOS -->
           <div class="detail-section">
             <h4 class="section-title">
               <ion-icon name="mail-outline"></ion-icon> Contacto

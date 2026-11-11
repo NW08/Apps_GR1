@@ -1,6 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
+  IonAccordion,
+  IonAccordionGroup,
   IonBadge,
   IonButton,
   IonCard,
@@ -10,14 +12,12 @@ import {
   IonCheckbox,
   IonContent,
   IonDatetime,
-  IonDatetimeButton,
   IonHeader,
   IonIcon,
   IonInput,
   IonItem,
   IonLabel,
   IonList,
-  IonModal,
   IonRadio,
   IonRadioGroup,
   IonSegment,
@@ -34,6 +34,7 @@ import { addIcons } from 'ionicons';
 import {
   alertCircleOutline,
   briefcaseOutline,
+  calendarOutline,
   cashOutline,
   documentTextOutline,
   personOutline,
@@ -62,6 +63,8 @@ type ToastColor = 'success' | 'danger';
   styleUrls: ['./registro.page.scss'],
   imports: [
     ReactiveFormsModule,
+    IonAccordion,
+    IonAccordionGroup,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -87,8 +90,6 @@ type ToastColor = 'success' | 'danger';
     IonSegment,
     IonSegmentButton,
     IonDatetime,
-    IonDatetimeButton,
-    IonModal,
     IonBadge,
   ],
 })
@@ -141,12 +142,18 @@ export class RegistroPage {
     addIcons({
       alertCircleOutline,
       briefcaseOutline,
+      calendarOutline,
       cashOutline,
       documentTextOutline,
       personOutline,
       refreshOutline,
       sendOutline,
     });
+  }
+
+  formatearFecha(valor: string | null): string {
+    if (!valor) return 'Toca para seleccionar fecha';
+    return valor.split('T')[0];
   }
 
   /** Muestra el error de un campo solo después de que el usuario lo tocó o intentó guardar. */
