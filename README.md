@@ -10,6 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio `README.md` d
 
 | #   | Proyecto                                                | Descripción                                                           | Tecnologías                                                         |
 | --- | ------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 11  | [`Introducción Firebase`](./src/Semana_06/Clase_10/)    | Proyecto inicial con configuración y despliegue a Firebase Hosting, integración de Capacitor y arquitectura Angular Standalone. | Ionic, Angular Standalone, Capacitor, Firebase Hosting, Firebase CLI |
 | 10  | [`UrbanInspect Corregida`](./src/Semana_05/Clase_09/)  | Corrección de la prueba: detalle de incidencias con mapa y clima, cambio de estado integrado y mejoras de interfaz. | Ionic, Angular Signals, Capacitor, MockAPI, Cloudinary, Open-Meteo |
 | 9   | [`UrbanInspect`](./src/Semana_05/Clase_08/)             | Reporte, geolocalización, clima, seguimiento y control de estados de incidencias urbanas en el DMQ. | Ionic, Angular Signals, Capacitor, MockAPI, Cloudinary, Open-Meteo |
 | 8   | [`API Explorer`](./src/Semana_04/Clase_07/)             | Explorador de libros con Open Library: búsqueda, filtros, infinite scrolling, detalle y favoritos persistentes. | Ionic, Angular Standalone, Open Library API, RxJS                  |

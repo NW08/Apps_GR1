@@ -29,6 +29,13 @@ out-tsc/
 .ionic/
 **/.ionic/
 
+# Firebase cache & debug
+.firebase/
+**/.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+
 # Mobile platforms & builds
 android/
 **/android/
@@ -97,6 +104,10 @@ Thumbs.db
 /src/Semana_05/Clase_09/node_modules
 /src/Semana_05/Clase_09/municipio/android
 /src/Semana_05/Clase_09/municipio/node_modules
+/src/Semana_06/Clase_10/node_modules
+/src/Semana_06/Clase_10/hello-firebase/android
+/src/Semana_06/Clase_10/hello-firebase/node_modules
+/src/Semana_06/Clase_10/hello-firebase/.firebase
 
 # APKs de entrega (excepciones a *.apk)
 !/src/Semana_05/Clase_08/app-debug.apk

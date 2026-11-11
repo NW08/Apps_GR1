@@ -1,0 +1,7 @@
+{
+  "name": "hello-firebase",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
