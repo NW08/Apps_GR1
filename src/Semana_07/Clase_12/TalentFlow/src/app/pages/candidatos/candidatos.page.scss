@@ -91,7 +91,9 @@
 .candidate-card {
   margin: 0;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .candidate-card:hover {
@@ -325,4 +327,3 @@
   color: var(--tf-text-primary);
   margin: 0;
 }
-
