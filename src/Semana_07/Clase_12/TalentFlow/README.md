@@ -37,14 +37,20 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 1. **Clona el repositorio y navega al directorio de la clase**
 
-La aplicación `TalentFlow` vive en su propio repositorio ([Eduxrd-o/TalentFlow](https://github.com/Eduxrd-o/TalentFlow)) y se incluye en el repositorio general como submódulo, por lo que se debe clonar con `--recurse-submodules`:
-
 ```bash
-git clone --recurse-submodules https://github.com/NW08/Apps_GR1.git
+git clone https://github.com/NW08/Apps_GR1.git
 cd Apps_GR1/src/Semana_07/Clase_12
 ```
 
-_(si ya clonaste el repositorio general, ejecuta `git submodule update --init` y luego `cd src/Semana_07/Clase_12`)_
+_(o `cd src/Semana_07/Clase_12` si ya estás dentro del repositorio)_
+
+> **Nota:** La aplicación `TalentFlow` también se mantiene en el repositorio compartido del equipo ([Eduxrd-o/TalentFlow](https://github.com/Eduxrd-o/TalentFlow)). En el repositorio general se integra mediante `git subtree`, por lo que sus archivos forman parte del repositorio y se sincronizan con:
+>
+> ```bash
+> git remote add talentflow https://github.com/Eduxrd-o/TalentFlow.git   # solo la primera vez
+> git subtree pull --prefix=src/Semana_07/Clase_12/TalentFlow talentflow main --squash
+> git subtree push --prefix=src/Semana_07/Clase_12/TalentFlow talentflow main
+> ```
 
 2. **Instala las dependencias raíz de la clase**
 
