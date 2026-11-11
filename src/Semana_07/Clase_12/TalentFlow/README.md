@@ -35,37 +35,20 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 ### Pasos
 
-1. **Clona el repositorio y navega al directorio de la clase**
+1. **Clona el repositorio y navega al directorio del proyecto**
 
 ```bash
-git clone https://github.com/NW08/Apps_GR1.git
-cd Apps_GR1/src/Semana_07/Clase_12
-```
-
-_(o `cd src/Semana_07/Clase_12` si ya estás dentro del repositorio)_
-
-> **Nota:** La aplicación `TalentFlow` también se mantiene en el repositorio compartido del equipo ([Eduxrd-o/TalentFlow](https://github.com/Eduxrd-o/TalentFlow)). En el repositorio general se integra mediante `git subtree`, por lo que sus archivos forman parte del repositorio y se sincronizan con:
->
-> ```bash
-> git remote add talentflow https://github.com/Eduxrd-o/TalentFlow.git   # solo la primera vez
-> git subtree pull --prefix=src/Semana_07/Clase_12/TalentFlow talentflow main --squash
-> git subtree push --prefix=src/Semana_07/Clase_12/TalentFlow talentflow main
-> ```
-
-2. **Instala las dependencias raíz de la clase**
-
-```bash
-npm install
-```
-
-3. **Ingresa a la carpeta `TalentFlow` e instala las dependencias de la aplicación**
-
-```bash
+git clone https://github.com/Eduxrd-o/TalentFlow.git
 cd TalentFlow
+```
+
+2. **Instala las dependencias de la aplicación**
+
+```bash
 npm install
 ```
 
-4. **Ejecuta el servidor de desarrollo local en el navegador**
+3. **Ejecuta el servidor de desarrollo local en el navegador**
 
 ```bash
 npx ionic serve
@@ -73,7 +56,7 @@ npx ionic serve
 
 > **Nota:** Se utiliza `npx` para ejecutar Ionic CLI directamente desde las dependencias del proyecto o las instaladas en el sistema.
 
-5. **Compila y sincroniza con Android Studio (Nativo)**
+4. **Compila y sincroniza con Android Studio (Nativo)**
 
 ```bash
 npx ionic build
