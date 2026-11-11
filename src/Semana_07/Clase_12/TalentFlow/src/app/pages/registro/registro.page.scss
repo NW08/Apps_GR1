@@ -28,7 +28,14 @@
 .date-picker-box {
   display: flex;
   align-items: center;
+  gap: 10px;
   padding: 6px 0;
+}
+
+.date-hint {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--tf-text-secondary);
 }
 
 /* Radio buttons estilizados */
