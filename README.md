@@ -10,6 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio README.md don
 
 | #   | Proyecto                                                | Descripción                                                   | Novedad                         |
 | --- | ------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------- |
+| 13  | [`TalentFlow S.A.`](./src/Semana_07/Clase_12/)          | Registro y consulta de perfiles profesionales (MVP).          | Firebase Cloud Firestore        |
 | 12  | [`Firebase - APK Municipio`](./src/Semana_06/Clase_11/) | Despliegue de UrbanInspect en Firebase Hosting y APK Android. | Firebase Hosting (producción)   |
 | 11  | [`Introducción Firebase`](./src/Semana_06/Clase_10/)    | Proyecto base configurado y desplegado en Firebase.           | Firebase Hosting, Firebase CLI  |
 | 10  | [`UrbanInspect Corregida`](./src/Semana_05/Clase_09/)   | Corrección de la prueba: detalle, mapa y cambio de estado.    | OpenStreetMap                   |

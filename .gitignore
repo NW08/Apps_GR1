@@ -108,6 +108,10 @@ Thumbs.db
 /src/Semana_06/Clase_10/hello-firebase/android
 /src/Semana_06/Clase_10/hello-firebase/node_modules
 /src/Semana_06/Clase_10/hello-firebase/.firebase
+/src/Semana_07/Clase_12/node_modules
+/src/Semana_07/Clase_12/TalentFlow/android
+/src/Semana_07/Clase_12/TalentFlow/node_modules
+/src/Semana_07/Clase_12/TalentFlow/.firebase
 
 # APKs de entrega (excepciones a *.apk)
 !/src/Semana_05/Clase_08/app-debug.apk
