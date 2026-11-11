@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/incidencias" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Seguimiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (visibles().length) {
+    @for (i of visibles(); track i.id) {
+      <app-incidencia-item [incidencia]="i" />
+    }
+  } @else if (cargando()) {
+    <div class="estado">
+      <ion-spinner></ion-spinner>
+      <p>Cargando seguimiento…</p>
+    </div>
+  } @else if (error()) {
+    <div class="estado">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <p>No se pudo consultar las incidencias marcadas.</p>
+      <ion-button fill="outline" (click)="cargar()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  } @else {
+    <div class="estado">
+      <ion-icon name="star-outline"></ion-icon>
+      <p>No tienes incidencias en seguimiento.<br />Marca la estrella de una incidencia para verla aquí.</p>
+      <ion-button fill="outline" routerLink="/incidencias">Ver incidencias</ion-button>
+    </div>
+  }
+</ion-content>
