@@ -1,0 +1,328 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar class="tf-toolbar">
+    <ion-title>
+      <div class="brand-title">
+        <ion-icon name="briefcase-outline" color="primary"></ion-icon>
+        <span>TalentFlow</span>
+        <span class="brand-badge">S.A.</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="page-container">
+    <div class="page-intro">
+      <h1 class="page-heading">Registro de Postulante</h1>
+      <p class="page-subheading">Completa tu perfil profesional para formar parte de nuestro banco de talento corporativo.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+
+      <!-- BLOQUE 1: DATOS PERSONALES -->
+      <ion-card class="tf-card">
+        <ion-card-header class="tf-card-header">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-card-title class="tf-card-title">1. Datos Personales</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="tf-field">
+            <span class="tf-field-label">Nombres y Apellidos *</span>
+            <div class="tf-input-wrapper">
+              <ion-input
+                formControlName="nombres"
+                placeholder="Ej. Ana Victoria Pérez"
+                [clearInput]="true">
+              </ion-input>
+            </div>
+            <div *ngIf="form.get('nombres')?.touched && form.get('nombres')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Ingresa tu nombre completo (mínimo 3 caracteres).</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Correo Electrónico *</span>
+            <div class="tf-input-wrapper">
+              <ion-input
+                type="email"
+                formControlName="correo"
+                placeholder="ana.perez@correo.com"
+                [clearInput]="true">
+              </ion-input>
+            </div>
+            <div *ngIf="form.get('correo')?.touched && form.get('correo')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Ingresa un correo electrónico con formato válido.</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Teléfono de Contacto *</span>
+            <div class="tf-input-wrapper">
+              <ion-input
+                type="tel"
+                formControlName="telefono"
+                placeholder="Ej. 0991234567"
+                [clearInput]="true">
+              </ion-input>
+            </div>
+            <div *ngIf="form.get('telefono')?.touched && form.get('telefono')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Ingresa un teléfono válido (entre 7 y 15 dígitos).</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Fecha de Nacimiento * (No futura)</span>
+            <div class="date-picker-box">
+              <ion-datetime-button datetime="datetime-nacimiento"></ion-datetime-button>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime
+                    id="datetime-nacimiento"
+                    presentation="date"
+                    [max]="fechaMaxNacimiento"
+                    formControlName="fechaNacimiento">
+                  </ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </div>
+            <div *ngIf="form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Selecciona una fecha de nacimiento válida.</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- BLOQUE 2: PERFIL PROFESIONAL -->
+      <ion-card class="tf-card">
+        <ion-card-header class="tf-card-header">
+          <ion-icon name="briefcase-outline"></ion-icon>
+          <ion-card-title class="tf-card-title">2. Perfil Profesional</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="tf-field">
+            <span class="tf-field-label">Cargo al que Postula *</span>
+            <div class="tf-input-wrapper select-wrapper">
+              <ion-select
+                formControlName="cargo"
+                placeholder="Selecciona el puesto deseado"
+                interface="popover">
+                <ion-select-option *ngFor="let c of cargos" [value]="c">
+                  {{ c }}
+                </ion-select-option>
+              </ion-select>
+            </div>
+            <div *ngIf="form.get('cargo')?.touched && form.get('cargo')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Debes elegir un cargo para continuar.</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Nivel Académico Máximo *</span>
+            <ion-radio-group formControlName="nivelAcademico">
+              <ion-list class="radio-list ion-no-padding">
+                <ion-item *ngFor="let nivel of nivelesAcademicos" lines="none" class="radio-item">
+                  <ion-radio [value]="nivel" justify="space-between">
+                    {{ nivel }}
+                  </ion-radio>
+                </ion-item>
+              </ion-list>
+            </ion-radio-group>
+            <div *ngIf="form.get('nivelAcademico')?.touched && form.get('nivelAcademico')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Selecciona tu nivel académico actual.</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Años de Experiencia Relevante (0 a 50) *</span>
+            <div class="tf-input-wrapper">
+              <ion-input
+                type="number"
+                formControlName="experienciaAnios"
+                min="0"
+                max="50"
+                placeholder="0">
+              </ion-input>
+            </div>
+            <div *ngIf="form.get('experienciaAnios')?.touched && form.get('experienciaAnios')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Ingresa un valor entre 0 y 50 años.</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Modalidad de Trabajo Preferida *</span>
+            <ion-segment formControlName="modalidad" class="tf-segment">
+              <ion-segment-button value="Presencial">
+                <ion-label>Presencial</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="Híbrida">
+                <ion-label>Híbrida</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="Remota">
+                <ion-label>Remota</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </div>
+
+          <div class="tf-field">
+            <div class="skills-header">
+              <span class="tf-field-label">Habilidades Técnicas * (Al menos 1)</span>
+              <ion-badge color="primary">{{ habilidadesArray.length }} seleccionadas</ion-badge>
+            </div>
+
+            <div class="skills-grid">
+              <div
+                *ngFor="let skill of habilidadesDisponibles"
+                class="skill-chip"
+                [class.selected]="isHabilidadSelected(skill)">
+                <ion-checkbox
+                  [checked]="isHabilidadSelected(skill)"
+                  (ionChange)="onHabilidadChange($event, skill)"
+                  labelPlacement="end">
+                  {{ skill }}
+                </ion-checkbox>
+              </div>
+            </div>
+            <div *ngIf="habilidadesArray.touched && habilidadesArray.length === 0" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Selecciona al menos una habilidad técnica.</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- BLOQUE 3: DISPONIBILIDAD Y COMPENSACIÓN -->
+      <ion-card class="tf-card">
+        <ion-card-header class="tf-card-header">
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-card-title class="tf-card-title">3. Disponibilidad y Aspiración</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="tf-field">
+            <span class="tf-field-label">Fecha Disponible para Iniciar * (A partir de hoy)</span>
+            <div class="date-picker-box">
+              <ion-datetime-button datetime="datetime-disponibilidad"></ion-datetime-button>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime
+                    id="datetime-disponibilidad"
+                    presentation="date"
+                    [min]="fechaMinDisponibilidad"
+                    formControlName="fechaDisponibilidad">
+                  </ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </div>
+            <div *ngIf="form.get('fechaDisponibilidad')?.touched && form.get('fechaDisponibilidad')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Indica una fecha disponible válida (hoy en adelante).</span>
+            </div>
+          </div>
+
+          <div class="tf-field">
+            <span class="tf-field-label">Aspiración Salarial Mensual (USD) *</span>
+            <div class="tf-input-wrapper salary-input">
+              <span class="currency-symbol">$</span>
+              <ion-input
+                type="number"
+                formControlName="aspiracionSalarial"
+                placeholder="Ej. 1200"
+                min="1">
+              </ion-input>
+            </div>
+            <div *ngIf="form.get('aspiracionSalarial')?.touched && form.get('aspiracionSalarial')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Ingresa un monto salarial mayor que 0.</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- BLOQUE 4: PRESENTACIÓN Y CONSENTIMIENTO -->
+      <ion-card class="tf-card">
+        <ion-card-header class="tf-card-header">
+          <ion-icon name="document-text-outline"></ion-icon>
+          <ion-card-title class="tf-card-title">4. Presentación y Consentimiento</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="tf-field">
+            <div class="textarea-header">
+              <span class="tf-field-label">Resumen Profesional * (Mínimo 30 caracteres)</span>
+              <span class="char-count" [class.valid]="(form.get('resumen')?.value || '').length >= 30">
+                {{ (form.get('resumen')?.value || '').length }}/30 min
+              </span>
+            </div>
+            <div class="tf-input-wrapper textarea-wrapper">
+              <ion-textarea
+                formControlName="resumen"
+                rows="4"
+                placeholder="Cuéntanos brevemente sobre tu trayectoria profesional, logros y fortalezas principales...">
+              </ion-textarea>
+            </div>
+            <div *ngIf="form.get('resumen')?.touched && form.get('resumen')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>El resumen debe tener al menos 30 caracteres.</span>
+            </div>
+          </div>
+
+          <div class="consent-box">
+            <ion-checkbox formControlName="consentimiento" justify="start">
+              <span class="consent-text">
+                Acepto el tratamiento de datos de prueba para fines de este taller de simulación y evaluación académica.
+              </span>
+            </ion-checkbox>
+            <div *ngIf="form.get('consentimiento')?.touched && form.get('consentimiento')?.invalid" class="tf-error-text">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Debes aceptar el consentimiento para poder enviar la postulación.</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- BOTONES DE ACCIÓN -->
+      <div class="actions-container">
+        <ion-button
+          type="submit"
+          expand="block"
+          class="tf-btn-primary"
+          [disabled]="guardando">
+          <ion-spinner *ngIf="guardando" name="crescent"></ion-spinner>
+          <ng-container *ngIf="!guardando">
+            <ion-icon slot="start" name="send-outline"></ion-icon>
+            Guardar Postulación en Firestore
+          </ng-container>
+        </ion-button>
+
+        <ion-button
+          type="button"
+          fill="outline"
+          expand="block"
+          class="tf-btn-secondary"
+          [disabled]="guardando"
+          (click)="limpiar()">
+          <ion-icon slot="start" name="refresh-outline"></ion-icon>
+          Limpiar Formulario
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+
+  <ion-toast
+    [isOpen]="toastAbierto"
+    [message]="toastMensaje"
+    [color]="toastColor"
+    [duration]="3500"
+    (didDismiss)="toastAbierto = false">
+  </ion-toast>
+</ion-content>

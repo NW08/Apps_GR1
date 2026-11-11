@@ -1,2 +1,91 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+/**
+ * TalentFlow - Theme Variables
+ * Paleta corporativa moderna con soporte para Modo Claro y Modo Oscuro
+ */
+
+:root {
+  /* Paleta Base - Modo Claro */
+  --ion-color-primary: #1e5c9b;
+  --ion-color-primary-rgb: 30, 92, 155;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1a5189;
+  --ion-color-primary-tint: #356ca5;
+
+  /* Verde Lima - Acento de disponibilidad y éxito */
+  --ion-color-success: #84cc16;
+  --ion-color-success-rgb: 132, 204, 22;
+  --ion-color-success-contrast: #1f2937;
+  --ion-color-success-contrast-rgb: 31, 41, 55;
+  --ion-color-success-shade: #74b413;
+  --ion-color-success-tint: #90d12d;
+
+  /* Amarillo Cálido - Acento complementario y modalidad */
+  --ion-color-warning: #facc15;
+  --ion-color-warning-rgb: 250, 204, 21;
+  --ion-color-warning-contrast: #1f2937;
+  --ion-color-warning-contrast-rgb: 31, 41, 55;
+  --ion-color-warning-shade: #dcb412;
+  --ion-color-warning-tint: #fbd12c;
+
+  /* Rojo Coral - Validaciones y errores */
+  --ion-color-danger: #e11d48;
+  --ion-color-danger-rgb: 225, 29, 72;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #c61a3f;
+  --ion-color-danger-tint: #e4345a;
+
+  /* Superficies y Neutros para Modo Claro */
+  --tf-bg-main: #f8fafc;
+  --tf-surface: #ffffff;
+  --tf-surface-border: #e2e8f0;
+  --tf-text-primary: #0f172a;
+  --tf-text-secondary: #64748b;
+  --tf-accent-lime: #84cc16;
+  --tf-accent-yellow: #facc15;
+  --tf-accent-blue: #1e5c9b;
+  --tf-accent-red: #e11d48;
+
+  --ion-background-color: var(--tf-bg-main);
+  --ion-item-background: var(--tf-surface);
+  --ion-text-color: var(--tf-text-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Paleta para Modo Oscuro - Estilo Obsidian Tech */
+    --ion-color-primary: #38bdf8;
+    --ion-color-primary-rgb: 56, 189, 248;
+    --ion-color-primary-contrast: #0f172a;
+    --ion-color-primary-contrast-rgb: 15, 23, 42;
+    --ion-color-primary-shade: #31a6da;
+    --ion-color-primary-tint: #4cc4f9;
+
+    --ion-color-success: #a3e635;
+    --ion-color-success-rgb: 163, 230, 53;
+    --ion-color-success-contrast: #0f172a;
+
+    --ion-color-warning: #fde047;
+    --ion-color-warning-rgb: 253, 224, 71;
+    --ion-color-warning-contrast: #0f172a;
+
+    --ion-color-danger: #fb7185;
+    --ion-color-danger-rgb: 251, 113, 133;
+    --ion-color-danger-contrast: #0f172a;
+
+    --tf-bg-main: #0b0f19;
+    --tf-surface: #131b2e;
+    --tf-surface-border: #1e293b;
+    --tf-text-primary: #f8fafc;
+    --tf-text-secondary: #94a3b8;
+    --tf-accent-lime: #a3e635;
+    --tf-accent-yellow: #fde047;
+    --tf-accent-blue: #38bdf8;
+    --tf-accent-red: #fb7185;
+
+    --ion-background-color: var(--tf-bg-main);
+    --ion-item-background: var(--tf-surface);
+    --ion-text-color: var(--tf-text-primary);
+  }
+}

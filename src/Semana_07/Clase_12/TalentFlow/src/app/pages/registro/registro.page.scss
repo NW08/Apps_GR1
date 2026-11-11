@@ -1,0 +1,150 @@
+.page-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.page-intro {
+  margin-bottom: 20px;
+  padding: 8px 4px;
+}
+
+.page-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--tf-text-primary);
+  letter-spacing: -0.5px;
+  margin: 0 0 6px 0;
+}
+
+.page-subheading {
+  font-size: 0.9rem;
+  color: var(--tf-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Selector de fecha */
+.date-picker-box {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+}
+
+/* Radio buttons estilizados */
+.radio-list {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.radio-item {
+  --background: var(--tf-bg-main);
+  --border-radius: 10px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  border: 1px solid var(--tf-surface-border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+/* Segmento de modalidad */
+.tf-segment {
+  --background: var(--tf-bg-main);
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid var(--tf-surface-border);
+}
+
+/* Habilidades en cuadrícula de chips */
+.skills-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-chip {
+  background: var(--tf-bg-main);
+  border: 1px solid var(--tf-surface-border);
+  border-radius: 10px;
+  padding: 4px 10px;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.skill-chip.selected {
+  background: rgba(var(--ion-color-primary-rgb), 0.12);
+  border-color: var(--ion-color-primary);
+}
+
+.skill-chip ion-checkbox {
+  --size: 18px;
+  --checkbox-background-checked: var(--ion-color-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Campo de salario */
+.salary-input {
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--tf-accent-lime);
+  margin-right: 6px;
+}
+
+/* Textarea y contador */
+.textarea-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: var(--tf-text-secondary);
+}
+
+.char-count.valid {
+  color: var(--tf-accent-lime);
+  font-weight: 600;
+}
+
+.textarea-wrapper {
+  padding: 8px 12px;
+}
+
+/* Consentimiento */
+.consent-box {
+  background: var(--tf-bg-main);
+  border: 1px dashed var(--tf-surface-border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 14px;
+}
+
+.consent-text {
+  font-size: 0.8rem;
+  color: var(--tf-text-secondary);
+  line-height: 1.35;
+}
+
+/* Botones de acción */
+.actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}

@@ -1,0 +1,327 @@
+.page-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.search-toolbar {
+  --background: var(--tf-surface);
+  border-bottom: 1px solid var(--tf-surface-border);
+  padding: 0 8px;
+}
+
+.tf-searchbar {
+  --background: var(--tf-bg-main);
+  --border-radius: 12px;
+  --placeholder-color: var(--tf-text-secondary);
+  --icon-color: var(--ion-color-primary);
+  padding: 0;
+}
+
+.stats-header {
+  margin: 12px 4px 8px 4px;
+}
+
+.stats-count {
+  font-size: 0.85rem;
+  color: var(--tf-text-secondary);
+}
+
+/* Spinner de carga */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 12px;
+}
+
+.loading-text {
+  font-size: 0.9rem;
+  color: var(--tf-text-secondary);
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.empty-icon-wrap ion-icon {
+  font-size: 36px;
+  color: var(--ion-color-primary);
+}
+
+.empty-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--tf-text-primary);
+  margin: 0 0 6px 0;
+}
+
+.empty-desc {
+  font-size: 0.85rem;
+  color: var(--tf-text-secondary);
+  max-width: 280px;
+  margin: 0;
+}
+
+/* Cuadrícula de tarjetas de candidatos */
+.candidates-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.candidate-card {
+  margin: 0;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.candidate-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.1);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.avatar-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--ion-color-primary), #3b82f6);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.candidate-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tf-text-primary);
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.candidate-role {
+  font-size: 0.85rem;
+  color: var(--ion-color-primary);
+  font-weight: 500;
+}
+
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.badge-item {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.badge-neutral {
+  background: var(--tf-bg-main);
+  border: 1px solid var(--tf-surface-border);
+  color: var(--tf-text-secondary);
+}
+
+.badge-salary {
+  background: rgba(132, 204, 22, 0.15);
+  color: #4d7c0f;
+  border: 1px solid rgba(132, 204, 22, 0.3);
+}
+
+.skills-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.skill-tag {
+  background: var(--tf-bg-main);
+  border: 1px solid var(--tf-surface-border);
+  color: var(--tf-text-primary);
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.skill-more {
+  font-size: 0.75rem;
+  color: var(--tf-text-secondary);
+  padding: 2px 4px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--tf-surface-border);
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
+.view-btn {
+  --color: var(--ion-color-primary);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* Modal de detalle */
+.modal-toolbar {
+  --background: var(--tf-surface);
+  border-bottom: 1px solid var(--tf-surface-border);
+}
+
+.modal-content {
+  --background: var(--tf-bg-main);
+}
+
+.modal-body {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.modal-hero {
+  text-align: center;
+  padding: 20px 0 16px 0;
+  border-bottom: 1px solid var(--tf-surface-border);
+  margin-bottom: 16px;
+}
+
+.modal-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--ion-color-primary), #3b82f6);
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+}
+
+.modal-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--tf-text-primary);
+  margin: 0 0 4px 0;
+}
+
+.modal-role {
+  font-size: 0.95rem;
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.modal-badges {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.detail-section {
+  background: var(--tf-surface);
+  border: 1px solid var(--tf-surface-border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--tf-text-primary);
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  border-bottom: 1px dashed var(--tf-surface-border);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: var(--tf-text-secondary);
+}
+
+.detail-value {
+  font-weight: 600;
+  color: var(--tf-text-primary);
+}
+
+.highlight-salary {
+  color: #16a34a;
+}
+
+.modal-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modal-skill-chip {
+  background: var(--tf-bg-main);
+  border: 1px solid var(--tf-surface-border);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--tf-text-primary);
+}
+
+.modal-resumen {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--tf-text-primary);
+  margin: 0;
+}
