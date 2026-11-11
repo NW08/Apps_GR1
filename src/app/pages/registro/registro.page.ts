@@ -1,73 +1,70 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormArray,
-  FormControl
-} from '@angular/forms';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
+  IonAccordion,
+  IonAccordionGroup,
+  IonBadge,
+  IonButton,
   IonCard,
+  IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonCardContent,
-  IonList,
+  IonCheckbox,
+  IonContent,
+  IonDatetime,
+  IonHeader,
+  IonIcon,
+  IonInput,
   IonItem,
   IonLabel,
-  IonInput,
-  IonTextarea,
-  IonSelect,
-  IonSelectOption,
-  IonRadioGroup,
+  IonList,
   IonRadio,
-  IonCheckbox,
-  IonButton,
-  IonIcon,
-  IonSpinner,
-  IonToast,
+  IonRadioGroup,
   IonSegment,
   IonSegmentButton,
-  IonDatetime,
-  IonDatetimeButton,
-  IonModal,
-  IonBadge
+  IonSelect,
+  IonSelectOption,
+  IonSpinner,
+  IonTextarea,
+  IonTitle,
+  IonToast,
+  IonToolbar,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
-  personOutline,
-  mailOutline,
-  callOutline,
-  calendarOutline,
+  alertCircleOutline,
   briefcaseOutline,
-  schoolOutline,
-  timeOutline,
-  laptopOutline,
+  calendarOutline,
   cashOutline,
   documentTextOutline,
-  checkmarkCircleOutline,
-  alertCircleOutline,
+  personOutline,
   refreshOutline,
-  sendOutline
+  sendOutline,
 } from 'ionicons/icons';
+
+import type { Candidato } from '../../models/candidato.model';
 import { CandidatosService } from '../../services/candidatos.service';
-import { Candidato } from '../../models/candidato.model';
+import {
+  entero,
+  fechaDesdeHoy,
+  fechaNoFutura,
+  hoyISO,
+  mayorQueCero,
+  soloFecha,
+  telefonoValido,
+  textoMinimo,
+} from '../../validators/candidato.validators';
+
+type ToastColor = 'success' | 'danger';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
-  standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
     ReactiveFormsModule,
+    IonAccordion,
+    IonAccordionGroup,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -93,150 +90,118 @@ import { Candidato } from '../../models/candidato.model';
     IonSegment,
     IonSegmentButton,
     IonDatetime,
-    IonDatetimeButton,
-    IonModal,
-    IonBadge
-  ]
+    IonBadge,
+  ],
 })
-export class RegistroPage implements OnInit {
-  form!: FormGroup;
-  guardando = false;
-  toastAbierto = false;
-  toastMensaje = '';
-  toastColor: 'success' | 'danger' = 'success';
+export class RegistroPage {
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly candidatosService = inject(CandidatosService);
 
- 
-  cargos = [
+  readonly cargos = [
     'Desarrollador móvil',
     'Analista de datos',
     'Diseñador UX/UI',
     'Soporte TI',
-    'Desarrollador Fullstack'
+    'Desarrollador Fullstack',
   ];
+  readonly nivelesAcademicos = ['Bachillerato', 'Tecnología', 'Tercer nivel', 'Posgrado'];
+  readonly modalidades = ['Presencial', 'Híbrida', 'Remota'];
+  readonly habilidadesDisponibles = ['Angular', 'Ionic', 'JavaScript', 'Python', 'SQL', 'Git', 'Firebase'];
 
-  nivelesAcademicos = [
-    'Bachillerato',
-    'Tecnología',
-    'Tercer nivel',
-    'Posgrado'
-  ];
+  /** Límite de fechas para los ion-datetime (fecha local, no UTC). */
+  readonly hoy = hoyISO();
 
-  habilidadesDisponibles = [
-    'Angular',
-    'Ionic',
-    'JavaScript',
-    'Python',
-    'SQL',
-    'Git',
-    'Firebase'
-  ];
+  readonly form = this.fb.group({
+    // Datos personales
+    nombres: ['', [Validators.required, textoMinimo(3)]],
+    correo: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]],
+    telefono: ['', [Validators.required, telefonoValido]],
+    // null (no '') porque ion-datetime no puede interpretar una cadena vacía y ion-datetime-button no se renderiza
+    fechaNacimiento: this.fb.control<string | null>(null, [Validators.required, fechaNoFutura]),
+    // Perfil profesional
+    cargo: ['', Validators.required],
+    nivelAcademico: ['', Validators.required],
+    experienciaAnios: [0, [Validators.required, Validators.min(0), Validators.max(50), entero]],
+    modalidad: ['Híbrida', Validators.required],
+    habilidades: this.fb.control<string[]>([], Validators.required),
+    // Disponibilidad
+    fechaDisponibilidad: this.fb.control<string | null>(null, [Validators.required, fechaDesdeHoy]),
+    aspiracionSalarial: this.fb.control<number | null>(null, [Validators.required, mayorQueCero]),
+    // Presentación y consentimiento
+    resumen: ['', [Validators.required, textoMinimo(30)]],
+    consentimiento: [false, Validators.requiredTrue],
+  });
 
+  // La app es zoneless: el estado que cambia tras un await debe ser un signal para refrescar la vista.
+  readonly guardando = signal(false);
+  readonly toastAbierto = signal(false);
+  readonly toastMensaje = signal('');
+  readonly toastColor = signal<ToastColor>('success');
 
-  fechaMaxNacimiento: string = '';
-  fechaMinDisponibilidad: string = '';
-
-  constructor(
-    private fb: FormBuilder,
-    private candidatosService: CandidatosService
-  ) {
+  constructor() {
     addIcons({
-      personOutline,
-      mailOutline,
-      callOutline,
-      calendarOutline,
+      alertCircleOutline,
       briefcaseOutline,
-      schoolOutline,
-      timeOutline,
-      laptopOutline,
+      calendarOutline,
       cashOutline,
       documentTextOutline,
-      checkmarkCircleOutline,
-      alertCircleOutline,
+      personOutline,
       refreshOutline,
-      sendOutline
+      sendOutline,
     });
   }
 
-  ngOnInit() {
-    const hoy = new Date();
-    this.fechaMaxNacimiento = hoy.toISOString().split('T')[0];
-    this.fechaMinDisponibilidad = hoy.toISOString().split('T')[0];
-
-    this.initForm();
+  formatearFecha(valor: string | null): string {
+    if (!valor) return 'Toca para seleccionar fecha';
+    return valor.split('T')[0];
   }
 
-  private initForm() {
-    this.form = this.fb.group({
-      nombres: ['', [Validators.required, Validators.minLength(3)]],
-      correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern(/^[0-9+ ]{7,15}$/)]],
-      fechaNacimiento: ['', [Validators.required]],
-      cargo: ['', [Validators.required]],
-      nivelAcademico: ['', [Validators.required]],
-      experienciaAnios: [0, [Validators.required, Validators.min(0), Validators.max(50)]],
-      modalidad: ['Híbrida', [Validators.required]],
-      habilidades: this.fb.array([], [Validators.required]),
-      fechaDisponibilidad: ['', [Validators.required]],
-      aspiracionSalarial: [null, [Validators.required, Validators.min(1)]],
-      resumen: ['', [Validators.required, Validators.minLength(30)]],
-      consentimiento: [false, [Validators.requiredTrue]]
-    });
+  /** Muestra el error de un campo solo después de que el usuario lo tocó o intentó guardar. */
+  invalido(campo: keyof RegistroPage['form']['controls']): boolean {
+    const control = this.form.controls[campo];
+    return control.invalid && control.touched;
   }
 
-  get habilidadesArray(): FormArray {
-    return this.form.get('habilidades') as FormArray;
+  habilidadSeleccionada(habilidad: string): boolean {
+    return this.form.controls.habilidades.value.includes(habilidad);
   }
 
-  onHabilidadChange(event: any, habilidad: string) {
-    const isChecked = event.detail.checked;
-    if (isChecked) {
-      this.habilidadesArray.push(new FormControl(habilidad));
-    } else {
-      const index = this.habilidadesArray.controls.findIndex(c => c.value === habilidad);
-      if (index >= 0) {
-        this.habilidadesArray.removeAt(index);
-      }
-    }
-    this.habilidadesArray.markAsTouched();
+  toggleHabilidad(habilidad: string, marcada: boolean): void {
+    const control = this.form.controls.habilidades;
+    const actuales = control.value.filter((h) => h !== habilidad);
+    control.setValue(marcada ? [...actuales, habilidad] : actuales);
+    control.markAsTouched();
   }
 
-  isHabilidadSelected(habilidad: string): boolean {
-    return this.habilidadesArray.controls.some(c => c.value === habilidad);
-  }
+  async guardar(): Promise<void> {
+    if (this.guardando()) return;
 
-  async guardar() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.mostrarToast('Por favor completa todos los campos requeridos correctamente.', 'danger');
       return;
     }
 
-    if (this.habilidadesArray.length === 0) {
-      this.mostrarToast('Selecciona al menos una habilidad técnica.', 'danger');
-      return;
-    }
-
-    this.guardando = true;
-
+    this.guardando.set(true);
     try {
-      const formValue = this.form.value;
-      const candidatoData: Omit<Candidato, 'id' | 'creadoEn'> = {
-        nombres: formValue.nombres.trim(),
-        correo: formValue.correo.trim().toLowerCase(),
-        telefono: formValue.telefono.trim(),
-        fechaNacimiento: formValue.fechaNacimiento.split('T')[0],
-        cargo: formValue.cargo,
-        nivelAcademico: formValue.nivelAcademico,
-        experienciaAnios: Number(formValue.experienciaAnios),
-        modalidad: formValue.modalidad,
-        habilidades: formValue.habilidades,
-        fechaDisponibilidad: formValue.fechaDisponibilidad.split('T')[0],
-        aspiracionSalarial: Number(formValue.aspiracionSalarial),
-        resumen: formValue.resumen.trim(),
-        consentimiento: Boolean(formValue.consentimiento)
+      const v = this.form.getRawValue();
+      const candidato: Omit<Candidato, 'id' | 'creadoEn'> = {
+        nombres: v.nombres.trim(),
+        correo: v.correo.trim().toLowerCase(),
+        telefono: v.telefono.trim(),
+        fechaNacimiento: soloFecha(v.fechaNacimiento),
+        cargo: v.cargo,
+        nivelAcademico: v.nivelAcademico,
+        experienciaAnios: Number(v.experienciaAnios),
+        modalidad: v.modalidad,
+        habilidades: v.habilidades,
+        fechaDisponibilidad: soloFecha(v.fechaDisponibilidad),
+        aspiracionSalarial: Number(v.aspiracionSalarial),
+        resumen: v.resumen.trim(),
+        consentimiento: v.consentimiento,
       };
 
-      await this.candidatosService.guardarCandidato(candidatoData);
+      await this.candidatosService.guardarCandidato(candidato);
 
       this.mostrarToast('¡Postulación guardada exitosamente en Firestore!', 'success');
       this.limpiar();
@@ -244,22 +209,18 @@ export class RegistroPage implements OnInit {
       console.error('Error al guardar en Firestore:', error);
       this.mostrarToast('Ocurrió un error al guardar en la nube. Intenta nuevamente.', 'danger');
     } finally {
-      this.guardando = false;
+      this.guardando.set(false);
     }
   }
 
-  limpiar() {
-    this.habilidadesArray.clear();
-    this.form.reset({
-      modalidad: 'Híbrida',
-      experienciaAnios: 0,
-      consentimiento: false
-    });
+  limpiar(): void {
+    // Con NonNullableFormBuilder, reset() vuelve a los valores iniciales definidos arriba.
+    this.form.reset();
   }
 
-  mostrarToast(mensaje: string, color: 'success' | 'danger') {
-    this.toastMensaje = mensaje;
-    this.toastColor = color;
-    this.toastAbierto = true;
+  private mostrarToast(mensaje: string, color: ToastColor): void {
+    this.toastMensaje.set(mensaje);
+    this.toastColor.set(color);
+    this.toastAbierto.set(true);
   }
 }
