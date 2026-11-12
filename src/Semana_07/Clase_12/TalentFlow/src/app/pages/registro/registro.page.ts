@@ -54,6 +54,7 @@ import {
   fechaNoFutura,
   hoyISO,
   mayorQueCero,
+  normalizarTelefono,
   soloFecha,
   telefonoValido,
   textoMinimo,
@@ -113,33 +114,27 @@ export class RegistroPage {
   readonly modalidades = ['Presencial', 'Híbrida', 'Remota'];
   readonly habilidadesDisponibles = ['Angular', 'Ionic', 'JavaScript', 'Python', 'SQL', 'Git', 'Firebase'];
 
-  /** Límite de fechas para los ion-datetime (fecha local, no UTC). */
   readonly hoy = hoyISO();
 
   readonly form = this.fb.group({
-    // Datos personales
     nombres: ['', [Validators.required, textoMinimo(3)]],
     correo: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]],
     telefono: ['', [Validators.required, telefonoValido]],
-    // null (no '') porque ion-datetime no puede interpretar una cadena vacía
+    // null y no '': ion-datetime no interpreta una cadena vacía.
     fechaNacimiento: this.fb.control<string | null>(null, [Validators.required, fechaNoFutura]),
-    // Perfil profesional
     cargo: ['', Validators.required],
     nivelAcademico: ['', Validators.required],
     experienciaAnios: [0, [Validators.required, Validators.min(0), Validators.max(50), entero]],
     modalidad: ['Híbrida', Validators.required],
     habilidades: this.fb.control<string[]>([], Validators.required),
-    // Disponibilidad
     fechaDisponibilidad: this.fb.control<string | null>(null, [Validators.required, fechaDesdeHoy]),
     aspiracionSalarial: this.fb.control<number | null>(null, [Validators.required, mayorQueCero]),
-    // Presentación y consentimiento
     resumen: ['', [Validators.required, textoMinimo(30)]],
     consentimiento: [false, Validators.requiredTrue],
   });
 
   // La app es zoneless: el estado que cambia tras un await debe ser un signal para refrescar la vista.
   readonly guardando = signal(false);
-  /** Id del documento en edición; `null` cuando se registra un candidato nuevo. */
   readonly editandoId = signal<string | null>(null);
   readonly cargandoPerfil = signal(false);
 
@@ -157,7 +152,6 @@ export class RegistroPage {
       sendOutline,
     });
 
-    // /tabs/registro?editar=<id> abre el formulario en modo edición.
     inject(ActivatedRoute)
       .queryParamMap.pipe(takeUntilDestroyed())
       .subscribe((params) => void this.prepararFormulario(params.get('editar')));
@@ -167,7 +161,6 @@ export class RegistroPage {
     return valor ? soloFecha(valor) : 'Toca para seleccionar fecha';
   }
 
-  /** Muestra el error de un campo solo después de que el usuario lo tocó o intentó guardar. */
   invalido(campo: keyof RegistroPage['form']['controls']): boolean {
     const control = this.form.controls[campo];
     return control.invalid && control.touched;
@@ -215,18 +208,16 @@ export class RegistroPage {
   }
 
   limpiar(): void {
-    // Con NonNullableFormBuilder, reset() vuelve a los valores iniciales definidos arriba.
+    // Con NonNullableFormBuilder, reset() vuelve a los valores iniciales y no a null.
     this.form.reset();
   }
 
-  /** Descarta la edición y vuelve al listado. */
   async cancelarEdicion(): Promise<void> {
     await this.salirDeEdicion();
   }
 
   private async prepararFormulario(id: string | null): Promise<void> {
     if (!id) {
-      // Se llegó sin ?editar (p. ej. desde la pestaña Postular): formulario de registro limpio.
       if (this.editandoId()) {
         this.editandoId.set(null);
         this.limpiar();
@@ -259,7 +250,7 @@ export class RegistroPage {
         resumen: candidato.resumen,
         consentimiento: candidato.consentimiento,
       });
-      // Marca los campos para señalar de inmediato los datos que ya no son válidos (p. ej. una fecha disponible pasada).
+      // Señala de inmediato los datos guardados que ya no son válidos (p. ej. una disponibilidad pasada).
       this.form.markAllAsTouched();
       this.editandoId.set(id);
     } catch (error) {
@@ -281,7 +272,7 @@ export class RegistroPage {
     return {
       nombres: v.nombres.trim(),
       correo: v.correo.trim().toLowerCase(),
-      telefono: v.telefono.trim(),
+      telefono: normalizarTelefono(v.telefono),
       fechaNacimiento: soloFecha(v.fechaNacimiento),
       cargo: v.cargo,
       nivelAcademico: v.nivelAcademico,

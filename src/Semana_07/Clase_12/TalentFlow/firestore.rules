@@ -14,7 +14,7 @@ service cloud.firestore {
         ])
         && d.nombres is string && d.nombres.size() >= 3
         && d.correo is string && d.correo.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$')
-        && d.telefono is string && d.telefono.size() >= 7 && d.telefono.size() <= 20
+        && d.telefono is string && d.telefono.matches('^\\d{10}$')
         && d.fechaNacimiento is string && d.fechaNacimiento.matches('^\\d{4}-\\d{2}-\\d{2}$')
         && d.cargo in ['Desarrollador móvil', 'Analista de datos', 'Diseñador UX/UI', 'Soporte TI', 'Desarrollador Fullstack']
         && d.nivelAcademico in ['Bachillerato', 'Tecnología', 'Tercer nivel', 'Posgrado']
@@ -30,12 +30,11 @@ service cloud.firestore {
     match /candidatos/{candidatoId} {
       allow read: if true;
 
-      // Alta: datos válidos y marca de creación generada por el servidor (serverTimestamp()).
+      // `== request.time` exige que las marcas de tiempo vengan de serverTimestamp(), no del cliente.
       allow create: if esCandidatoValido(request.resource.data)
         && request.resource.data.creadoEn == request.time
         && !('actualizadoEn' in request.resource.data);
 
-      // Edición: datos válidos, `creadoEn` intacto y marca de edición generada por el servidor.
       allow update: if esCandidatoValido(request.resource.data)
         && request.resource.data.creadoEn == resource.data.creadoEn
         && request.resource.data.actualizadoEn == request.time;
@@ -43,7 +42,6 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Cualquier otra colección queda cerrada.
     match /{document=**} {
       allow read, write: if false;
     }

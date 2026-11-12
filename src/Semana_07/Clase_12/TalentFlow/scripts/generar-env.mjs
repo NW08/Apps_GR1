@@ -1,5 +1,5 @@
 // Genera src/environments/firebase.config.ts a partir de las variables del archivo .env.
-// Se ejecuta automáticamente antes de `ionic serve`, `ionic build`, `npm start`, `npm run build` y los tests.
+// Se ejecuta automáticamente antes de `ionic serve`/`build`, `npm start`, `npm run build`, lint y tests.
 // Las variables de entorno del sistema tienen prioridad sobre .env (útil en CI).
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -20,7 +20,6 @@ const VARIABLES = {
 };
 const OPCIONALES = new Set(['FIREBASE_MEASUREMENT_ID']);
 
-/** Parser mínimo de .env: CLAVE=valor, comentarios con # y comillas opcionales. */
 function leerEnv(ruta) {
   if (!existsSync(ruta)) return {};
   const valores = {};

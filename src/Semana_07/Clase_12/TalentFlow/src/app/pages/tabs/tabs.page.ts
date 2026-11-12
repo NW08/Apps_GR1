@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular';
+import { Component, inject } from '@angular/core';
+import { IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs, NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { peopleOutline, personAddOutline } from 'ionicons/icons';
 
@@ -8,7 +8,7 @@ import { peopleOutline, personAddOutline } from 'ionicons/icons';
   imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel],
   template: `
     <ion-tabs>
-      <ion-tab-bar slot="bottom" id="tf-tab-bar" class="tf-tab-bar">
+      <ion-tab-bar slot="bottom" id="tf-tab-bar" class="tf-tab-bar" (ionTabButtonClick)="alPulsarPestana($event)">
         <ion-tab-button tab="registro" href="/tabs/registro">
           <ion-icon aria-hidden="true" name="person-add-outline"></ion-icon>
           <ion-label>Postular</ion-label>
@@ -42,7 +42,20 @@ import { peopleOutline, personAddOutline } from 'ionicons/icons';
   ],
 })
 export class TabsPage {
+  private readonly navCtrl = inject(NavController);
+
   constructor() {
     addIcons({ personAddOutline, peopleOutline });
+  }
+
+  /**
+   * ion-tabs recuerda la última URL de cada pestaña, así que tras editar reabriría
+   * `/tabs/registro?editar=<id>`. Se intercepta el clic para abrir siempre el registro limpio.
+   */
+  alPulsarPestana(evento: Event): void {
+    const { tab } = (evento as CustomEvent<{ tab: string }>).detail;
+    if (tab !== 'registro') return;
+    evento.stopPropagation();
+    void this.navCtrl.navigateRoot('/tabs/registro', { animated: true, animationDirection: 'back' });
   }
 }

@@ -83,7 +83,6 @@ export class CandidatosPage implements ViewWillEnter {
   private readonly modalDetalle = viewChild(IonModal);
 
   // La app es zoneless: el estado que cambia tras un await debe ser un signal para refrescar la vista.
-  /** Candidatos tal como llegan de Firestore (orden descendente por `creadoEn`). */
   readonly candidatos = signal<Candidato[]>([]);
   readonly cargando = signal(true);
   readonly errorCarga = signal(false);
@@ -132,12 +131,11 @@ export class CandidatosPage implements ViewWillEnter {
     });
   }
 
-  /** Ionic conserva la página en caché: se recarga cada vez que se entra para reflejar registros y ediciones. */
+  /** Ionic conserva la página en caché: se recarga al entrar para reflejar registros y ediciones. */
   ionViewWillEnter(): void {
     void this.cargarCandidatos();
   }
 
-  /** Consulta la colección; el spinner de pantalla completa solo aparece si aún no hay datos. */
   async cargarCandidatos(event?: Event): Promise<void> {
     this.cargando.set(!event && this.candidatos().length === 0);
     try {
@@ -171,10 +169,9 @@ export class CandidatosPage implements ViewWillEnter {
     this.candidatoSeleccionado.set(null);
   }
 
-  /** Abre el formulario de registro en modo edición para el candidato indicado. */
   async editar(candidato: Candidato): Promise<void> {
-    // Cerrar el modal y esperar a que termine ANTES de navegar: al salir, Ionic deja de actualizar
-    // esta página y el modal quedaría abierto encima del formulario.
+    // Cerrar el modal y esperar ANTES de navegar: al salir, Ionic deja de actualizar esta página
+    // y el modal quedaría abierto encima del formulario.
     await this.modalDetalle()?.dismiss();
     this.cerrarDetalle();
     await this.router.navigate(['/tabs/registro'], { queryParams: { editar: candidato.id } });

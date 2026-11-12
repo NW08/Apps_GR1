@@ -78,7 +78,7 @@
             @if (invalido('telefono')) {
             <div class="tf-error-text">
               <ion-icon name="alert-circle-outline"></ion-icon>
-              <span>Ingresa un teléfono válido (entre 7 y 15 dígitos).</span>
+              <span>Ingresa un teléfono válido de 10 dígitos.</span>
             </div>
             }
           </div>
@@ -314,7 +314,7 @@
           </div>
 
           <div class="consent-box">
-            <ion-checkbox formControlName="consentimiento" justify="start">
+            <ion-checkbox formControlName="consentimiento" labelPlacement="end" justify="start" alignment="start">
               <span class="consent-text">
                 Acepto el tratamiento de datos de prueba para fines de este taller de simulación y evaluación académica.
               </span>
