@@ -276,7 +276,7 @@ Capturas sin datos sensibles, guardadas en [`docs/evidencias/`](./docs/evidencia
 
 | Colección `candidatos` | Documento | Reglas publicadas |
 | :---: | :---: | :---: |
-| ![Colección](docs/evidencias/11-firestore-coleccion.png) | ![Documento](docs/evidencias/12-firestore-documento.png) | ![Reglas](docs/evidencias/13-firestore-reglas.png) |
+| ![Colección](docs/evidencias/11-firestore-coleccion.jpeg) | ![Documento](docs/evidencias/12-firestore-documento.jpeg) | ![Reglas](docs/evidencias/13-firestore-reglas.jpeg) |
 
 ---
 
