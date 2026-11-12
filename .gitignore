@@ -77,3 +77,9 @@ Thumbs.db
 
 
 /android
+
+# Configuración de Firebase (se genera desde .env con scripts/generar-env.mjs)
+.env
+.env.*
+!.env.example
+/src/environments/firebase.config.ts

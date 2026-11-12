@@ -13,13 +13,27 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="page-container">
     <div class="page-intro">
+      @if (editandoId()) {
+      <h1 class="page-heading">Editar Postulante</h1>
+      <p class="page-subheading">
+        Actualiza los datos del perfil. La fecha de registro original se conserva y se guarda la fecha de edición.
+      </p>
+      } @else {
       <h1 class="page-heading">Registro de Postulante</h1>
       <p class="page-subheading">
         Completa tu perfil profesional para formar parte de nuestro banco de talento corporativo.
       </p>
+      }
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="guardar()">
+    @if (cargandoPerfil()) {
+    <div class="perfil-loading">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Cargando perfil desde Firestore...</p>
+    </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="guardar()" [hidden]="cargandoPerfil()">
       <ion-card class="tf-card">
         <ion-card-header class="tf-card-header">
           <ion-icon name="person-outline"></ion-icon>
@@ -64,7 +78,7 @@
             @if (invalido('telefono')) {
             <div class="tf-error-text">
               <ion-icon name="alert-circle-outline"></ion-icon>
-              <span>Ingresa un teléfono válido (entre 7 y 15 dígitos).</span>
+              <span>Ingresa un teléfono válido de 10 dígitos.</span>
             </div>
             }
           </div>
@@ -300,7 +314,7 @@
           </div>
 
           <div class="consent-box">
-            <ion-checkbox formControlName="consentimiento" justify="start">
+            <ion-checkbox formControlName="consentimiento" labelPlacement="end" justify="start" alignment="start">
               <span class="consent-text">
                 Acepto el tratamiento de datos de prueba para fines de este taller de simulación y evaluación académica.
               </span>
@@ -319,11 +333,26 @@
         <ion-button type="submit" expand="block" class="tf-btn-primary" [disabled]="guardando()">
           @if (guardando()) {
           <ion-spinner name="crescent"></ion-spinner>
-          } @else {
+          } @else if (editandoId()) {
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          Actualizar Postulación } @else {
           <ion-icon slot="start" name="send-outline"></ion-icon>
           Guardar Postulación }
         </ion-button>
 
+        @if (editandoId()) {
+        <ion-button
+          type="button"
+          fill="outline"
+          expand="block"
+          class="tf-btn-secondary"
+          [disabled]="guardando()"
+          (click)="cancelarEdicion()"
+        >
+          <ion-icon slot="start" name="close-outline"></ion-icon>
+          Cancelar Edición
+        </ion-button>
+        } @else {
         <ion-button
           type="button"
           fill="outline"
@@ -335,16 +364,8 @@
           <ion-icon slot="start" name="refresh-outline"></ion-icon>
           Limpiar Formulario
         </ion-button>
+        }
       </div>
     </form>
   </div>
-
-  <ion-toast
-    [isOpen]="toastAbierto()"
-    [message]="toastMensaje()"
-    [color]="toastColor()"
-    [duration]="3500"
-    (didDismiss)="toastAbierto.set(false)"
-  >
-  </ion-toast>
 </ion-content>

@@ -24,7 +24,15 @@
   line-height: 1.4;
 }
 
-/* Selector de fecha en acordeón inline moderno */
+.perfil-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: var(--tf-text-secondary);
+}
+
 .date-accordion-group {
   border: 1px solid var(--tf-surface-border);
   border-radius: 12px;
@@ -84,7 +92,6 @@
   --background: var(--tf-surface);
 }
 
-/* Radio buttons estilizados */
 .radio-list {
   background: transparent;
   display: flex;
@@ -102,7 +109,6 @@
   font-size: 0.9rem;
 }
 
-/* Segmento de modalidad */
 .tf-segment {
   --background: var(--tf-bg-main);
   border-radius: 12px;
@@ -110,7 +116,15 @@
   border: 1px solid var(--tf-surface-border);
 }
 
-/* Habilidades en cuadrícula de chips */
+.select-wrapper ion-select {
+  width: 100%;
+}
+
+/* Estira el contenedor interno para que la flecha del select quede en el borde derecho. */
+.select-wrapper ion-select::part(container) {
+  flex: 1 1 auto;
+}
+
 .skills-header {
   display: flex;
   justify-content: space-between;
@@ -145,7 +159,6 @@
   font-weight: 500;
 }
 
-/* Campo de salario */
 .salary-input {
   display: flex;
   align-items: center;
@@ -158,7 +171,6 @@
   margin-right: 6px;
 }
 
-/* Textarea y contador */
 .textarea-header {
   display: flex;
   justify-content: space-between;
@@ -175,11 +187,11 @@
   font-weight: 600;
 }
 
-.textarea-wrapper {
-  padding: 8px 12px;
+.textarea-wrapper ion-textarea {
+  --padding-top: 12px;
+  --padding-bottom: 12px;
 }
 
-/* Consentimiento */
 .consent-box {
   background: var(--tf-bg-main);
   border: 1px dashed var(--tf-surface-border);
@@ -188,13 +200,23 @@
   margin-top: 14px;
 }
 
+.consent-box ion-checkbox {
+  width: 100%;
+}
+
+/* ion-checkbox recorta el label en una sola línea; se permite que el texto largo salte de línea. */
+.consent-box ion-checkbox::part(label) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
 .consent-text {
   font-size: 0.8rem;
   color: var(--tf-text-secondary);
   line-height: 1.35;
 }
 
-/* Botones de acción */
 .actions-container {
   display: flex;
   flex-direction: column;
