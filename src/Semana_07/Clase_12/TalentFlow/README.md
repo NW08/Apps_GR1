@@ -282,30 +282,8 @@ Capturas sin datos sensibles, guardadas en [`docs/evidencias/`](./docs/evidencia
 
 ## 9. Pruebas
 
-### Candidatos ficticios registrados
-
-Se registraron **5 candidatos ficticios** con combinaciones distintas de cargo, nivel académico, modalidad y habilidades:
-
-| # | Nombres            | Cargo               | Nivel académico | Modalidad  | Habilidades                  |
-| - | ------------------ | ------------------- | --------------- | ---------- | ---------------------------- |
-| 1 | _Pendiente_        | _Pendiente_         | _Pendiente_     | _Pendiente_| _Pendiente_                  |
-| 2 | _Pendiente_        | _Pendiente_         | _Pendiente_     | _Pendiente_| _Pendiente_                  |
-| 3 | _Pendiente_        | _Pendiente_         | _Pendiente_     | _Pendiente_| _Pendiente_                  |
-| 4 | _Pendiente_        | _Pendiente_         | _Pendiente_     | _Pendiente_| _Pendiente_                  |
-| 5 | _Pendiente_        | _Pendiente_         | _Pendiente_     | _Pendiente_| _Pendiente_                  |
-
-### Casos de prueba
-
-| ID  | Caso                                         | Pasos                                                                                         | Resultado esperado                                                                                   | Resultado obtenido | Evidencia |
-| --- | -------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------ | --------- |
-| P01 | Registro válido                              | Completar todos los campos correctamente y pulsar **Guardar Postulación**.                   | Toast de éxito, formulario limpio y nuevo documento en `candidatos` con `creadoEn`.                 | _Pendiente_        | [P01](docs/pruebas/P01-registro-valido.png) |
-| P02 | Persistencia tras recargar                   | Registrar los 5 candidatos, recargar la aplicación y abrir **Candidatos**.                   | Se listan los 5 candidatos leídos desde Firestore.                                                   | _Pendiente_        | [P02](docs/pruebas/P02-persistencia.png) |
-| P03 | ❌ Validación fallida: formulario vacío       | Pulsar **Guardar Postulación** sin completar campos.                                          | Mensajes de error junto a cada campo, toast de error y **ningún** documento nuevo.                  | _Pendiente_        | [P03](docs/pruebas/P03-validacion-vacio.png) |
-| P04 | ❌ Validación fallida: datos fuera de rango   | Correo sin dominio, experiencia `2.5`, resumen de menos de 30 caracteres y sin consentimiento. | Errores en esos campos y **ningún** documento nuevo.                                                | _Pendiente_        | [P04](docs/pruebas/P04-validacion-rangos.png) |
-| P05 | Detalle completo                             | En **Candidatos**, tocar una tarjeta.                                                         | El modal muestra todos los campos, el consentimiento y la fecha de registro.                         | _Pendiente_        | [P05](docs/pruebas/P05-detalle.png) |
-| P06 | Edición de perfil                            | En el detalle, **Editar perfil**, cambiar el cargo y pulsar **Actualizar Postulación**.       | Toast de éxito, vuelta al listado con el cargo actualizado; `creadoEn` se conserva y se agrega `actualizadoEn`. | _Pendiente_ | [P06](docs/pruebas/P06-edicion.png) |
-| P07 | Ordenamiento por fecha de registro           | Alternar **Recientes** / **Antiguos** en el listado.                                          | El orden de las tarjetas se invierte según `creadoEn`.                                               | _Pendiente_        | [P07](docs/pruebas/P07-ordenamiento.png) |
-
+### APK Resultante
+> [Descargar APK](app-debug.apk)
 ---
 
 ## 10. Seguridad y Limitaciones
