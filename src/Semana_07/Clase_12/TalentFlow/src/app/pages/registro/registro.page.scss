@@ -24,6 +24,16 @@
   line-height: 1.4;
 }
 
+/* Carga del perfil en modo edición */
+.perfil-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: var(--tf-text-secondary);
+}
+
 /* Selector de fecha en acordeón inline moderno */
 .date-accordion-group {
   border: 1px solid var(--tf-surface-border);

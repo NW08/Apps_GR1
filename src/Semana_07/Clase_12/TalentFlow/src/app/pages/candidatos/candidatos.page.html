@@ -30,7 +30,19 @@
     @if (cargando()) {
     <div class="loading-state">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p class="loading-text">Consultando candidatos ...</p>
+      <p class="loading-text">Consultando candidatos en Firestore...</p>
+    </div>
+    } @else if (errorCarga() && candidatos().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon-wrap error">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+      </div>
+      <h3 class="empty-title">No se pudo consultar Firestore</h3>
+      <p class="empty-desc">Verifica tu conexión a internet y las reglas de la colección «candidatos».</p>
+      <ion-button fill="outline" (click)="cargarCandidatos()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reintentar
+      </ion-button>
     </div>
     } @else {
     <div class="stats-header">
@@ -38,6 +50,19 @@
         Mostrando <strong>{{ candidatosFiltrados().length }}</strong> de
         <strong>{{ candidatos().length }}</strong> candidatos
       </span>
+      <ion-segment
+        class="orden-segment"
+        [value]="orden()"
+        (ionChange)="cambiarOrden($event.detail.value)"
+        aria-label="Ordenar por fecha de registro"
+      >
+        <ion-segment-button value="recientes">
+          <ion-label>Recientes</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="antiguos">
+          <ion-label>Antiguos</ion-label>
+        </ion-segment-button>
+      </ion-segment>
     </div>
 
     @if (candidatosFiltrados().length === 0) {
@@ -62,6 +87,10 @@
           <div class="header-info">
             <h2 class="candidate-name">{{ c.nombres }}</h2>
             <span class="candidate-role">{{ c.cargo }}</span>
+            <span class="candidate-date">
+              <ion-icon name="time-outline"></ion-icon>
+              Registrado: {{ formatearMarca(c.creadoEn) }}
+            </span>
           </div>
         </div>
 
@@ -99,7 +128,7 @@
         <ion-toolbar class="modal-toolbar">
           <ion-title>Perfil del Candidato</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="cerrarDetalle()">
+            <ion-button (click)="cerrarDetalle()" aria-label="Cerrar">
               <ion-icon name="close-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -138,8 +167,16 @@
           <div class="detail-section">
             <h4 class="section-title"><ion-icon name="briefcase-outline"></ion-icon> Experiencia y Condiciones</h4>
             <div class="detail-row">
+              <span class="detail-label">Nivel académico:</span>
+              <span class="detail-value">{{ cand.nivelAcademico }}</span>
+            </div>
+            <div class="detail-row">
               <span class="detail-label">Años de experiencia:</span>
               <span class="detail-value">{{ cand.experienciaAnios }} años</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Modalidad:</span>
+              <span class="detail-value">{{ cand.modalidad }}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Fecha disponible:</span>
@@ -164,8 +201,35 @@
             <h4 class="section-title"><ion-icon name="document-text-outline"></ion-icon> Resumen Profesional</h4>
             <p class="modal-resumen">{{ cand.resumen }}</p>
           </div>
+
+          <div class="detail-section">
+            <h4 class="section-title"><ion-icon name="shield-checkmark-outline"></ion-icon> Registro</h4>
+            <div class="detail-row">
+              <span class="detail-label">Consentimiento de datos:</span>
+              <span class="detail-value">{{ cand.consentimiento ? 'Aceptado' : 'No aceptado' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Fecha de registro:</span>
+              <span class="detail-value">{{ formatearMarca(cand.creadoEn) }}</span>
+            </div>
+            @if (cand.actualizadoEn) {
+            <div class="detail-row">
+              <span class="detail-label">Última edición:</span>
+              <span class="detail-value">{{ formatearMarca(cand.actualizadoEn) }}</span>
+            </div>
+            }
+          </div>
         </div>
       </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-toolbar class="modal-footer">
+          <ion-button expand="block" class="tf-btn-primary" (click)="editar(cand)">
+            <ion-icon slot="start" name="create-outline"></ion-icon>
+            Editar perfil
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
       }
     </ng-template>
   </ion-modal>

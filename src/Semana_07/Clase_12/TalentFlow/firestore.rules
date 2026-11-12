@@ -1,0 +1,51 @@
+rules_version = '2';
+
+// Reglas de PRÁCTICA para el taller TalentFlow (sin autenticación).
+// Solo exponen la colección `candidatos` con lectura, creación y edición validadas.
+// NO son aptas para producción: cualquier persona con la configuración web puede leer y modificar datos.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function esCandidatoValido(d) {
+      return d.keys().hasOnly([
+          'nombres', 'correo', 'telefono', 'fechaNacimiento', 'cargo', 'nivelAcademico',
+          'experienciaAnios', 'modalidad', 'habilidades', 'fechaDisponibilidad',
+          'aspiracionSalarial', 'resumen', 'consentimiento', 'creadoEn', 'actualizadoEn'
+        ])
+        && d.nombres is string && d.nombres.size() >= 3
+        && d.correo is string && d.correo.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$')
+        && d.telefono is string && d.telefono.size() >= 7 && d.telefono.size() <= 20
+        && d.fechaNacimiento is string && d.fechaNacimiento.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && d.cargo in ['Desarrollador móvil', 'Analista de datos', 'Diseñador UX/UI', 'Soporte TI', 'Desarrollador Fullstack']
+        && d.nivelAcademico in ['Bachillerato', 'Tecnología', 'Tercer nivel', 'Posgrado']
+        && d.experienciaAnios is int && d.experienciaAnios >= 0 && d.experienciaAnios <= 50
+        && d.modalidad in ['Presencial', 'Híbrida', 'Remota']
+        && d.habilidades is list && d.habilidades.size() >= 1
+        && d.fechaDisponibilidad is string && d.fechaDisponibilidad.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && d.aspiracionSalarial is number && d.aspiracionSalarial > 0
+        && d.resumen is string && d.resumen.size() >= 30
+        && d.consentimiento == true;
+    }
+
+    match /candidatos/{candidatoId} {
+      allow read: if true;
+
+      // Alta: datos válidos y marca de creación generada por el servidor (serverTimestamp()).
+      allow create: if esCandidatoValido(request.resource.data)
+        && request.resource.data.creadoEn == request.time
+        && !('actualizadoEn' in request.resource.data);
+
+      // Edición: datos válidos, `creadoEn` intacto y marca de edición generada por el servidor.
+      allow update: if esCandidatoValido(request.resource.data)
+        && request.resource.data.creadoEn == resource.data.creadoEn
+        && request.resource.data.actualizadoEn == request.time;
+
+      allow delete: if false;
+    }
+
+    // Cualquier otra colección queda cerrada.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,5 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonAccordion,
   IonAccordionGroup,
@@ -27,8 +29,8 @@ import {
   IonSpinner,
   IonTextarea,
   IonTitle,
-  IonToast,
   IonToolbar,
+  ToastController,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -36,13 +38,15 @@ import {
   briefcaseOutline,
   calendarOutline,
   cashOutline,
+  closeOutline,
   documentTextOutline,
   personOutline,
   refreshOutline,
+  saveOutline,
   sendOutline,
 } from 'ionicons/icons';
 
-import type { Candidato } from '../../models/candidato.model';
+import type { CandidatoForm } from '../../models/candidato.model';
 import { CandidatosService } from '../../services/candidatos.service';
 import {
   entero,
@@ -86,7 +90,6 @@ type ToastColor = 'success' | 'danger';
     IonButton,
     IonIcon,
     IonSpinner,
-    IonToast,
     IonSegment,
     IonSegmentButton,
     IonDatetime,
@@ -96,6 +99,8 @@ type ToastColor = 'success' | 'danger';
 export class RegistroPage {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly candidatosService = inject(CandidatosService);
+  private readonly toastCtrl = inject(ToastController);
+  private readonly router = inject(Router);
 
   readonly cargos = [
     'Desarrollador móvil',
@@ -116,7 +121,7 @@ export class RegistroPage {
     nombres: ['', [Validators.required, textoMinimo(3)]],
     correo: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]],
     telefono: ['', [Validators.required, telefonoValido]],
-    // null (no '') porque ion-datetime no puede interpretar una cadena vacía y ion-datetime-button no se renderiza
+    // null (no '') porque ion-datetime no puede interpretar una cadena vacía
     fechaNacimiento: this.fb.control<string | null>(null, [Validators.required, fechaNoFutura]),
     // Perfil profesional
     cargo: ['', Validators.required],
@@ -134,9 +139,9 @@ export class RegistroPage {
 
   // La app es zoneless: el estado que cambia tras un await debe ser un signal para refrescar la vista.
   readonly guardando = signal(false);
-  readonly toastAbierto = signal(false);
-  readonly toastMensaje = signal('');
-  readonly toastColor = signal<ToastColor>('success');
+  /** Id del documento en edición; `null` cuando se registra un candidato nuevo. */
+  readonly editandoId = signal<string | null>(null);
+  readonly cargandoPerfil = signal(false);
 
   constructor() {
     addIcons({
@@ -144,16 +149,22 @@ export class RegistroPage {
       briefcaseOutline,
       calendarOutline,
       cashOutline,
+      closeOutline,
       documentTextOutline,
       personOutline,
       refreshOutline,
+      saveOutline,
       sendOutline,
     });
+
+    // /tabs/registro?editar=<id> abre el formulario en modo edición.
+    inject(ActivatedRoute)
+      .queryParamMap.pipe(takeUntilDestroyed())
+      .subscribe((params) => void this.prepararFormulario(params.get('editar')));
   }
 
   formatearFecha(valor: string | null): string {
-    if (!valor) return 'Toca para seleccionar fecha';
-    return valor.split('T')[0];
+    return valor ? soloFecha(valor) : 'Toca para seleccionar fecha';
   }
 
   /** Muestra el error de un campo solo después de que el usuario lo tocó o intentó guardar. */
@@ -174,40 +185,30 @@ export class RegistroPage {
   }
 
   async guardar(): Promise<void> {
-    if (this.guardando()) return;
+    if (this.guardando() || this.cargandoPerfil()) return;
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.mostrarToast('Por favor completa todos los campos requeridos correctamente.', 'danger');
+      await this.mostrarToast('Por favor completa todos los campos requeridos correctamente.', 'danger');
       return;
     }
 
+    const id = this.editandoId();
     this.guardando.set(true);
     try {
-      const v = this.form.getRawValue();
-      const candidato: Omit<Candidato, 'id' | 'creadoEn'> = {
-        nombres: v.nombres.trim(),
-        correo: v.correo.trim().toLowerCase(),
-        telefono: v.telefono.trim(),
-        fechaNacimiento: soloFecha(v.fechaNacimiento),
-        cargo: v.cargo,
-        nivelAcademico: v.nivelAcademico,
-        experienciaAnios: Number(v.experienciaAnios),
-        modalidad: v.modalidad,
-        habilidades: v.habilidades,
-        fechaDisponibilidad: soloFecha(v.fechaDisponibilidad),
-        aspiracionSalarial: Number(v.aspiracionSalarial),
-        resumen: v.resumen.trim(),
-        consentimiento: v.consentimiento,
-      };
-
-      await this.candidatosService.guardarCandidato(candidato);
-
-      this.mostrarToast('¡Postulación guardada exitosamente en Firestore!', 'success');
-      this.limpiar();
+      const candidato = this.datosFormulario();
+      if (id) {
+        await this.candidatosService.actualizarCandidato(id, candidato);
+        await this.mostrarToast('¡Perfil actualizado correctamente en Firestore!', 'success');
+        await this.salirDeEdicion();
+      } else {
+        await this.candidatosService.guardarCandidato(candidato);
+        await this.mostrarToast('¡Postulación guardada exitosamente en Firestore!', 'success');
+        this.limpiar();
+      }
     } catch (error) {
       console.error('Error al guardar en Firestore:', error);
-      this.mostrarToast('Ocurrió un error al guardar en la nube. Intenta nuevamente.', 'danger');
+      await this.mostrarToast('Ocurrió un error al guardar en la nube. Intenta nuevamente.', 'danger');
     } finally {
       this.guardando.set(false);
     }
@@ -218,9 +219,90 @@ export class RegistroPage {
     this.form.reset();
   }
 
-  private mostrarToast(mensaje: string, color: ToastColor): void {
-    this.toastMensaje.set(mensaje);
-    this.toastColor.set(color);
-    this.toastAbierto.set(true);
+  /** Descarta la edición y vuelve al listado. */
+  async cancelarEdicion(): Promise<void> {
+    await this.salirDeEdicion();
+  }
+
+  private async prepararFormulario(id: string | null): Promise<void> {
+    if (!id) {
+      // Se llegó sin ?editar (p. ej. desde la pestaña Postular): formulario de registro limpio.
+      if (this.editandoId()) {
+        this.editandoId.set(null);
+        this.limpiar();
+      }
+      return;
+    }
+    if (id === this.editandoId()) return;
+
+    this.cargandoPerfil.set(true);
+    try {
+      const candidato = await this.candidatosService.obtenerCandidatoPorId(id);
+      if (!candidato) {
+        await this.mostrarToast('El candidato que intentas editar ya no existe.', 'danger');
+        await this.router.navigate(['/tabs/candidatos'], { replaceUrl: true });
+        return;
+      }
+      this.limpiar();
+      this.form.patchValue({
+        nombres: candidato.nombres,
+        correo: candidato.correo,
+        telefono: candidato.telefono,
+        fechaNacimiento: candidato.fechaNacimiento,
+        cargo: candidato.cargo,
+        nivelAcademico: candidato.nivelAcademico,
+        experienciaAnios: candidato.experienciaAnios,
+        modalidad: candidato.modalidad,
+        habilidades: candidato.habilidades ?? [],
+        fechaDisponibilidad: candidato.fechaDisponibilidad,
+        aspiracionSalarial: candidato.aspiracionSalarial,
+        resumen: candidato.resumen,
+        consentimiento: candidato.consentimiento,
+      });
+      // Marca los campos para señalar de inmediato los datos que ya no son válidos (p. ej. una fecha disponible pasada).
+      this.form.markAllAsTouched();
+      this.editandoId.set(id);
+    } catch (error) {
+      console.error('Error al cargar el candidato:', error);
+      await this.mostrarToast('No se pudo cargar el perfil para editar.', 'danger');
+    } finally {
+      this.cargandoPerfil.set(false);
+    }
+  }
+
+  private async salirDeEdicion(): Promise<void> {
+    this.editandoId.set(null);
+    this.limpiar();
+    await this.router.navigate(['/tabs/candidatos'], { replaceUrl: true });
+  }
+
+  private datosFormulario(): CandidatoForm {
+    const v = this.form.getRawValue();
+    return {
+      nombres: v.nombres.trim(),
+      correo: v.correo.trim().toLowerCase(),
+      telefono: v.telefono.trim(),
+      fechaNacimiento: soloFecha(v.fechaNacimiento),
+      cargo: v.cargo,
+      nivelAcademico: v.nivelAcademico,
+      experienciaAnios: Number(v.experienciaAnios),
+      modalidad: v.modalidad,
+      habilidades: v.habilidades,
+      fechaDisponibilidad: soloFecha(v.fechaDisponibilidad),
+      aspiracionSalarial: Number(v.aspiracionSalarial),
+      resumen: v.resumen.trim(),
+      consentimiento: v.consentimiento,
+    };
+  }
+
+  private async mostrarToast(mensaje: string, color: ToastColor): Promise<void> {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      color,
+      duration: 3500,
+      position: 'bottom',
+      positionAnchor: 'tf-tab-bar',
+    });
+    await toast.present();
   }
 }
