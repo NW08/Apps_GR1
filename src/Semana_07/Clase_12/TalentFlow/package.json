@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "env": "node scripts/generar-env.mjs",
+    "evidencias": "node scripts/vincular-evidencias.mjs",
     "prestart": "npm run env",
     "start": "ng serve",
     "prebuild": "npm run env",

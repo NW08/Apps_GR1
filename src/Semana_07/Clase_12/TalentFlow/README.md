@@ -248,29 +248,29 @@ Calidad de código: `npm run lint` (ESLint, tipos de e2e y Prettier) y `npm run 
 
 ## 8. Evidencias
 
-Capturas sin datos sensibles, guardadas en [`docs/evidencias/`](./docs/evidencias/).
+Capturas sin datos sensibles, guardadas en [`docs/evidencias/`](./docs/evidencias/) y [`docs/pruebas/`](./docs/pruebas/). Se admiten `.png`, `.jpg` y `.jpeg`: tras agregar o reemplazar imágenes, `npm run evidencias` ajusta los enlaces de este README a la extensión real de cada archivo.
 
 ### Formulario de registro
 
 | Datos personales | Perfil profesional | Disponibilidad y presentación |
 | :---: | :---: | :---: |
-| ![Datos personales](docs/evidencias/01-registro-datos-personales.png) | ![Perfil profesional](docs/evidencias/02-registro-perfil-profesional.png) | ![Disponibilidad y presentación](docs/evidencias/03-registro-disponibilidad-presentacion.png) |
+| ![Datos personales](docs/evidencias/01-registro-datos-personales.jpg) | ![Perfil profesional](docs/evidencias/02-registro-perfil-profesional.jpg) | ![Disponibilidad y presentación](docs/evidencias/03-registro-disponibilidad-presentacion.jpg) |
 
 ### Validaciones y guardado
 
 | Validaciones | Guardado exitoso |
 | :---: | :---: |
-| ![Validaciones](docs/evidencias/04-validaciones.png) | ![Guardado exitoso](docs/evidencias/05-guardado-exitoso.png) |
+| ![Validaciones](docs/evidencias/04-validaciones.jpg) | ![Guardado exitoso](docs/evidencias/05-guardado-exitoso.jpg) |
 
 ### Listado, detalle y edición
 
 | Listado | Detalle | Edición |
 | :---: | :---: | :---: |
-| ![Listado](docs/evidencias/06-listado-candidatos.png) | ![Detalle](docs/evidencias/07-detalle-candidato.png) | ![Edición](docs/evidencias/08-edicion-perfil.png) |
+| ![Listado](docs/evidencias/06-listado-candidatos.jpg) | ![Detalle](docs/evidencias/07-detalle-candidato.jpg) | ![Edición](docs/evidencias/08-edicion-perfil.jpg) |
 
 | Ordenamiento por fecha | Búsqueda |
 | :---: | :---: |
-| ![Ordenamiento](docs/evidencias/09-ordenamiento.png) | ![Búsqueda](docs/evidencias/10-busqueda.png) |
+| ![Ordenamiento](docs/evidencias/09-ordenamiento.jpg) | ![Búsqueda](docs/evidencias/10-busqueda.jpg) |
 
 ### Cloud Firestore
 

@@ -116,3 +116,4 @@ Thumbs.db
 # APKs de entrega (excepciones a *.apk)
 !/src/Semana_05/Clase_08/app-debug.apk
 !/src/Semana_05/Clase_09/debug.apk
+!/src/Semana_07/Clase_12/TalentFlow/app-debug.apk
