@@ -1,51 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import type { OnInit } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonCard,
   IonButton,
+  IonButtons,
+  IonCard,
+  IonContent,
+  IonHeader,
   IonIcon,
-  IonSpinner,
-  IonSearchbar,
+  IonModal,
   IonRefresher,
   IonRefresherContent,
-  IonModal,
-  IonButtons
+  IonSearchbar,
+  IonSpinner,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   briefcaseOutline,
-  personOutline,
-  mailOutline,
-  callOutline,
   calendarOutline,
-  schoolOutline,
-  timeOutline,
-  laptopOutline,
+  callOutline,
   cashOutline,
-  documentTextOutline,
-  searchOutline,
   closeOutline,
+  documentTextOutline,
   eyeOutline,
-  refreshOutline,
+  laptopOutline,
+  mailOutline,
   peopleOutline,
-  sparklesOutline
+  personOutline,
+  refreshOutline,
+  schoolOutline,
+  searchOutline,
+  sparklesOutline,
+  timeOutline,
 } from 'ionicons/icons';
+
+import type { Candidato } from '../../models/candidato.model';
 import { CandidatosService } from '../../services/candidatos.service';
-import { Candidato } from '../../models/candidato.model';
 
 @Component({
   selector: 'app-candidatos',
   templateUrl: './candidatos.page.html',
   styleUrls: ['./candidatos.page.scss'],
-  standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
+    NgClass,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -58,19 +57,35 @@ import { Candidato } from '../../models/candidato.model';
     IonRefresher,
     IonRefresherContent,
     IonModal,
-    IonButtons
-  ]
+    IonButtons,
+  ],
 })
 export class CandidatosPage implements OnInit {
-  candidatos: Candidato[] = [];
-  candidatosFiltrados: Candidato[] = [];
-  cargando = true;
-  filtroTexto = '';
+  private readonly candidatosService = inject(CandidatosService);
 
-  modalDetalleAbierto = false;
-  candidatoSeleccionado: Candidato | null = null;
+  // La app es zoneless: el estado que cambia tras un await debe ser un signal para refrescar la vista.
+  readonly candidatos = signal<Candidato[]>([]);
+  readonly cargando = signal(true);
+  readonly filtroTexto = signal('');
 
-  constructor(private candidatosService: CandidatosService) {
+  readonly modalDetalleAbierto = signal(false);
+  readonly candidatoSeleccionado = signal<Candidato | null>(null);
+
+  readonly candidatosFiltrados = computed(() => {
+    const texto = this.filtroTexto().trim().toLowerCase();
+    const todos = this.candidatos();
+    if (!texto) return todos;
+
+    return todos.filter(
+      (c) =>
+        c.nombres.toLowerCase().includes(texto) ||
+        c.cargo.toLowerCase().includes(texto) ||
+        c.modalidad.toLowerCase().includes(texto) ||
+        c.habilidades.some((h) => h.toLowerCase().includes(texto)),
+    );
+  });
+
+  constructor() {
     addIcons({
       briefcaseOutline,
       personOutline,
@@ -87,53 +102,39 @@ export class CandidatosPage implements OnInit {
       eyeOutline,
       refreshOutline,
       peopleOutline,
-      sparklesOutline
+      sparklesOutline,
     });
   }
 
-  ngOnInit() {
-    this.cargarCandidatos();
+  ngOnInit(): void {
+    void this.cargarCandidatos();
   }
 
-  async cargarCandidatos(event?: any) {
-    this.cargando = !event;
+  /** Consulta la colección; si viene del ion-refresher no muestra el spinner de pantalla completa. */
+  async cargarCandidatos(event?: Event): Promise<void> {
+    this.cargando.set(!event);
     try {
-      this.candidatos = await this.candidatosService.obtenerCandidatos();
-      this.aplicarFiltro();
+      this.candidatos.set(await this.candidatosService.obtenerCandidatos());
     } catch (error) {
       console.error('Error al obtener candidatos de Firestore:', error);
     } finally {
-      this.cargando = false;
-      if (event) {
-        event.target.complete();
-      }
+      this.cargando.set(false);
+      await (event?.target as HTMLIonRefresherElement | undefined)?.complete();
     }
   }
 
-  aplicarFiltro() {
-    const texto = this.filtroTexto.trim().toLowerCase();
-    if (!texto) {
-      this.candidatosFiltrados = [...this.candidatos];
-      return;
-    }
-
-    this.candidatosFiltrados = this.candidatos.filter(
-      (c) =>
-        c.nombres.toLowerCase().includes(texto) ||
-        c.cargo.toLowerCase().includes(texto) ||
-        c.modalidad.toLowerCase().includes(texto) ||
-        c.habilidades.some((h) => h.toLowerCase().includes(texto))
-    );
+  buscar(valor: string | null | undefined): void {
+    this.filtroTexto.set(valor ?? '');
   }
 
-  abrirDetalle(candidato: Candidato) {
-    this.candidatoSeleccionado = candidato;
-    this.modalDetalleAbierto = true;
+  abrirDetalle(candidato: Candidato): void {
+    this.candidatoSeleccionado.set(candidato);
+    this.modalDetalleAbierto.set(true);
   }
 
-  cerrarDetalle() {
-    this.modalDetalleAbierto = false;
-    this.candidatoSeleccionado = null;
+  cerrarDetalle(): void {
+    this.modalDetalleAbierto.set(false);
+    this.candidatoSeleccionado.set(null);
   }
 
   getIniciales(nombres: string): string {
