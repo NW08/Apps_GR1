@@ -27,7 +27,7 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 | Herramienta                                                  | Versión recomendada                                       |
 | ------------------------------------------------------------ | --------------------------------------------------------- |
-| [Node.js](https://nodejs.org/)                               | v22.x o LTS vigente                                       |
+| [Node.js](https://nodejs.org/)                               | v22.x o LTS vigente actual                                |
 | [npm](https://www.npmjs.com/)                                | v10.x o superior                                          |
 | [Ionic CLI](https://ionicframework.com/docs/intro/cli)       | Incluido en dependencias o global (`npm i -g @ionic/cli`) |
 | Proyecto de [Supabase](https://supabase.com/)                | Plan gratuito                                             |
