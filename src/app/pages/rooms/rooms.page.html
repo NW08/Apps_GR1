@@ -1,0 +1,115 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>
+      <div class="title-stack">
+        <span class="app-name">novaSync</span>
+        <span class="online-sub">{{ onlineCount() }} en línea · Firebase en vivo</span>
+      </div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="theme.toggleTheme()" aria-label="Cambiar tema">
+        <ion-icon [name]="theme.isDark() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="goProfile()" aria-label="Mi perfil">
+        @if (supabase.currentProfile()?.avatar_url; as avatar) {
+          <ion-avatar class="header-avatar">
+            <img [src]="avatar" alt="Avatar" />
+          </ion-avatar>
+        } @else {
+          <ion-icon name="person-circle-outline"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="rooms-container">
+    <div class="action-bar">
+      <ion-button expand="block" (click)="openCreateRoom()" class="primary-action">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Nueva sala
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="openJoinByCode()" class="secondary-action">
+        <ion-icon name="key-outline" slot="start"></ion-icon>
+        Código NOVA
+      </ion-button>
+    </div>
+
+    <ion-searchbar
+      placeholder="Buscar sala, tema o código..."
+      [debounce]="150"
+      (ionInput)="searchQuery.set($event.detail.value ?? '')"
+      class="rooms-search"
+    ></ion-searchbar>
+
+    @if (loading()) {
+      <div class="skeleton-list">
+        @for (item of [1, 2, 3]; track item) {
+          <div class="nova-card room-card">
+            <ion-skeleton-text [animated]="true" style="width: 55%; height: 18px"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 85%; height: 14px; margin-top: 8px"></ion-skeleton-text>
+          </div>
+        }
+      </div>
+    } @else if (filteredRooms().length === 0) {
+      <div class="empty-state nova-card">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <h3>Sin salas disponibles</h3>
+        <p>Crea una nueva sala pública o privada, o únete con un código de invitación.</p>
+      </div>
+    } @else {
+      <div class="rooms-grid">
+        @for (room of filteredRooms(); track room.id) {
+          <article class="nova-card room-card" (click)="enterRoom(room)">
+            <div class="room-top">
+              <div class="room-badges">
+                <ion-chip class="topic-chip" color="primary" [outline]="true">
+                  <ion-label>{{ room.topic }}</ion-label>
+                </ion-chip>
+                @if (room.is_private) {
+                  <ion-badge color="tertiary" class="privacy-badge">
+                    <ion-icon name="lock-closed-outline"></ion-icon> Privada
+                  </ion-badge>
+                } @else {
+                  <ion-badge color="secondary" class="privacy-badge">
+                    <ion-icon name="globe-outline"></ion-icon> Pública
+                  </ion-badge>
+                }
+              </div>
+
+              <button
+                type="button"
+                class="invite-pill mono"
+                (click)="copyCode($event, room.invite_code)"
+                title="Copiar código de invitación"
+              >
+                {{ room.invite_code }}
+                <ion-icon name="copy-outline"></ion-icon>
+              </button>
+            </div>
+
+            <h2 class="room-name">{{ room.name }}</h2>
+            @if (room.description) {
+              <p class="room-desc">{{ room.description }}</p>
+            }
+
+            <div class="room-footer">
+              <span class="member-count">
+                <ion-icon name="people-outline"></ion-icon>
+                {{ room.member_count ?? 1 }} miembros
+              </span>
+              <span class="enter-link">Entrar →</span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</ion-content>

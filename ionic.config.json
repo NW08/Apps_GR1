@@ -1,0 +1,7 @@
+{
+  "name": "novaSync",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
