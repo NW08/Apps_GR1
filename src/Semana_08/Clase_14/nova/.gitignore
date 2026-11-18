@@ -76,3 +76,9 @@ Thumbs.db
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Credenciales de Supabase y Firebase (se generan desde .env con scripts/generar-env.mjs)
+.env
+.env.*
+!.env.example
+/src/environments/env.config.ts

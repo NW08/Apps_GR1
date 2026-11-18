@@ -64,7 +64,7 @@ export class SupabaseService {
   private getClient(): SupabaseClient {
     if (!this.client) {
       throw new Error(
-        'Supabase no está configurado. Actualiza src/environments/environment.ts con tu URL y Anon Key.'
+        'Supabase no está configurado. Completa SUPABASE_URL y SUPABASE_ANON_KEY en el archivo .env.'
       );
     }
     return this.client;

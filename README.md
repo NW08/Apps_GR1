@@ -10,6 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio README.md don
 
 | #   | Proyecto                                                | Descripción                                                   | Novedad                         |
 | --- | ------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------- |
+| 15  | [`novaSync`](./src/Semana_08/Clase_14/)                 | Mensajería en tiempo real con salas, multimedia y GPS.        | Supabase + Firebase RTDB        |
 | 14  | [`Ionic - Sensores`](./src/Semana_07/Clase_13/)         | Posición del celular: vertical, horizontal, diagonal.         | Capacitor Motion                |
 | 13  | [`TalentFlow S.A.`](./src/Semana_07/Clase_12/)          | Registro y consulta de perfiles profesionales (MVP).          | Firebase Cloud Firestore        |
 | 12  | [`Firebase - APK Municipio`](./src/Semana_06/Clase_11/) | Despliegue de UrbanInspect en Firebase Hosting y APK Android. | Firebase Hosting (producción)   |

@@ -116,6 +116,8 @@ Thumbs.db
 /src/Semana_07/Clase_13/node_modules
 /src/Semana_07/Clase_13/ionic-sensores/android
 /src/Semana_07/Clase_13/ionic-sensores/node_modules
+/src/Semana_08/Clase_14/nova/android
+/src/Semana_08/Clase_14/nova/node_modules
 
 # APKs de entrega (excepciones a *.apk)
 !/src/Semana_05/Clase_08/app-debug.apk
@@ -123,3 +125,4 @@ Thumbs.db
 !/src/Semana_06/Clase_11/debug.apk
 !/src/Semana_04/Clase_06/poke/PokeAPP-v1.0.0.apk
 !/src/Semana_07/Clase_12/TalentFlow/app-debug.apk
+!/src/Semana_08/Clase_14/nova/app-debug.apk
