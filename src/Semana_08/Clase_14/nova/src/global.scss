@@ -1,0 +1,70 @@
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+@import "@ionic/angular/css/palettes/dark.class.css";
+@import "leaflet/dist/leaflet.css";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--ion-font-family);
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
+.mono {
+  font-family: var(--nova-mono);
+}
+
+.engine-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.engine-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--nova-mono);
+  background: var(--nova-surface-2);
+  border: 1px solid var(--nova-border);
+  color: var(--nova-text-muted);
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #64748b;
+  }
+
+  &.active .dot {
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+  }
+
+  &.warn .dot {
+    background: #f59e0b;
+  }
+}
+
+.nova-card {
+  background: var(--nova-surface-1);
+  border: 1px solid var(--nova-border);
+  border-radius: 16px;
+}

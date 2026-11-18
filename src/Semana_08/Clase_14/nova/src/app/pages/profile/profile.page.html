@@ -1,0 +1,116 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/rooms"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mi Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-container">
+    <div class="avatar-section nova-card">
+      <ion-avatar class="profile-avatar" (click)="changeAvatar()">
+        <img
+          [src]="avatarUrl || 'https://api.dicebear.com/9.x/initials/svg?seed=' + (displayName || 'NS')"
+          alt="Avatar"
+        />
+      </ion-avatar>
+      <ion-button fill="outline" size="small" (click)="changeAvatar()">
+        <ion-icon name="camera-outline" slot="start"></ion-icon>
+        Cambiar foto
+      </ion-button>
+      <input
+        #avatarInput
+        type="file"
+        hidden
+        accept="image/*"
+        (change)="onAvatarFileSelected($event)"
+      />
+    </div>
+
+    <div class="nova-card form-card">
+      <ion-item lines="none" class="field-item">
+        <ion-input
+          [(ngModel)]="displayName"
+          label="Nombre visible"
+          labelPlacement="floating"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="field-item">
+        <ion-input
+          [(ngModel)]="username"
+          label="Usuario (@handle)"
+          labelPlacement="floating"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="field-item">
+        <ion-select [(ngModel)]="availability" label="Disponibilidad" labelPlacement="floating">
+          <ion-select-option value="online">🟢 Disponible</ion-select-option>
+          <ion-select-option value="busy">🔴 Ocupado</ion-select-option>
+          <ion-select-option value="away">🟡 Ausente</ion-select-option>
+          <ion-select-option value="dnd">⛔ No molestar</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none" class="field-item">
+        <ion-input
+          [(ngModel)]="statusText"
+          label="Estado rápido"
+          labelPlacement="floating"
+          placeholder="Ej. En laboratorio de Móviles"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="field-item">
+        <ion-textarea
+          [(ngModel)]="bio"
+          label="Biografía"
+          labelPlacement="floating"
+          [rows]="3"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-button expand="block" (click)="saveProfile()" [disabled]="saving()">
+        @if (saving()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          <ion-icon name="save-outline" slot="start"></ion-icon>
+          Guardar cambios
+        }
+      </ion-button>
+    </div>
+
+    <div class="nova-card settings-card">
+      <ion-item lines="none">
+        <ion-icon name="moon-outline" slot="start"></ion-icon>
+        <ion-label>Modo oscuro</ion-label>
+        <ion-toggle [checked]="theme.isDark()" (ionChange)="theme.toggleTheme()"></ion-toggle>
+      </ion-item>
+
+      <div class="diagnostics">
+        <div class="diag-title">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          Estado de Motor Dual
+        </div>
+        <div class="engine-pills">
+          <span class="engine-pill" [class.active]="supabase.isConfigured()">
+            <span class="dot"></span>
+            Supabase Autenticación/BD/Storage
+          </span>
+          <span class="engine-pill" [class.active]="firebase.isConnected()">
+            <span class="dot"></span>
+            Firebase RTDB {{ firebase.isConnected() ? 'Conectado' : 'Desconectado' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <ion-button expand="block" color="danger" fill="outline" (click)="logout()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Cerrar sesión
+    </ion-button>
+  </div>
+</ion-content>

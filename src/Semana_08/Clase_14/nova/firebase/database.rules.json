@@ -1,0 +1,26 @@
+{
+  "rules": {
+    "presence": {
+      ".read": true,
+      "$uid": {
+        ".write": true
+      }
+    },
+    "typing": {
+      "$roomId": {
+        ".read": true,
+        "$uid": {
+          ".write": true
+        }
+      }
+    },
+    "beacons": {
+      "$roomId": {
+        ".read": true,
+        "$uid": {
+          ".write": true
+        }
+      }
+    }
+  }
+}

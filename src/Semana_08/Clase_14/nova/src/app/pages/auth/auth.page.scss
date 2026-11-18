@@ -1,0 +1,104 @@
+.auth-wrapper {
+  min-height: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.brand-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  .brand-mark {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0891b2, #10b981);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 30px;
+    box-shadow: 0 12px 28px rgba(8, 145, 178, 0.35);
+  }
+
+  h1 {
+    margin: 4px 0 0;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: var(--nova-text-muted);
+  }
+}
+
+.setup-banner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  font-size: 12px;
+  line-height: 1.45;
+
+  ion-icon {
+    font-size: 20px;
+    color: #f59e0b;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  code {
+    font-family: var(--nova-mono);
+    font-size: 11px;
+  }
+}
+
+.auth-card {
+  padding: 18px;
+}
+
+.auth-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field-item {
+  --background: var(--nova-surface-2);
+  --border-radius: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--nova-border);
+
+  ion-icon {
+    color: var(--nova-text-muted);
+    margin-right: 8px;
+  }
+}
+
+.submit-btn {
+  margin-top: 6px;
+  --border-radius: 12px;
+  height: 46px;
+  font-weight: 700;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--nova-text-muted);
+  margin: 0;
+}

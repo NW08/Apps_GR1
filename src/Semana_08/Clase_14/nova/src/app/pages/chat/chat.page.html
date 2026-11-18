@@ -1,0 +1,272 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/rooms"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      <div class="chat-title-stack">
+        <span class="room-title">{{ room()?.name || 'Sala' }}</span>
+        <span class="room-meta">
+          {{ members().length }} miembros
+          @if (room()?.invite_code; as code) {
+            · <span class="mono" (click)="copyInviteCode()">{{ code }}</span>
+          }
+        </span>
+      </div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="showBeacons.set(!showBeacons())" [color]="beacons().length ? 'secondary' : 'medium'">
+        <ion-icon name="radio-outline"></ion-icon>
+        @if (beacons().length > 0) {
+          <ion-badge color="secondary" class="beacon-count">{{ beacons().length }}</ion-badge>
+        }
+      </ion-button>
+      <ion-button (click)="showSearch.set(!showSearch())">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  @if (showSearch()) {
+    <ion-toolbar class="sub-toolbar">
+      <ion-searchbar
+        placeholder="Buscar en esta sala..."
+        [debounce]="120"
+        (ionInput)="searchQuery.set($event.detail.value ?? '')"
+      ></ion-searchbar>
+    </ion-toolbar>
+  }
+
+  @if (pinnedMessages().length > 0) {
+    <div class="pinned-bar">
+      <ion-icon name="pin-outline"></ion-icon>
+      <span class="pinned-text">
+        <strong>Fijado:</strong> {{ pinnedMessages()[0].content || pinnedMessages()[0].file_name || 'Ubicación' }}
+      </span>
+    </div>
+  }
+
+  @if (showBeacons()) {
+    <div class="beacons-drawer">
+      <div class="beacons-header">
+        <span>Ubicación GPS en vivo (Firebase RTDB)</span>
+        @if (beaconWatchId() !== null) {
+          <ion-button size="small" color="danger" fill="outline" (click)="stopLiveBeacon()">
+            Detener mío
+          </ion-button>
+        } @else {
+          <ion-button size="small" color="secondary" fill="outline" (click)="startLiveBeacon()">
+            Compartir mi GPS
+          </ion-button>
+        }
+      </div>
+      @if (beacons().length === 0) {
+        <p class="beacons-empty">Nadie está compartiendo su ubicación en vivo ahora.</p>
+      } @else {
+        <div class="beacons-list">
+          @for (b of beacons(); track b.uid) {
+            <ion-chip color="secondary" (click)="openExternalMap(b.latitude, b.longitude)">
+              <ion-icon name="navigate-outline"></ion-icon>
+              <ion-label>{{ b.displayName }} · {{ b.latitude.toFixed(4) }}, {{ b.longitude.toFixed(4) }}</ion-label>
+            </ion-chip>
+          }
+        </div>
+      }
+    </div>
+  }
+</ion-header>
+
+<ion-content [fullscreen]="true" class="chat-content">
+  @if (loading()) {
+    <div class="center-loader">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else {
+    <div class="messages-list">
+      @for (msg of visibleMessages(); track msg.id) {
+        <div class="message-row" [class.mine]="isMine(msg)">
+          @if (!isMine(msg)) {
+            <ion-avatar class="msg-avatar">
+              <img
+                [src]="msg.sender?.avatar_url || 'https://api.dicebear.com/9.x/initials/svg?seed=' + (msg.sender?.display_name || 'U')"
+                alt="Avatar"
+              />
+            </ion-avatar>
+          }
+
+          <div class="bubble" [class.mine]="isMine(msg)" (click)="openMessageActions(msg)">
+            @if (!isMine(msg)) {
+              <div class="sender-name">{{ msg.sender?.display_name || 'Usuario' }}</div>
+            }
+
+            @if (msg.reply_to) {
+              <div class="reply-quote">
+                <span class="reply-author">{{ msg.reply_to.sender?.display_name || 'Mensaje' }}</span>
+                <span class="reply-snippet">
+                  {{ msg.reply_to.content || msg.reply_to.file_name || 'Archivo adjunto' }}
+                </span>
+              </div>
+            }
+
+            @if (msg.type === 'image' && msg.media_url) {
+              <img
+                [src]="msg.media_url"
+                alt="Imagen compartida"
+                class="chat-image"
+                (click)="$event.stopPropagation(); previewImageUrl.set(msg.media_url)"
+              />
+            }
+
+            @if (msg.type === 'file' && msg.media_url) {
+              <a
+                [href]="msg.media_url"
+                target="_blank"
+                rel="noopener"
+                class="file-card"
+                (click)="$event.stopPropagation()"
+              >
+                <ion-icon name="document-outline"></ion-icon>
+                <div class="file-info">
+                  <span class="file-name">{{ msg.file_name || 'Archivo' }}</span>
+                  <span class="file-size mono">{{ formatBytes(msg.file_size) }}</span>
+                </div>
+                <ion-icon name="download-outline"></ion-icon>
+              </a>
+            }
+
+            @if (msg.type === 'location' && msg.latitude !== null && msg.longitude !== null) {
+              <div class="location-card" (click)="$event.stopPropagation()">
+                <app-location-map
+                  [latitude]="msg.latitude"
+                  [longitude]="msg.longitude"
+                  [label]="msg.sender?.display_name || 'Ubicación'"
+                ></app-location-map>
+                <div class="location-meta">
+                  <span class="mono">{{ msg.latitude.toFixed(5) }}, {{ msg.longitude.toFixed(5) }}</span>
+                  <ion-button
+                    size="small"
+                    fill="clear"
+                    (click)="openExternalMap(msg.latitude, msg.longitude)"
+                  >
+                    Abrir mapa
+                  </ion-button>
+                </div>
+              </div>
+            }
+
+            @if (msg.content && msg.type !== 'file') {
+              <p class="msg-text">{{ msg.content }}</p>
+            }
+
+            <div class="msg-meta">
+              @if (msg.is_pinned) {
+                <ion-icon name="pin-outline" title="Fijado"></ion-icon>
+              }
+              @if (msg.expires_at) {
+                <ion-icon name="timer-outline" title="Mensaje temporal"></ion-icon>
+              }
+              <span class="mono">{{ msg.created_at | date: 'HH:mm' }}</span>
+            </div>
+
+            @if (getReactionGroups(msg.reactions).length > 0) {
+              <div class="reactions-bar" (click)="$event.stopPropagation()">
+                @for (rg of getReactionGroups(msg.reactions); track rg.emoji) {
+                  <button
+                    type="button"
+                    class="reaction-pill"
+                    [class.active]="rg.reactedByMe"
+                    (click)="react(msg, rg.emoji)"
+                  >
+                    {{ rg.emoji }} {{ rg.count }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</ion-content>
+
+<ion-footer class="ion-no-border chat-footer">
+  @if (typingLabel()) {
+    <div class="typing-bar">{{ typingLabel() }}</div>
+  }
+
+  @if (replyingTo(); as reply) {
+    <div class="reply-preview">
+      <div>
+        <span class="reply-label">Respondiendo a {{ reply.sender?.display_name || 'Usuario' }}</span>
+        <p>{{ reply.content || reply.file_name || 'Adjunto' }}</p>
+      </div>
+      <ion-button fill="clear" size="small" (click)="replyingTo.set(null)">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </div>
+  }
+
+  <div class="composer-row">
+    <ion-button fill="clear" (click)="openAttachMenu()" aria-label="Adjuntar">
+      <ion-icon name="attach-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button
+      fill="clear"
+      [color]="ephemeralSeconds() ? 'tertiary' : 'medium'"
+      (click)="cycleEphemeral()"
+      aria-label="Mensaje temporal"
+    >
+      <ion-icon name="timer-outline"></ion-icon>
+      @if (ephemeralSeconds(); as ttl) {
+        <span class="ttl-tag mono">{{ ttl === 60 ? '1m' : '5m' }}</span>
+      }
+    </ion-button>
+
+    <ion-input
+      [(ngModel)]="draftText"
+      (ionInput)="onTyping()"
+      (keyup.enter)="sendText()"
+      placeholder="Escribe un mensaje..."
+      class="composer-input"
+    ></ion-input>
+
+    <ion-button
+      fill="solid"
+      color="primary"
+      [disabled]="!draftText.trim() || sending()"
+      (click)="sendText()"
+      class="send-btn"
+    >
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </div>
+
+  <input
+    #fileInput
+    type="file"
+    hidden
+    accept="image/*,.pdf,.doc,.docx,.zip,.txt"
+    (change)="onFileSelected($event)"
+  />
+</ion-footer>
+
+<ion-modal [isOpen]="previewImageUrl() !== null" (didDismiss)="previewImageUrl.set(null)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Vista previa</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="previewImageUrl.set(null)">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="modal-image-content">
+      @if (previewImageUrl(); as url) {
+        <img [src]="url" alt="Vista previa" class="fullscreen-img" />
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>
