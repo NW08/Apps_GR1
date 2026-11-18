@@ -93,7 +93,8 @@ Thumbs.db
 /src/Semana_03/Clase_05/gps/android
 /src/Semana_03/Clase_05/gps/node_modules
 /src/Semana_04/Clase_06/node_modules
-/src/Semana_04/Clase_06/poke/android
+# poke versiona su android/ (identidad y firma); los artefactos los excluye su propio .gitignore
+!/src/Semana_04/Clase_06/poke/android/
 /src/Semana_04/Clase_06/poke/node_modules
 /src/Semana_04/Clase_07/node_modules
 /src/Semana_04/Clase_07/explorer/android
@@ -120,4 +121,5 @@ Thumbs.db
 !/src/Semana_05/Clase_08/app-debug.apk
 !/src/Semana_05/Clase_09/debug.apk
 !/src/Semana_06/Clase_11/debug.apk
+!/src/Semana_04/Clase_06/poke/PokeAPP-v1.0.0.apk
 !/src/Semana_07/Clase_12/TalentFlow/app-debug.apk

@@ -1,6 +1,10 @@
-# PokéAPP & Comparador Pokémon || `SEMANA 04 - CLASE 06 (21|10|2026)`
+# PokéAPP - Publicación en Aptoide || `SEMANA 04 - CLASE 06 (21|10|2026)`
 
-Se realizó este proyecto como práctica formativa en la materia de Desarrollo de Aplicaciones Móviles mediante **Ionic Framework** y **Angular (Standalone Components)**, implementando una aplicación móvil visualmente atractiva e interactiva que consume la **PokéAPI REST v2** para la búsqueda y visualización de personajes, reproducción de sonidos oficiales, renderizado de galerías multimedia y animaciones GIF, así como un módulo de comparación y simulación de combate entre 2 Pokémon.
+### Ganchala Eduardo & Ortiz Josué
+
+Se realizó esta práctica en la materia de Desarrollo de Aplicaciones Móviles como **Parte 2: Publicación de la Pokédex**. A partir del repositorio de referencia [jzaldumbide/pokedex-2026b](https://github.com/jzaldumbide/pokedex-2026b) se desarrolló una versión propia con **Ionic**, **Angular (Standalone Components)** y **Capacitor**. La app consume la **PokéAPI** (listado, búsqueda, detalle, multimedia y comparador de combate), se personalizó con nombre, ícono y pantalla de inicio propios, se configuró su identificador y versión, se generó su **APK firmado** y **AAB**, y finalmente se **publicó en Aptoide** como tienda alternativa a Google Play.
+
+La documentación completa de la publicación (requisitos, comparativa de plataformas, compilación, firma, evidencias y estado) está en el [README de la aplicación](./poke/README.md).
 
 ---
 
@@ -12,81 +16,122 @@ Antes de empezar, asegúrate de contar con el entorno base:
 
 | Herramienta                                            | Versión recomendada                                       |
 | ------------------------------------------------------ | --------------------------------------------------------- |
-| [Node.js](https://nodejs.org/)                         | v20.x o LTS vigente                                       |
+| [Node.js](https://nodejs.org/)                         | v22.x o LTS vigente                                       |
 | [npm](https://www.npmjs.com/)                          | v10.x o superior                                          |
 | [Ionic CLI](https://ionicframework.com/docs/intro/cli) | Incluido en dependencias o global (`npm i -g @ionic/cli`) |
+| [Android Studio](https://developer.android.com/studio) | Para compilación, firma y generación del APK/AAB          |
 | [Visual Studio Code](https://code.visualstudio.com/)   | Editor de código recomendado                              |
 
 ---
 
 ### Pasos
 
-1. **Clona el repositorio y navega al directorio del proyecto**
+1. **Clona el repositorio y navega al directorio de la clase**
 
 ```bash
 git clone https://github.com/NW08/Apps_GR1.git
-cd Apps_GR1/src/Semana_04/Clase_06/poke
+cd Apps_GR1/src/Semana_04/Clase_06
 ```
 
-_(o `cd src/Semana_04/Clase_06/poke` si ya estás dentro del repositorio)_
+_(o `cd src/Semana_04/Clase_06` si ya estás dentro del repositorio)_
 
-2. **Instala las dependencias de la aplicación**
+> **Nota:** La aplicación `poke` también se mantiene en el repositorio compartido del equipo ([Eduxrd-o/PokeAPP](https://github.com/Eduxrd-o/PokeAPP)). En el repositorio general se integra mediante `git subtree`, por lo que sus archivos forman parte del repositorio y se sincronizan con:
+>
+> ```bash
+> git remote add poke git@github.com:Eduxrd-o/PokeAPP.git   # solo la primera vez
+> git subtree pull --prefix=src/Semana_04/Clase_06/poke poke master --squash
+> git subtree push --prefix=src/Semana_04/Clase_06/poke poke master
+> ```
+
+2. **Instala las dependencias raíz de la clase**
 
 ```bash
 npm install
 ```
 
-3. **Ejecuta el servidor de desarrollo local**
+3. **Ingresa a la carpeta `poke` e instala las dependencias de la aplicación**
 
 ```bash
-ionic serve
+cd poke
+npm install
 ```
 
-> **Nota:** Si no tienes el Ionic CLI instalado de forma global, puedes ejecutar el servidor directamente con `npx ionic serve` o con `npm start`.
+4. **Ejecuta el servidor de desarrollo local en el navegador**
 
-4. **Visualiza la aplicación**
+```bash
+npx ionic serve
+```
 
-- La aplicación se abrirá automáticamente en tu navegador en `http://localhost:8100/`.
-- Puedes utilizar la consola de desarrollador (F12) en modo dispositivo móvil para disfrutar de la experiencia visual en formato smartphone o tablet.
+> **Nota:** Se utiliza `npx` para ejecutar Ionic CLI directamente desde las dependencias del proyecto o las instaladas en el sistema.
+
+5. **Compila y sincroniza con Android Studio (Nativo)**
+
+```bash
+npx ionic build
+npx cap sync android
+npx cap open android
+```
+
+La carpeta `android/` sí se versiona en este proyecto, porque contiene la identidad de la app (`ec.edu.epn.pokeapp`), el ícono, la pantalla de inicio y la configuración de firma. Por eso **no** se ejecuta `npx cap add android`.
+
+6. **Genera el APK firmado y el AAB**
+
+```bash
+cp android/keystore.properties.example android/keystore.properties   # completar con los datos del keystore
+cd android
+./gradlew assembleRelease   # APK firmado
+./gradlew bundleRelease     # AAB firmado
+```
+
+> **Importante:** el keystore (`.jks`) y `keystore.properties` nunca se suben al repositorio; ambos están excluidos en `.gitignore`.
+
+---
+
+## Publicación en Aptoide
+
+| Paso                     | Detalle                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Selección de plataforma  | Aptoide: gratuita, acepta APK firmados y genera un enlace público (Google Play exige un pago de 25 USD y AAB). |
+| Personalización          | Nombre **PokéAPP**, ícono y _splash_ generados desde `poke/resources/` con `@capacitor/assets`.          |
+| Identidad                | `appId` `ec.edu.epn.pokeapp`, versión `1.0.0` (`versionCode 1`).                                         |
+| Firma                    | Keystore propio con `keytool`; credenciales leídas desde `android/keystore.properties`.                  |
+| Envío                    | Carga del APK firmado en Aptoide Connect, con ficha, capturas y [política de privacidad](./poke/PRIVACY.md). |
+| Evidencias               | Capturas de compilación, firma, carga y estado en [`poke/docs/evidencias/`](./poke/docs/evidencias/).    |
 
 ---
 
 ## Vista General del Proyecto
 
-| Componente / Archivo           | Responsabilidad                                                                                                                                                                                |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pokemon.ts`                   | Servicio injectable (`Pokemon`) que gestiona el consumo de PokéAPI: listados, detalles, descripciones por especie, extracción y ordenamiento de sprites de galería y reproducción de audio. |
-| `home.page.ts / html / scss`   | Vista principal con interfaz segmentada: buscador reactivo, galería de imágenes interactiva, reproductor de grito, alternador de GIF/ilustración, cuadro comparativo y arena de simulación.  |
-| `pokemos-detail.page.ts`       | Página de detalle secundaria configurada en el enrutamiento para navegaciones modales o directas.                                                                                              |
-| `app.routes.ts`                | Configuración de rutas de Angular con soporte para carga diferida (`loadComponent`).                                                                                                         |
-| `main.ts`                      | Configuración de arranque Standalone con `provideHttpClient()` y proveedores de Ionic Angular.                                                                                                |
+| Componente / Archivo                         | Responsabilidad                                                                                           |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `poke/src/app/services/pokemon.ts`           | Servicio que consume PokéAPI: listado, detalle, especie, galería de sprites y reproducción de sonidos.    |
+| `poke/src/app/home/home.page.*`              | Pokédex (listado, buscador, detalle y multimedia) y sección **Comparar & Batalla**.                       |
+| `poke/capacitor.config.ts`                   | Identificador `ec.edu.epn.pokeapp` y nombre visible **PokéAPP**.                                          |
+| `poke/android/app/build.gradle`              | Versión (`versionName`, `versionCode`) y configuración de firma de release.                               |
+| `poke/android/keystore.properties.example`   | Plantilla de credenciales de firma (el archivo real no se versiona).                                      |
+| `poke/resources/`                            | Ícono y pantalla de inicio fuente para generar los recursos de Android.                                   |
+| `poke/PRIVACY.md`                            | Política de privacidad requerida para la publicación.                                                     |
+| `poke/README.md`                             | Documentación del repositorio compartido: requisitos, publicación, evidencias y estado.                   |
 
 ---
 
-## Niveles y Requerimientos Implementados
+## Calidad de Código y Linter
 
-### Nivel 1 — Buscador y Detalles con Diseño Agradable
+El proyecto incluye scripts configurados para análisis estático y formateo de código:
 
-- **Buscador interactivo:** Permite encontrar cualquier Pokémon tanto por nombre como por número de ID oficial en la Pokédex.
-- **Detalle completo:** Presenta el nombre, ID formateado, tipos con insignias de color, peso, altura, descripción narrativa de la especie (en español con respaldo en inglés) y barras de progreso reactivas para cada estadística base (HP, Ataque, Defensa, etc.) coloreadas según su magnitud.
-- **Diseño visual:** Estilo Pokéball temático con encabezado estilizado en color rojo (`danger`), bordes redondeados, transiciones suaves y cuadrícula inicial de personajes sugeridos para consulta instantánea.
+```bash
+# Ejecutar verificación de linter, tipos y estilos Prettier
+npm run lint
 
-### Nivel 2 — Multimedia: Sonido, Galería y GIF Animado
-
-- **Reproducción de sonido:** Botón para reproducir el grito sonoro característico del Pokémon en tiempo real mediante los recursos de audio oficial provistos por la PokéAPI (`cries.latest`).
-- **Galería de más de 5 imágenes:** Colección interactiva de miniaturas que incluye arte oficial de alta resolución, versiones shiny (frente y espalda), modelos 3D de Pokémon HOME, sprites clásicos y versiones animadas de la Generación V y Showdown. Tocar cualquier miniatura actualiza la imagen principal en tamaño ampliado.
-- **Visualizador de GIF/WebP:** Botón dedicado para alternar fluidamente entre la ilustración estática y la animación viva (GIF/WebP) proveniente de Pokémon Showdown.
-
-### Nivel 3 — Comparador de 2 Personajes y Arena de Combate
-
-- **Selección de contrincantes:** Búsqueda individual de dos Pokémon por nombre o ID, o selección con un toque mediante chips de sugerencias rápidas (Pikachu, Charizard, Blastoise, Gengar, Mewtwo, etc.).
-- **Cuadro comparativo directo:** Tabla métrica que compara lado a lado HP, Ataque, Defensa, Ataque Especial, Defensa Especial, Velocidad, Poder Base Total, Peso y Altura, resaltando con distintivo verde cuál personaje lidera en cada característica.
-- **Simulador de batalla:** Botón de combate que ejecuta una animación de enfrentamiento, calcula el desenlace considerando las fortalezas ofensivas y defensivas de ambos participantes, anuncia al vencedor y reproduce automáticamente su grito de victoria.
+# Aplicar correcciones automáticas de eslint y formateo Prettier
+npm run lint:fix
+```
 
 ---
 
-## Autor
+## Autores
 
 Desarrollado por:
 
+- **Ganchala Eduardo** · EPN · Periodo 2026B
 - **Ortiz Josué** · EPN · Periodo 2026B

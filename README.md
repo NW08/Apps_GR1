@@ -17,7 +17,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio README.md don
 | 10  | [`UrbanInspect Corregida`](./src/Semana_05/Clase_09/)   | Corrección de la prueba: detalle, mapa y cambio de estado.    | OpenStreetMap                   |
 | 9   | [`UrbanInspect`](./src/Semana_05/Clase_08/)             | Reporte y seguimiento de incidencias urbanas del DMQ.         | MockAPI, Cloudinary, Open-Meteo |
 | 8   | [`API Explorer`](./src/Semana_04/Clase_07/)             | Buscador de libros con infinite scroll y favoritos.           | Open Library API                |
-| 7   | [`PokéAPP`](./src/Semana_04/Clase_06/)                  | Búsqueda, multimedia y comparación de Pokémon.                | PokéAPI, RxJS                   |
+| 7   | [`PokéAPP`](./src/Semana_04/Clase_06/)                  | Pokédex personalizada, firmada (APK/AAB) y distribuida.       | App publicada en Aptoide        |
 | 6   | [`GPS`](./src/Semana_03/Clase_05/)                      | Rutas con waypoints y exportación a TXT.                      | Geolocation API                 |
 | 5   | [`Galería de Fotos`](./src/Semana_03/Clase_04/)         | Captura y galería de fotos persistentes.                      | Camera, Filesystem, Preferences |
 | 4   | [`Compras & Pagos`](./src/Semana_02/Clase_03/producto/) | Simulación de compras y liquidación de pagos.                 | Capacitor Assets                |
