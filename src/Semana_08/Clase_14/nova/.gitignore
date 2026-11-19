@@ -19,8 +19,10 @@ log.txt
 firebase-debug*.log
 database-debug.log
 
-# Ionic
+# Ionic / Capacitor (el proyecto nativo se genera con `npx cap add android`)
 /.ionic
+/android
+/ios
 /www
 /platforms
 /plugins
