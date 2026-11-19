@@ -1,22 +1,32 @@
 {
   "name": "novaSync",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Ganchala Eduardo, Ortiz Josué",
   "scripts": {
     "ng": "ng",
+    "env": "node scripts/generar-env.mjs",
+    "prestart": "npm run env",
     "start": "ng serve",
+    "prebuild": "npm run env",
     "build": "ng build",
+    "prewatch": "npm run env",
+    "ionic:serve:before": "npm run env",
+    "ionic:build:before": "npm run env",
     "watch": "ng build --watch --configuration development",
     "lint": "npm run eslint && npm run typecheck:e2e && npm run prettier -- --check",
     "lint:fix": "npm run eslint -- --fix && npm run prettier -- --write",
+    "preeslint": "npm run env",
     "eslint": "ng lint --max-warnings 0",
     "prettier": "prettier \"**/*.{ts,html}\"",
     "typecheck:e2e": "tsc -p tsconfig.e2e.json",
     "test": "npm run test:unit && npm run test:e2e",
+    "pretest:unit": "npm run env",
     "test:unit": "ng test --no-watch",
+    "pretest:unit:watch": "npm run env",
     "test:unit:watch": "ng test --watch",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only database"
   },
   "private": true,
   "dependencies": {
@@ -56,12 +66,12 @@
     "@types/node": "^26.6.6",
     "angular-eslint": "22.6.0",
     "eslint": "^10.10.0",
+    "firebase-tools": "^15.37.0",
     "jsdom": "^31.0.0",
     "prettier": "^3.9.10",
     "typescript": "~6.0.0",
     "typescript-eslint": "^8.61.0",
     "vitest": "^5.1.0"
   },
-  "prettier": "@ionic/prettier-config",
-  "description": "An Ionic project"
+  "description": "Mensajería en tiempo real con Ionic, Supabase y Firebase"
 }

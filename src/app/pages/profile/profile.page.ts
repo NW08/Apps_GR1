@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import type { ElementRef, OnInit } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import {
@@ -22,27 +21,22 @@ import {
   IonTitle,
   IonToggle,
   IonToolbar,
+  NavController,
   ToastController,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import {
-  cameraOutline,
-  logOutOutline,
-  moonOutline,
-  saveOutline,
-  shieldCheckmarkOutline,
-} from 'ionicons/icons';
-import { AvailabilityStatus } from '../../models/chat.models';
+import { cameraOutline, logOutOutline, moonOutline, saveOutline, shieldCheckmarkOutline } from 'ionicons/icons';
+
+import type { AvailabilityStatus } from '../../models/chat.models';
 import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
+import { traducirError } from '../../utils/error-es';
 
 @Component({
   selector: 'app-profile',
-  standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     IonHeader,
     IonToolbar,
@@ -71,7 +65,7 @@ export class ProfilePage implements OnInit {
   readonly supabase = inject(SupabaseService);
   readonly firebase = inject(FirebaseService);
   readonly theme = inject(ThemeService);
-  private readonly router = inject(Router);
+  private readonly navCtrl = inject(NavController);
   private readonly toastCtrl = inject(ToastController);
   private readonly haptics = inject(HapticsService);
 
@@ -144,8 +138,7 @@ export class ProfilePage implements OnInit {
       await this.haptics.notify();
       await this.showToast('Avatar actualizado', 'success');
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error subiendo avatar';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'Error subiendo avatar'), 'danger');
     } finally {
       this.saving.set(false);
     }
@@ -159,22 +152,20 @@ export class ProfilePage implements OnInit {
 
     this.saving.set(true);
     try {
-      const updated = await this.supabase.updateProfile({
+      await this.supabase.updateProfile({
         display_name: this.displayName.trim(),
         username: this.username.trim().toLowerCase(),
         bio: this.bio.trim(),
         status_text: this.statusText.trim(),
         availability: this.availability,
       });
-      await this.firebase.setUserPresence(
-        updated.id,
-        updated.display_name,
-        updated.availability
-      );
       await this.haptics.notify();
       await this.showToast('Perfil guardado y sincronizado', 'success');
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo guardar el perfil';
+      const isDuplicate = (err as { code?: string }).code === '23505';
+      const msg = isDuplicate
+        ? 'Ese nombre de usuario ya está en uso'
+        : traducirError(err, 'No se pudo guardar el perfil');
       await this.showToast(msg, 'danger');
     } finally {
       this.saving.set(false);
@@ -188,7 +179,7 @@ export class ProfilePage implements OnInit {
       await this.firebase.setUserOffline(user.id, profile?.display_name ?? user.email ?? 'Usuario');
     }
     await this.supabase.signOut();
-    await this.router.navigateByUrl('/auth', { replaceUrl: true });
+    await this.navCtrl.navigateRoot('/auth');
   }
 
   private async showToast(message: string, color: 'success' | 'warning' | 'danger'): Promise<void> {

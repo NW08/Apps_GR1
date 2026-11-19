@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import type { OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   AlertController,
@@ -21,7 +20,7 @@ import {
   IonToolbar,
   ToastController,
 } from '@ionic/angular';
-import { RealtimeChannel } from '@supabase/supabase-js';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 import { addIcons } from 'ionicons';
 import {
   addOutline,
@@ -35,18 +34,17 @@ import {
   personCircleOutline,
   sunnyOutline,
 } from 'ionicons/icons';
-import { Room } from '../../models/chat.models';
+
+import type { Room } from '../../models/chat.models';
 import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
+import { traducirError } from '../../utils/error-es';
 
 @Component({
   selector: 'app-rooms',
-  standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -93,7 +91,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       (r) =>
         r.name.toLowerCase().includes(q) ||
         r.topic.toLowerCase().includes(q) ||
-        r.invite_code.toLowerCase().includes(q)
+        r.invite_code.toLowerCase().includes(q),
     );
   });
 
@@ -114,15 +112,6 @@ export class RoomsPage implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     await this.loadRooms();
-    const profile = this.supabase.currentProfile();
-    const user = this.supabase.currentUser();
-    if (user) {
-      await this.firebase.setUserPresence(
-        user.id,
-        profile?.display_name ?? user.email ?? 'Usuario',
-        profile?.availability ?? 'online'
-      );
-    }
 
     if (this.supabase.isConfigured()) {
       this.roomsChannel = this.supabase.subscribeToRoomsList(() => {
@@ -141,8 +130,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       const list = await this.supabase.getRooms();
       this.rooms.set(list);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudieron cargar las salas';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudieron cargar las salas'), 'danger');
     } finally {
       this.loading.set(false);
     }
@@ -179,7 +167,7 @@ export class RoomsPage implements OnInit, OnDestroy {
 
   private async createRoom(
     data: { name?: string; topic?: string; description?: string },
-    isPrivate: boolean
+    isPrivate: boolean,
   ): Promise<void> {
     if (!data.name?.trim()) {
       await this.showToast('El nombre de la sala es obligatorio.', 'warning');
@@ -197,8 +185,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       await this.showToast(`Sala creada · Código ${room.invite_code}`, 'success');
       await this.router.navigate(['/chat', room.id]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error al crear sala';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'Error al crear la sala'), 'danger');
     }
   }
 
@@ -225,8 +212,7 @@ export class RoomsPage implements OnInit, OnDestroy {
               await this.loadRooms(false);
               await this.router.navigate(['/chat', room.id]);
             } catch (err) {
-              const msg = err instanceof Error ? err.message : 'Código inválido';
-              await this.showToast(msg, 'danger');
+              await this.showToast(traducirError(err, 'Código inválido'), 'danger');
             }
           },
         },
@@ -243,8 +229,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       await this.haptics.impact();
       await this.router.navigate(['/chat', room.id]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo abrir la sala';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudo abrir la sala'), 'danger');
     }
   }
 

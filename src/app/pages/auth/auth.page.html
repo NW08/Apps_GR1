@@ -24,24 +24,28 @@
         <ion-icon name="warning-outline"></ion-icon>
         <div>
           <strong>Modo Demo / Configuración pendiente:</strong>
-          Pega tus claves de Supabase y Firebase en
-          <code>src/environments/environment.ts</code> y ejecuta <code>supabase/schema.sql</code>.
+          Completa las claves de Supabase y Firebase en <code>.env</code>, reinicia la app y ejecuta
+          <code>supabase/schema.sql</code>.
         </div>
       </div>
     }
 
     <div class="nova-card auth-card">
-      <ion-segment [value]="mode()" (ionChange)="onModeChange($event.detail.value)">
-        <ion-segment-button value="login">
-          <ion-label>Ingresar</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="register">
-          <ion-label>Registro</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="reset">
-          <ion-label>Recuperar</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+      @if (mode() === 'update') {
+        <h2 class="update-title">Crea una nueva contraseña</h2>
+      } @else {
+        <ion-segment [value]="mode()" (ionChange)="onModeChange($event.detail.value)">
+          <ion-segment-button value="login">
+            <ion-label>Ingresar</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="register">
+            <ion-label>Registro</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="reset">
+            <ion-label>Recuperar</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      }
 
       <form (ngSubmit)="submit()" class="auth-form">
         @if (mode() === 'register') {
@@ -69,18 +73,20 @@
           </ion-item>
         }
 
-        <ion-item lines="none" class="field-item">
-          <ion-icon name="mail-outline" slot="start"></ion-icon>
-          <ion-input
-            [(ngModel)]="email"
-            name="email"
-            type="email"
-            label="Correo electrónico"
-            labelPlacement="floating"
-            placeholder="tu@correo.com"
-            required
-          ></ion-input>
-        </ion-item>
+        @if (mode() !== 'update') {
+          <ion-item lines="none" class="field-item">
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="email"
+              name="email"
+              type="email"
+              label="Correo electrónico"
+              labelPlacement="floating"
+              placeholder="tu@correo.com"
+              required
+            ></ion-input>
+          </ion-item>
+        }
 
         @if (mode() !== 'reset') {
           <ion-item lines="none" class="field-item">
@@ -97,19 +103,25 @@
           </ion-item>
         }
 
+        @if (mode() === 'update') {
+          <ion-item lines="none" class="field-item">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              label="Confirmar contraseña"
+              labelPlacement="floating"
+              required
+            ></ion-input>
+          </ion-item>
+        }
+
         <ion-button expand="block" type="submit" [disabled]="loading()" class="submit-btn">
           @if (loading()) {
             <ion-spinner name="crescent"></ion-spinner>
           } @else {
-            <span>
-              {{
-                mode() === 'login'
-                  ? 'Iniciar sesión'
-                  : mode() === 'register'
-                    ? 'Crear cuenta'
-                    : 'Enviar enlace'
-              }}
-            </span>
+            <span>{{ submitLabel() }}</span>
           }
         </ion-button>
       </form>

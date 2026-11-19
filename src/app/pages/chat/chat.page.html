@@ -10,7 +10,15 @@
         <span class="room-meta">
           {{ members().length }} miembros
           @if (room()?.invite_code; as code) {
-            · <span class="mono" (click)="copyInviteCode()">{{ code }}</span>
+            ·
+            <span
+              class="mono"
+              role="button"
+              tabindex="0"
+              (click)="copyInviteCode()"
+              (keydown.enter)="copyInviteCode()"
+              >{{ code }}</span
+            >
           }
         </span>
       </div>
@@ -38,7 +46,6 @@
       ></ion-searchbar>
     </ion-toolbar>
   }
-
   @if (pinnedMessages().length > 0) {
     <div class="pinned-bar">
       <ion-icon name="pin-outline"></ion-icon>
@@ -47,15 +54,12 @@
       </span>
     </div>
   }
-
   @if (showBeacons()) {
     <div class="beacons-drawer">
       <div class="beacons-header">
         <span>Ubicación GPS en vivo (Firebase RTDB)</span>
         @if (beaconWatchId() !== null) {
-          <ion-button size="small" color="danger" fill="outline" (click)="stopLiveBeacon()">
-            Detener mío
-          </ion-button>
+          <ion-button size="small" color="danger" fill="outline" (click)="stopLiveBeacon()"> Detener mío </ion-button>
         } @else {
           <ion-button size="small" color="secondary" fill="outline" (click)="startLiveBeacon()">
             Compartir mi GPS
@@ -90,17 +94,25 @@
           @if (!isMine(msg)) {
             <ion-avatar class="msg-avatar">
               <img
-                [src]="msg.sender?.avatar_url || 'https://api.dicebear.com/9.x/initials/svg?seed=' + (msg.sender?.display_name || 'U')"
+                [src]="
+                  msg.sender?.avatar_url ||
+                  'https://api.dicebear.com/9.x/initials/svg?seed=' + (msg.sender?.display_name || 'U')
+                "
                 alt="Avatar"
               />
             </ion-avatar>
           }
 
-          <div class="bubble" [class.mine]="isMine(msg)" (click)="openMessageActions(msg)">
+          <div
+            class="bubble"
+            tabindex="0"
+            [class.mine]="isMine(msg)"
+            (click)="onBubbleActivate($event, msg)"
+            (keydown.enter)="onBubbleActivate($event, msg)"
+          >
             @if (!isMine(msg)) {
               <div class="sender-name">{{ msg.sender?.display_name || 'Usuario' }}</div>
             }
-
             @if (msg.reply_to) {
               <div class="reply-quote">
                 <span class="reply-author">{{ msg.reply_to.sender?.display_name || 'Mensaje' }}</span>
@@ -109,24 +121,18 @@
                 </span>
               </div>
             }
-
             @if (msg.type === 'image' && msg.media_url) {
               <img
                 [src]="msg.media_url"
                 alt="Imagen compartida"
                 class="chat-image"
-                (click)="$event.stopPropagation(); previewImageUrl.set(msg.media_url)"
+                tabindex="0"
+                (click)="previewImageUrl.set(msg.media_url)"
+                (keydown.enter)="previewImageUrl.set(msg.media_url)"
               />
             }
-
             @if (msg.type === 'file' && msg.media_url) {
-              <a
-                [href]="msg.media_url"
-                target="_blank"
-                rel="noopener"
-                class="file-card"
-                (click)="$event.stopPropagation()"
-              >
+              <a [href]="msg.media_url" target="_blank" rel="noopener" class="file-card">
                 <ion-icon name="document-outline"></ion-icon>
                 <div class="file-info">
                   <span class="file-name">{{ msg.file_name || 'Archivo' }}</span>
@@ -135,9 +141,8 @@
                 <ion-icon name="download-outline"></ion-icon>
               </a>
             }
-
             @if (msg.type === 'location' && msg.latitude !== null && msg.longitude !== null) {
-              <div class="location-card" (click)="$event.stopPropagation()">
+              <div class="location-card">
                 <app-location-map
                   [latitude]="msg.latitude"
                   [longitude]="msg.longitude"
@@ -145,17 +150,12 @@
                 ></app-location-map>
                 <div class="location-meta">
                   <span class="mono">{{ msg.latitude.toFixed(5) }}, {{ msg.longitude.toFixed(5) }}</span>
-                  <ion-button
-                    size="small"
-                    fill="clear"
-                    (click)="openExternalMap(msg.latitude, msg.longitude)"
-                  >
+                  <ion-button size="small" fill="clear" (click)="openExternalMap(msg.latitude, msg.longitude)">
                     Abrir mapa
                   </ion-button>
                 </div>
               </div>
             }
-
             @if (msg.content && msg.type !== 'file') {
               <p class="msg-text">{{ msg.content }}</p>
             }
@@ -170,9 +170,9 @@
               <span class="mono">{{ msg.created_at | date: 'HH:mm' }}</span>
             </div>
 
-            @if (getReactionGroups(msg.reactions).length > 0) {
-              <div class="reactions-bar" (click)="$event.stopPropagation()">
-                @for (rg of getReactionGroups(msg.reactions); track rg.emoji) {
+            @if (reactionGroups().get(msg.id); as groups) {
+              <div class="reactions-bar">
+                @for (rg of groups; track rg.emoji) {
                   <button
                     type="button"
                     class="reaction-pill"
@@ -195,7 +195,6 @@
   @if (typingLabel()) {
     <div class="typing-bar">{{ typingLabel() }}</div>
   }
-
   @if (replyingTo(); as reply) {
     <div class="reply-preview">
       <div>
@@ -244,13 +243,7 @@
     </ion-button>
   </div>
 
-  <input
-    #fileInput
-    type="file"
-    hidden
-    accept="image/*,.pdf,.doc,.docx,.zip,.txt"
-    (change)="onFileSelected($event)"
-  />
+  <input #fileInput type="file" hidden accept="image/*,.pdf,.doc,.docx,.zip,.txt" (change)="onFileSelected($event)" />
 </ion-footer>
 
 <ion-modal [isOpen]="previewImageUrl() !== null" (didDismiss)="previewImageUrl.set(null)">

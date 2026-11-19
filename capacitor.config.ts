@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'ec.edu.epn.novasync',
   appName: 'novaSync',
-  webDir: 'www'
+  webDir: 'www',
 };
 
 export default config;

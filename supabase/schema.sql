@@ -1,6 +1,3 @@
-
-
-
 -- 1. PROFILES
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -15,23 +12,26 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+drop policy if exists "Profiles are viewable by authenticated users" on public.profiles;
 create policy "Profiles are viewable by authenticated users"
   on public.profiles for select
   to authenticated
   using (true);
 
+drop policy if exists "Users can insert their own profile" on public.profiles;
 create policy "Users can insert their own profile"
   on public.profiles for insert
   to authenticated
   with check (auth.uid() = id);
 
+drop policy if exists "Users can update their own profile" on public.profiles;
 create policy "Users can update their own profile"
   on public.profiles for update
   to authenticated
   using (auth.uid() = id)
   with check (auth.uid() = id);
 
--- Trigger to auto-create profile on signup
+-- Crea el perfil al registrarse; el username recibe un sufijo para evitar duplicados.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -93,11 +93,11 @@ create table if not exists public.room_members (
 alter table public.rooms enable row level security;
 alter table public.room_members enable row level security;
 
--- Helper function to avoid recursive RLS
+-- security definer evita la recursión de RLS al consultar room_members desde sus propias políticas.
 create or replace function public.is_room_member(p_room_id uuid, p_user_id uuid)
 returns boolean
 language sql
-security definer
+security definer set search_path = public
 stable
 as $$
   select exists (
@@ -106,29 +106,35 @@ as $$
   );
 $$;
 
+drop policy if exists "Public rooms or member rooms are viewable" on public.rooms;
 create policy "Public rooms or member rooms are viewable"
   on public.rooms for select
   to authenticated
-  using (not is_private or public.is_room_member(id, auth.uid()));
+  using (not is_private or created_by = auth.uid() or public.is_room_member(id, auth.uid()));
 
+drop policy if exists "Authenticated users can create rooms" on public.rooms;
 create policy "Authenticated users can create rooms"
   on public.rooms for insert
   to authenticated
   with check (auth.uid() = created_by);
 
+drop policy if exists "Room owners can update rooms" on public.rooms;
 create policy "Room owners can update rooms"
   on public.rooms for update
   to authenticated
   using (auth.uid() = created_by);
 
+drop policy if exists "Room members can view membership" on public.room_members;
 create policy "Room members can view membership"
   on public.room_members for select
   to authenticated
   using (
     user_id = auth.uid()
     or public.is_room_member(room_id, auth.uid())
+    or exists (select 1 from public.rooms r where r.id = room_id and not r.is_private)
   );
 
+drop policy if exists "Users can join public rooms or be added as owner" on public.room_members;
 create policy "Users can join public rooms or be added as owner"
   on public.room_members for insert
   to authenticated
@@ -139,12 +145,13 @@ create policy "Users can join public rooms or be added as owner"
     )
   );
 
+drop policy if exists "Users can leave rooms" on public.room_members;
 create policy "Users can leave rooms"
   on public.room_members for delete
   to authenticated
   using (auth.uid() = user_id);
 
--- RPC to join any room (including private rooms) via invite_code
+-- Permite unirse a salas privadas sin exponerlas en las consultas normales.
 create or replace function public.join_room_by_code(p_code text)
 returns public.rooms
 language plpgsql
@@ -198,6 +205,7 @@ create index if not exists idx_messages_room_created on public.messages(room_id,
 
 alter table public.messages enable row level security;
 
+drop policy if exists "Room members can read messages" on public.messages;
 create policy "Room members can read messages"
   on public.messages for select
   to authenticated
@@ -206,6 +214,7 @@ create policy "Room members can read messages"
     or exists (select 1 from public.rooms r where r.id = room_id and not r.is_private)
   );
 
+drop policy if exists "Room members can send messages" on public.messages;
 create policy "Room members can send messages"
   on public.messages for insert
   to authenticated
@@ -217,13 +226,18 @@ create policy "Room members can send messages"
     )
   );
 
-create policy "Senders or room members can update pin status"
+drop policy if exists "Senders or room members can update pin status" on public.messages;
+drop policy if exists "Room members can update pin status" on public.messages;
+create policy "Room members can update pin status"
   on public.messages for update
   to authenticated
-  using (
-    public.is_room_member(room_id, auth.uid())
-  );
+  using (public.is_room_member(room_id, auth.uid()));
 
+-- Solo se permite modificar is_pinned; el resto del mensaje es inmutable.
+revoke update on public.messages from authenticated;
+grant update (is_pinned) on public.messages to authenticated;
+
+drop policy if exists "Senders can delete their own messages" on public.messages;
 create policy "Senders can delete their own messages"
   on public.messages for delete
   to authenticated
@@ -241,16 +255,19 @@ create table if not exists public.message_reactions (
 
 alter table public.message_reactions enable row level security;
 
+drop policy if exists "Authenticated users can view reactions" on public.message_reactions;
 create policy "Authenticated users can view reactions"
   on public.message_reactions for select
   to authenticated
   using (true);
 
+drop policy if exists "Users can add their own reactions" on public.message_reactions;
 create policy "Users can add their own reactions"
   on public.message_reactions for insert
   to authenticated
   with check (auth.uid() = user_id);
 
+drop policy if exists "Users can remove their own reactions" on public.message_reactions;
 create policy "Users can remove their own reactions"
   on public.message_reactions for delete
   to authenticated
@@ -265,31 +282,48 @@ insert into storage.buckets (id, name, public)
 values ('chat-media', 'chat-media', true)
 on conflict (id) do nothing;
 
+drop policy if exists "Public read access for avatars" on storage.objects;
 create policy "Public read access for avatars"
   on storage.objects for select
   using (bucket_id = 'avatars');
 
-create policy "Authenticated upload for avatars"
+-- Rutas: avatars/{uid}/... y chat-media/{images|files}/{uid}/...
+drop policy if exists "Authenticated upload for avatars" on storage.objects;
+drop policy if exists "Users upload their own avatar" on storage.objects;
+create policy "Users upload their own avatar"
   on storage.objects for insert
   to authenticated
-  with check (bucket_id = 'avatars');
+  with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 
-create policy "Authenticated update for avatars"
+drop policy if exists "Authenticated update for avatars" on storage.objects;
+drop policy if exists "Users update their own avatar" on storage.objects;
+create policy "Users update their own avatar"
   on storage.objects for update
   to authenticated
-  using (bucket_id = 'avatars');
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 
+drop policy if exists "Public read access for chat-media" on storage.objects;
 create policy "Public read access for chat-media"
   on storage.objects for select
   using (bucket_id = 'chat-media');
 
-create policy "Authenticated upload for chat-media"
+drop policy if exists "Authenticated upload for chat-media" on storage.objects;
+drop policy if exists "Users upload chat media to their own folder" on storage.objects;
+create policy "Users upload chat media to their own folder"
   on storage.objects for insert
   to authenticated
-  with check (bucket_id = 'chat-media');
+  with check (bucket_id = 'chat-media' and (storage.foldername(name))[2] = auth.uid()::text);
 
 -- 7. REALTIME PUBLICATIONS
-alter publication supabase_realtime add table public.messages;
-alter publication supabase_realtime add table public.message_reactions;
-alter publication supabase_realtime add table public.rooms;
-alter publication supabase_realtime add table public.room_members;
+do $$
+declare
+  t text;
+begin
+  foreach t in array array['messages', 'message_reactions', 'rooms', 'room_members'] loop
+    begin
+      execute format('alter publication supabase_realtime add table public.%I', t);
+    exception when duplicate_object then
+      null;
+    end;
+  end loop;
+end $$;
