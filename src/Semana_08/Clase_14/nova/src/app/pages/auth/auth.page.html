@@ -24,8 +24,8 @@
         <ion-icon name="warning-outline"></ion-icon>
         <div>
           <strong>Modo Demo / Configuración pendiente:</strong>
-          Pega tus claves de Supabase y Firebase en
-          <code>src/environments/environment.ts</code> y ejecuta <code>supabase/schema.sql</code>.
+          Completa las claves de Supabase y Firebase en <code>.env</code>, reinicia la app y ejecuta
+          <code>supabase/schema.sql</code>.
         </div>
       </div>
     }
@@ -102,13 +102,7 @@
             <ion-spinner name="crescent"></ion-spinner>
           } @else {
             <span>
-              {{
-                mode() === 'login'
-                  ? 'Iniciar sesión'
-                  : mode() === 'register'
-                    ? 'Crear cuenta'
-                    : 'Enviar enlace'
-              }}
+              {{ mode() === 'login' ? 'Iniciar sesión' : mode() === 'register' ? 'Crear cuenta' : 'Enviar enlace' }}
             </span>
           }
         </ion-button>

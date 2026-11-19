@@ -39,7 +39,7 @@ EPN · Periodo 2026B. Los aportes de cada uno están en [Distribución del Traba
 | 3   | Avatar                              | Foto con la cámara o la galería (`@capacitor/camera`), guardada en el _bucket_ `avatars`.                       | Supabase Storage |
 | 4   | Salas públicas y privadas           | Creación con nombre, tema y descripción; el creador queda como `owner`.                                         | Supabase         |
 | 5   | Códigos de invitación `NOVA-XXXX`   | Función RPC `join_room_by_code` (`security definer`) que valida el código y agrega al usuario a la sala privada. | Supabase         |
-| 6   | Mensajes en tiempo real             | Supabase Realtime (`postgres_changes`) recarga la conversación al insertar, editar o borrar mensajes.            | Supabase         |
+| 6   | Mensajes en tiempo real             | Supabase Realtime (`postgres_changes`) actualiza la conversación al insertar, editar o borrar mensajes y reacciones. | Supabase         |
 | 7   | Imágenes                            | Envío desde la cámara o la galería y visor a pantalla completa (`chat-media/images`).                            | Supabase Storage |
 | 8   | Archivos                            | PDF, DOCX, ZIP o TXT con nombre, tamaño y descarga directa (`chat-media/files`).                                | Supabase Storage |
 | 9   | Ubicación puntual                   | `@capacitor/geolocation` + mapa Leaflet / OpenStreetMap dentro del mensaje.                                     | Supabase         |
@@ -180,10 +180,10 @@ Rutas: `/auth`, `/rooms`, `/chat/:id` y `/profile`. Todas menos `/auth` están p
 
 | Tabla               | Campos principales                                                                                                     | Acceso (RLS)                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `profiles`          | `id` (= `auth.users.id`), `username` (único), `display_name`, `avatar_url`, `bio`, `status_text`, `availability`      | Lectura para autenticados; cada uno crea y edita solo el suyo     |
-| `rooms`             | `id`, `name`, `description`, `topic`, `is_private`, `invite_code` (único), `created_by`, `created_at`                  | Visibles si son públicas o si el usuario es miembro                |
-| `room_members`      | `room_id`, `user_id`, `role` (`owner`, `admin`, `member`), `joined_at`                                                 | Los miembros ven la membresía; cada uno puede salir de una sala    |
-| `messages`          | `id`, `room_id`, `sender_id`, `type` (`text`, `image`, `file`, `location`, `system`), `content`, `media_url`, `file_name`, `file_size`, `latitude`, `longitude`, `reply_to_id`, `is_pinned`, `expires_at` | Solo miembros de la sala leen y envían; el remitente puede borrar |
+| `profiles`          | `id` (= `auth.users.id`), `username` (único; al registrarse se le agrega un sufijo de 4 caracteres), `display_name`, `avatar_url`, `bio`, `status_text`, `availability` | Lectura para autenticados; cada uno crea y edita solo el suyo     |
+| `rooms`             | `id`, `name`, `description`, `topic`, `is_private`, `invite_code` (único), `created_by`, `created_at`                  | Visibles si son públicas, si el usuario es miembro o si las creó   |
+| `room_members`      | `room_id`, `user_id`, `role` (`owner`, `admin`, `member`), `joined_at`                                                 | Visible para los miembros y en salas públicas; cada uno puede salir de una sala |
+| `messages`          | `id`, `room_id`, `sender_id`, `type` (`text`, `image`, `file`, `location`, `system`), `content`, `media_url`, `file_name`, `file_size`, `latitude`, `longitude`, `reply_to_id`, `is_pinned`, `expires_at` | Miembros (o cualquiera en salas públicas) leen y envían; los miembros solo pueden cambiar `is_pinned`; el remitente puede borrar |
 | `message_reactions` | `message_id`, `user_id`, `emoji` (único por mensaje, usuario y emoji)                                                  | Lectura para autenticados; cada uno agrega o quita las suyas       |
 
 El script completo está en [`supabase/schema.sql`](./supabase/schema.sql).
@@ -336,15 +336,17 @@ Como el inicio de sesión ocurre en Supabase, Firebase no sabe quién es el usua
 
 1. **Unir las identidades:** una Supabase Edge Function que emita un _custom token_ de Firebase con el mismo `uid`, para iniciar sesión en Firebase con `signInWithCustomToken`.
 2. **Reglas por usuario y sala:** escribir solo en `$uid === auth.uid` y leer `typing` o `beacons` solo si se pertenece a la sala.
-3. **Storage privado:** _buckets_ privados con URLs firmadas, y políticas que verifiquen que la carpeta corresponde a `auth.uid()`.
+3. **Storage privado:** _buckets_ privados con URLs firmadas en lugar de URLs públicas.
 4. **Borrado de mensajes efímeros en el servidor** con una tarea programada (`pg_cron`).
 5. **Firebase App Check** y restricción de la API key por dominio o paquete.
 
 ### Limitaciones conocidas
 
-- Los mensajes efímeros se **ocultan en el cliente** al vencer, pero siguen guardados en la tabla `messages`.
-- Los _buckets_ `avatars` y `chat-media` son públicos: cualquiera con el enlace puede ver la imagen o el archivo.
-- La política de actualización del _bucket_ `avatars` no verifica el dueño del archivo, así que un usuario autenticado podría reemplazar el avatar de otro.
+- Los mensajes efímeros se **ocultan en el cliente** al vencer (se revisa cada 10 s), pero siguen guardados en la tabla `messages`.
+- Los _buckets_ `avatars` y `chat-media` son públicos: cualquiera con el enlace puede ver la imagen o el archivo. Para subir, las políticas exigen que la carpeta sea la del propio usuario (`avatars/{uid}/…`, `chat-media/{images|files}/{uid}/…`).
+- Las reacciones (`message_reactions`) son legibles por cualquier usuario autenticado, incluso las de salas privadas.
+- `schema.sql` está pensado para ejecutarse una sola vez en un proyecto nuevo: volver a correrlo falla en las políticas y publicaciones que ya existen.
+- Los avatares por defecto se generan con DiceBear (servicio externo) a partir del nombre visible.
 - La carpeta `android/` no se versiona; los permisos de cámara y ubicación se agregan al generar el proyecto nativo.
 
 ---
@@ -353,5 +355,5 @@ Como el inicio de sesión ocurre en Supabase, Firebase no sabe quién es el usua
 
 | Integrante           | Aportes                                                                                                                                                                  |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Ganchala Eduardo** | Creación del proyecto, arquitectura con Supabase y Firebase, esquema SQL con RLS y RPC, reglas de Realtime Database, servicios, páginas de acceso, salas, chat y perfil.  |
-| **Ortiz Josué**      | Configuración de credenciales con `.env`, revisión de seguridad, integración con el repositorio general y documentación.                                                 |
+| **Ganchala Eduardo** | Creación del proyecto, arquitectura con Supabase y Firebase, esquema SQL con RLS y RPC, reglas de Realtime Database,  chat y perfil.  |
+| **Ortiz Josué**      | Configuración de credenciales con `.env`, revisión de seguridad, servicios, páginas de acceso, salas, integración con el repositorio general y documentación. |

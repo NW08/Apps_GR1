@@ -1,14 +1,6 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  computed,
-  ElementRef,
-  inject,
-  OnDestroy,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { DatePipe } from '@angular/common';
+import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -35,8 +27,8 @@ import {
   IonToolbar,
   ToastController,
 } from '@ionic/angular';
-import { RealtimeChannel } from '@supabase/supabase-js';
-import { Unsubscribe } from 'firebase/database';
+import type { RealtimeChannel } from '@supabase/supabase-js';
+import type { Unsubscribe } from 'firebase/database';
 import { addIcons } from 'ionicons';
 import {
   attachOutline,
@@ -60,18 +52,12 @@ import {
   timerOutline,
   trashOutline,
 } from 'ionicons/icons';
+
 import { LocationMapComponent } from '../../components/location-map/location-map.component';
-import {
-  ChatMessage,
-  LiveBeacon,
-  MessageReaction,
-  Room,
-  RoomMember,
-  TypingState,
-} from '../../models/chat.models';
+import type { ChatMessage, LiveBeacon, Room, RoomMember, TypingState } from '../../models/chat.models';
 import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
-import { SupabaseService } from '../../services/supabase.service';
+import { isExpired, SupabaseService } from '../../services/supabase.service';
 
 interface ReactionGroup {
   emoji: string;
@@ -79,11 +65,13 @@ interface ReactionGroup {
   reactedByMe: boolean;
 }
 
+const BEACON_DURATION_MS = 15 * 60 * 1000;
+const EXPIRY_CHECK_MS = 10_000;
+
 @Component({
   selector: 'app-chat',
-  standalone: true,
   imports: [
-    CommonModule,
+    DatePipe,
     FormsModule,
     IonHeader,
     IonToolbar,
@@ -141,12 +129,12 @@ export class ChatPage implements OnInit, OnDestroy {
   private roomChannel: RealtimeChannel | null = null;
   private typingUnsub: Unsubscribe | null = null;
   private beaconsUnsub: Unsubscribe | null = null;
+  private beaconTimer: ReturnType<typeof setTimeout> | null = null;
+  private expiryInterval: ReturnType<typeof setInterval> | null = null;
 
   readonly quickEmojis = ['👍', '🔥', '❤️', '😂', '🚀'];
 
-  readonly pinnedMessages = computed(() =>
-    this.messages().filter((m) => m.is_pinned)
-  );
+  readonly pinnedMessages = computed(() => this.messages().filter((m) => m.is_pinned));
 
   readonly visibleMessages = computed(() => {
     const q = this.searchQuery().trim().toLowerCase();
@@ -156,8 +144,24 @@ export class ChatPage implements OnInit, OnDestroy {
       (m) =>
         m.content.toLowerCase().includes(q) ||
         (m.file_name ?? '').toLowerCase().includes(q) ||
-        (m.sender?.display_name ?? '').toLowerCase().includes(q)
+        (m.sender?.display_name ?? '').toLowerCase().includes(q),
     );
+  });
+
+  readonly reactionGroups = computed(() => {
+    const uid = this.supabase.currentUser()?.id;
+    const byMessage = new Map<string, ReactionGroup[]>();
+    for (const msg of this.messages()) {
+      const groups = new Map<string, ReactionGroup>();
+      for (const r of msg.reactions ?? []) {
+        const group = groups.get(r.emoji) ?? { emoji: r.emoji, count: 0, reactedByMe: false };
+        group.count += 1;
+        if (r.user_id === uid) group.reactedByMe = true;
+        groups.set(r.emoji, group);
+      }
+      if (groups.size) byMessage.set(msg.id, [...groups.values()]);
+    }
+    return byMessage;
   });
 
   readonly typingLabel = computed(() => {
@@ -200,10 +204,13 @@ export class ChatPage implements OnInit, OnDestroy {
     }
 
     await this.loadRoomData();
+    if (!this.room()) return;
     this.setupRealtimeSubscriptions();
+    this.expiryInterval = setInterval(() => this.pruneExpiredMessages(), EXPIRY_CHECK_MS);
   }
 
   ngOnDestroy(): void {
+    if (this.expiryInterval) clearInterval(this.expiryInterval);
     this.supabase.removeChannel(this.roomChannel);
     this.typingUnsub?.();
     this.beaconsUnsub?.();
@@ -223,6 +230,11 @@ export class ChatPage implements OnInit, OnDestroy {
         this.supabase.getRoomMembers(this.roomId),
         this.supabase.getMessages(this.roomId),
       ]);
+      if (!room) {
+        await this.showToast('La sala no existe o no tienes acceso.', 'warning');
+        await this.router.navigateByUrl('/rooms');
+        return;
+      }
       this.room.set(room);
       this.members.set(members);
       this.messages.set(messages);
@@ -240,7 +252,15 @@ export class ChatPage implements OnInit, OnDestroy {
     if (this.supabase.isConfigured()) {
       this.roomChannel = this.supabase.subscribeToRoom(this.roomId, {
         onMessageChange: () => void this.refreshMessages(),
-        onReactionChange: () => void this.refreshMessages(),
+        onMessageDeleted: (id) => this.messages.update((list) => list.filter((m) => m.id !== id)),
+        onReactionInserted: (messageId) => {
+          if (this.messages().some((m) => m.id === messageId)) void this.refreshMessages();
+        },
+        onReactionDeleted: (reactionId) => {
+          if (this.messages().some((m) => m.reactions?.some((r) => r.id === reactionId))) {
+            void this.refreshMessages();
+          }
+        },
       });
     }
 
@@ -267,6 +287,14 @@ export class ChatPage implements OnInit, OnDestroy {
     }
   }
 
+  private pruneExpiredMessages(): void {
+    const now = Date.now();
+    const list = this.messages();
+    if (list.some((m) => isExpired(m, now))) {
+      this.messages.set(list.filter((m) => !isExpired(m, now)));
+    }
+  }
+
   scrollToBottom(): void {
     setTimeout(() => {
       void this.content?.scrollToBottom(250);
@@ -277,11 +305,7 @@ export class ChatPage implements OnInit, OnDestroy {
     const user = this.supabase.currentUser();
     const profile = this.supabase.currentProfile();
     if (!user || !this.draftText.trim()) return;
-    void this.firebase.setTyping(
-      this.roomId,
-      user.id,
-      profile?.display_name ?? user.email ?? 'Usuario'
-    );
+    void this.firebase.setTyping(this.roomId, user.id, profile?.display_name ?? user.email ?? 'Usuario');
   }
 
   async sendText(): Promise<void> {
@@ -341,9 +365,7 @@ export class ChatPage implements OnInit, OnDestroy {
         },
         {
           text:
-            this.beaconWatchId() !== null
-              ? 'Detener ubicación GPS en vivo'
-              : 'Compartir ubicación GPS en vivo (15m)',
+            this.beaconWatchId() !== null ? 'Detener ubicación GPS en vivo' : 'Compartir ubicación GPS en vivo (15m)',
           icon: 'radio-outline',
           handler: () => {
             if (this.beaconWatchId() !== null) {
@@ -394,15 +416,11 @@ export class ChatPage implements OnInit, OnDestroy {
     fileName: string,
     fileSize: number,
     mimeType: string,
-    isImage: boolean
+    isImage: boolean,
   ): Promise<void> {
     this.sending.set(true);
     try {
-      const url = await this.supabase.uploadChatMedia(
-        blob,
-        fileName,
-        isImage ? 'images' : 'files'
-      );
+      const url = await this.supabase.uploadChatMedia(blob, fileName, isImage ? 'images' : 'files');
       await this.supabase.sendMessage({
         roomId: this.roomId,
         type: isImage ? 'image' : 'file',
@@ -438,7 +456,7 @@ export class ChatPage implements OnInit, OnDestroy {
       navigator.geolocation.getCurrentPosition(
         (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
         (err) => reject(new Error(err.message || 'Permiso de ubicación denegado')),
-        { enableHighAccuracy: true, timeout: 10000 }
+        { enableHighAccuracy: true, timeout: 10000 },
       );
     });
   }
@@ -470,50 +488,37 @@ export class ChatPage implements OnInit, OnDestroy {
   async startLiveBeacon(): Promise<void> {
     const user = this.supabase.currentUser();
     const profile = this.supabase.currentProfile();
-    if (!user) return;
+    if (!user || this.beaconWatchId() !== null) return;
 
-    try {
-      const { lat, lng } = await this.getCoordinates();
-      const expiresAt = Date.now() + 15 * 60 * 1000;
-      await this.firebase.publishBeacon(this.roomId, {
+    const expiresAt = Date.now() + BEACON_DURATION_MS;
+    const publish = (latitude: number, longitude: number) =>
+      this.firebase.publishBeacon(this.roomId, {
         uid: user.id,
         displayName: profile?.display_name ?? user.email ?? 'Usuario',
         avatarUrl: profile?.avatar_url ?? null,
-        latitude: lat,
-        longitude: lng,
+        latitude,
+        longitude,
         updatedAt: Date.now(),
         expiresAt,
       });
 
+    try {
+      const { lat, lng } = await this.getCoordinates();
+      await publish(lat, lng);
+
       if (Capacitor.isNativePlatform()) {
         const id = await Geolocation.watchPosition({ enableHighAccuracy: true }, (pos) => {
-          if (!pos) return;
-          void this.firebase.publishBeacon(this.roomId, {
-            uid: user.id,
-            displayName: profile?.display_name ?? user.email ?? 'Usuario',
-            avatarUrl: profile?.avatar_url ?? null,
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-            updatedAt: Date.now(),
-            expiresAt,
-          });
+          if (pos) void publish(pos.coords.latitude, pos.coords.longitude);
         });
         this.beaconWatchId.set(id);
       } else if (navigator.geolocation) {
         const id = navigator.geolocation.watchPosition((pos) => {
-          void this.firebase.publishBeacon(this.roomId, {
-            uid: user.id,
-            displayName: profile?.display_name ?? user.email ?? 'Usuario',
-            avatarUrl: profile?.avatar_url ?? null,
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-            updatedAt: Date.now(),
-            expiresAt,
-          });
+          void publish(pos.coords.latitude, pos.coords.longitude);
         });
         this.beaconWatchId.set(id);
       }
 
+      this.beaconTimer = setTimeout(() => void this.stopLiveBeacon(), BEACON_DURATION_MS);
       this.showBeacons.set(true);
       await this.showToast('Ubicación GPS en vivo activada por 15 minutos', 'success');
     } catch (err) {
@@ -523,6 +528,10 @@ export class ChatPage implements OnInit, OnDestroy {
   }
 
   async stopLiveBeacon(): Promise<void> {
+    if (this.beaconTimer) {
+      clearTimeout(this.beaconTimer);
+      this.beaconTimer = null;
+    }
     const watchId = this.beaconWatchId();
     if (watchId !== null) {
       if (typeof watchId === 'string') {
@@ -538,14 +547,21 @@ export class ChatPage implements OnInit, OnDestroy {
     }
   }
 
+  // Ignora los eventos que vienen de elementos interactivos dentro de la burbuja (imagen, enlace, mapa, reacciones).
+  onBubbleActivate(event: Event, msg: ChatMessage): void {
+    const target = event.target as HTMLElement;
+    if (target.closest('a, button, ion-button, img, .location-card')) return;
+    void this.openMessageActions(msg);
+  }
+
   async openMessageActions(msg: ChatMessage): Promise<void> {
     const isMine = msg.sender_id === this.supabase.currentUser()?.id;
-    const buttons: Array<{
+    const buttons: {
       text: string;
       icon?: string;
       role?: string;
       handler?: () => void;
-    }> = [
+    }[] = [
       {
         text: 'Responder',
         icon: 'return-up-back-outline',
@@ -609,19 +625,6 @@ export class ChatPage implements OnInit, OnDestroy {
     } catch {
       await this.showToast('No se pudo eliminar', 'danger');
     }
-  }
-
-  getReactionGroups(reactions: MessageReaction[] | undefined): ReactionGroup[] {
-    if (!reactions || reactions.length === 0) return [];
-    const uid = this.supabase.currentUser()?.id;
-    const map = new Map<string, ReactionGroup>();
-    for (const r of reactions) {
-      const existing = map.get(r.emoji) ?? { emoji: r.emoji, count: 0, reactedByMe: false };
-      existing.count += 1;
-      if (r.user_id === uid) existing.reactedByMe = true;
-      map.set(r.emoji, existing);
-    }
-    return Array.from(map.values());
   }
 
   isMine(msg: ChatMessage): boolean {

@@ -67,7 +67,12 @@
     } @else {
       <div class="rooms-grid">
         @for (room of filteredRooms(); track room.id) {
-          <article class="nova-card room-card" (click)="enterRoom(room)">
+          <article
+            class="nova-card room-card"
+            tabindex="0"
+            (click)="enterRoom(room)"
+            (keydown.enter)="$event.target === $event.currentTarget && enterRoom(room)"
+          >
             <div class="room-top">
               <div class="room-badges">
                 <ion-chip class="topic-chip" color="primary" [outline]="true">

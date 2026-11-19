@@ -1,8 +1,5 @@
-// Genera src/environments/env.config.ts a partir de las variables del archivo .env.
-// Se ejecuta automáticamente antes de `ionic serve`/`build`, `npm start`, `npm run build`, lint y tests.
-// Las variables de entorno del sistema tienen prioridad sobre .env (útil en CI).
-// Si falta una variable se usa su valor de ejemplo: la app compila igual y los servicios
-// (SupabaseService / FirebaseService) detectan que no están configurados.
+// Genera src/environments/env.config.ts desde .env. Las variables del sistema tienen prioridad (CI).
+// Si falta una, se usa un valor de ejemplo que los servicios detectan como "no configurado".
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

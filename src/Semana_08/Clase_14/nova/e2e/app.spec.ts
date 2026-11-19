@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
-test('visits the app root url', async ({ page }) => {
+test('redirige a /auth sin sesión', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('#container')).toContainText('Ready to create an app?');
+  await expect(page).toHaveURL(/\/auth$/);
+  await expect(page.getByRole('heading', { name: 'novaSync' })).toBeVisible();
 });

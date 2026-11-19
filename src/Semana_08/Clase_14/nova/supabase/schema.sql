@@ -1,6 +1,3 @@
-
-
-
 -- 1. PROFILES
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -31,7 +28,7 @@ create policy "Users can update their own profile"
   using (auth.uid() = id)
   with check (auth.uid() = id);
 
--- Trigger to auto-create profile on signup
+-- Crea el perfil al registrarse; el username recibe un sufijo para evitar duplicados.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -93,11 +90,11 @@ create table if not exists public.room_members (
 alter table public.rooms enable row level security;
 alter table public.room_members enable row level security;
 
--- Helper function to avoid recursive RLS
+-- security definer evita la recursión de RLS al consultar room_members desde sus propias políticas.
 create or replace function public.is_room_member(p_room_id uuid, p_user_id uuid)
 returns boolean
 language sql
-security definer
+security definer set search_path = public
 stable
 as $$
   select exists (
@@ -109,7 +106,7 @@ $$;
 create policy "Public rooms or member rooms are viewable"
   on public.rooms for select
   to authenticated
-  using (not is_private or public.is_room_member(id, auth.uid()));
+  using (not is_private or created_by = auth.uid() or public.is_room_member(id, auth.uid()));
 
 create policy "Authenticated users can create rooms"
   on public.rooms for insert
@@ -127,6 +124,7 @@ create policy "Room members can view membership"
   using (
     user_id = auth.uid()
     or public.is_room_member(room_id, auth.uid())
+    or exists (select 1 from public.rooms r where r.id = room_id and not r.is_private)
   );
 
 create policy "Users can join public rooms or be added as owner"
@@ -144,7 +142,7 @@ create policy "Users can leave rooms"
   to authenticated
   using (auth.uid() = user_id);
 
--- RPC to join any room (including private rooms) via invite_code
+-- Permite unirse a salas privadas sin exponerlas en las consultas normales.
 create or replace function public.join_room_by_code(p_code text)
 returns public.rooms
 language plpgsql
@@ -217,12 +215,14 @@ create policy "Room members can send messages"
     )
   );
 
-create policy "Senders or room members can update pin status"
+create policy "Room members can update pin status"
   on public.messages for update
   to authenticated
-  using (
-    public.is_room_member(room_id, auth.uid())
-  );
+  using (public.is_room_member(room_id, auth.uid()));
+
+-- Solo se permite modificar is_pinned; el resto del mensaje es inmutable.
+revoke update on public.messages from authenticated;
+grant update (is_pinned) on public.messages to authenticated;
 
 create policy "Senders can delete their own messages"
   on public.messages for delete
@@ -269,24 +269,25 @@ create policy "Public read access for avatars"
   on storage.objects for select
   using (bucket_id = 'avatars');
 
-create policy "Authenticated upload for avatars"
+-- Rutas: avatars/{uid}/... y chat-media/{images|files}/{uid}/...
+create policy "Users upload their own avatar"
   on storage.objects for insert
   to authenticated
-  with check (bucket_id = 'avatars');
+  with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 
-create policy "Authenticated update for avatars"
+create policy "Users update their own avatar"
   on storage.objects for update
   to authenticated
-  using (bucket_id = 'avatars');
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 
 create policy "Public read access for chat-media"
   on storage.objects for select
   using (bucket_id = 'chat-media');
 
-create policy "Authenticated upload for chat-media"
+create policy "Users upload chat media to their own folder"
   on storage.objects for insert
   to authenticated
-  with check (bucket_id = 'chat-media');
+  with check (bucket_id = 'chat-media' and (storage.foldername(name))[2] = auth.uid()::text);
 
 -- 7. REALTIME PUBLICATIONS
 alter publication supabase_realtime add table public.messages;

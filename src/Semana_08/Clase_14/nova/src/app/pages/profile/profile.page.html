@@ -20,30 +20,16 @@
         <ion-icon name="camera-outline" slot="start"></ion-icon>
         Cambiar foto
       </ion-button>
-      <input
-        #avatarInput
-        type="file"
-        hidden
-        accept="image/*"
-        (change)="onAvatarFileSelected($event)"
-      />
+      <input #avatarInput type="file" hidden accept="image/*" (change)="onAvatarFileSelected($event)" />
     </div>
 
     <div class="nova-card form-card">
       <ion-item lines="none" class="field-item">
-        <ion-input
-          [(ngModel)]="displayName"
-          label="Nombre visible"
-          labelPlacement="floating"
-        ></ion-input>
+        <ion-input [(ngModel)]="displayName" label="Nombre visible" labelPlacement="floating"></ion-input>
       </ion-item>
 
       <ion-item lines="none" class="field-item">
-        <ion-input
-          [(ngModel)]="username"
-          label="Usuario (@handle)"
-          labelPlacement="floating"
-        ></ion-input>
+        <ion-input [(ngModel)]="username" label="Usuario (@handle)" labelPlacement="floating"></ion-input>
       </ion-item>
 
       <ion-item lines="none" class="field-item">
@@ -65,12 +51,7 @@
       </ion-item>
 
       <ion-item lines="none" class="field-item">
-        <ion-textarea
-          [(ngModel)]="bio"
-          label="Biografía"
-          labelPlacement="floating"
-          [rows]="3"
-        ></ion-textarea>
+        <ion-textarea [(ngModel)]="bio" label="Biografía" labelPlacement="floating" [rows]="3"></ion-textarea>
       </ion-item>
 
       <ion-button expand="block" (click)="saveProfile()" [disabled]="saving()">

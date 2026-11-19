@@ -1,13 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import {
-  createClient,
-  RealtimeChannel,
-  Session,
-  SupabaseClient,
-  User,
-} from '@supabase/supabase-js';
+import type { RealtimeChannel, Session, SupabaseClient, User } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
+
 import { environment } from '../../environments/environment';
-import {
+import type {
   AvailabilityStatus,
   ChatMessage,
   MessageReaction,
@@ -16,6 +12,9 @@ import {
   Room,
   RoomMember,
 } from '../models/chat.models';
+
+export const isExpired = (m: Pick<ChatMessage, 'expires_at'>, now = Date.now()): boolean =>
+  !!m.expires_at && new Date(m.expires_at).getTime() <= now;
 
 export interface SendMessagePayload {
   roomId: string;
@@ -38,7 +37,7 @@ export interface SendMessagePayload {
 export class SupabaseService {
   readonly isConfigured = signal<boolean>(
     !environment.supabase.url.includes('YOUR_PROJECT_ID') &&
-      !environment.supabase.anonKey.includes('YOUR_SUPABASE_ANON_KEY')
+      !environment.supabase.anonKey.includes('YOUR_SUPABASE_ANON_KEY'),
   );
 
   readonly session = signal<Session | null>(null);
@@ -63,9 +62,7 @@ export class SupabaseService {
 
   private getClient(): SupabaseClient {
     if (!this.client) {
-      throw new Error(
-        'Supabase no está configurado. Completa SUPABASE_URL y SUPABASE_ANON_KEY en el archivo .env.'
-      );
+      throw new Error('Supabase no está configurado. Completa SUPABASE_URL y SUPABASE_ANON_KEY en el archivo .env.');
     }
     return this.client;
   }
@@ -76,7 +73,9 @@ export class SupabaseService {
       this.session.set(session);
       this.currentUser.set(session?.user ?? null);
       if (session?.user) {
-        void this.loadCurrentProfile(session.user.id);
+        // Supabase recomienda no llamar al cliente dentro de este callback (puede bloquearse).
+        const userId = session.user.id;
+        setTimeout(() => this.loadCurrentProfile(userId).catch(() => undefined));
       } else {
         this.currentProfile.set(null);
       }
@@ -150,11 +149,7 @@ export class SupabaseService {
 
   async loadCurrentProfile(userId: string): Promise<Profile | null> {
     const client = this.getClient();
-    const { data, error } = await client
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .maybeSingle();
+    const { data, error } = await client.from('profiles').select('*').eq('id', userId).maybeSingle();
 
     if (error) throw error;
     this.currentProfile.set(data as Profile | null);
@@ -196,7 +191,6 @@ export class SupabaseService {
 
     const path = `${user.id}/avatar-${Date.now()}.${extension}`;
     const { error } = await client.storage.from('avatars').upload(path, file, {
-      upsert: true,
       contentType: file.type || `image/${extension}`,
     });
     if (error) throw error;
@@ -221,8 +215,6 @@ export class SupabaseService {
     return data.publicUrl;
   }
 
-  // ==================== ROOMS ====================
-
   private generateInviteCode(): string {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let suffix = '';
@@ -242,7 +234,7 @@ export class SupabaseService {
     if (error) throw error;
 
     return (data ?? []).map((row) => {
-      const typed = row as Room & { room_members?: Array<{ count: number }> };
+      const typed = row as Room & { room_members?: { count: number }[] };
       return {
         ...typed,
         member_count: typed.room_members?.[0]?.count ?? 0,
@@ -257,12 +249,7 @@ export class SupabaseService {
     return data as Room | null;
   }
 
-  async createRoom(input: {
-    name: string;
-    description: string;
-    topic: string;
-    isPrivate: boolean;
-  }): Promise<Room> {
+  async createRoom(input: { name: string; description: string; topic: string; isPrivate: boolean }): Promise<Room> {
     const client = this.getClient();
     const user = this.currentUser();
     if (!user) throw new Error('Sesión no iniciada');
@@ -284,11 +271,12 @@ export class SupabaseService {
     if (error) throw error;
     const room = data as Room;
 
-    await client.from('room_members').upsert({
+    const { error: memberError } = await client.from('room_members').insert({
       room_id: room.id,
       user_id: user.id,
       role: 'owner',
     });
+    if (memberError) throw memberError;
 
     return room;
   }
@@ -298,11 +286,13 @@ export class SupabaseService {
     const user = this.currentUser();
     if (!user) throw new Error('Sesión no iniciada');
 
-    const { error } = await client.from('room_members').upsert({
-      room_id: roomId,
-      user_id: user.id,
-      role: 'member',
-    });
+    // ignoreDuplicates evita sobrescribir el rol (owner) y no requiere política UPDATE.
+    const { error } = await client
+      .from('room_members')
+      .upsert(
+        { room_id: roomId, user_id: user.id, role: 'member' },
+        { onConflict: 'room_id,user_id', ignoreDuplicates: true },
+      );
     if (error) throw error;
   }
 
@@ -319,26 +309,17 @@ export class SupabaseService {
     const client = this.getClient();
     const user = this.currentUser();
     if (!user) return;
-    const { error } = await client
-      .from('room_members')
-      .delete()
-      .eq('room_id', roomId)
-      .eq('user_id', user.id);
+    const { error } = await client.from('room_members').delete().eq('room_id', roomId).eq('user_id', user.id);
     if (error) throw error;
   }
 
   async getRoomMembers(roomId: string): Promise<RoomMember[]> {
     const client = this.getClient();
-    const { data, error } = await client
-      .from('room_members')
-      .select('*, profile:profiles(*)')
-      .eq('room_id', roomId);
+    const { data, error } = await client.from('room_members').select('*, profile:profiles(*)').eq('room_id', roomId);
 
     if (error) throw error;
     return (data ?? []) as RoomMember[];
   }
-
-  // ==================== MESSAGES ====================
 
   async getMessages(roomId: string, limit = 80): Promise<ChatMessage[]> {
     const client = this.getClient();
@@ -346,15 +327,13 @@ export class SupabaseService {
       .from('messages')
       .select('*, sender:profiles(*), reactions:message_reactions(*)')
       .eq('room_id', roomId)
-      .order('created_at', { ascending: true })
+      .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) throw error;
 
     const now = Date.now();
-    const messages = ((data ?? []) as ChatMessage[]).filter(
-      (m) => !m.expires_at || new Date(m.expires_at).getTime() > now
-    );
+    const messages = ((data ?? []) as ChatMessage[]).filter((m) => !isExpired(m, now)).reverse();
 
     const byId = new Map(messages.map((m) => [m.id, m]));
     return messages.map((m) => ({
@@ -398,10 +377,7 @@ export class SupabaseService {
 
   async togglePinMessage(messageId: string, isPinned: boolean): Promise<void> {
     const client = this.getClient();
-    const { error } = await client
-      .from('messages')
-      .update({ is_pinned: !isPinned })
-      .eq('id', messageId);
+    const { error } = await client.from('messages').update({ is_pinned: !isPinned }).eq('id', messageId);
     if (error) throw error;
   }
 
@@ -434,36 +410,35 @@ export class SupabaseService {
     }
   }
 
-  // ==================== REALTIME ====================
-
+  // Realtime no aplica filtros a los DELETE y, con RLS, solo envía la clave primaria;
+  // por eso los borrados se escuchan sin filtro y se comparan por id en el cliente.
   subscribeToRoom(
     roomId: string,
     callbacks: {
       onMessageChange: () => void;
-      onReactionChange: () => void;
-    }
+      onMessageDeleted: (messageId: string) => void;
+      onReactionInserted: (messageId: string) => void;
+      onReactionDeleted: (reactionId: string) => void;
+    },
   ): RealtimeChannel {
     const client = this.getClient();
+    const filter = `room_id=eq.${roomId}`;
     return client
       .channel(`room-sync-${roomId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'messages',
-          filter: `room_id=eq.${roomId}`,
-        },
-        () => callbacks.onMessageChange()
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter }, () =>
+        callbacks.onMessageChange(),
       )
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'message_reactions',
-        },
-        () => callbacks.onReactionChange()
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter }, () =>
+        callbacks.onMessageChange(),
+      )
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, (payload) =>
+        callbacks.onMessageDeleted((payload.old as { id: string }).id),
+      )
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'message_reactions' }, (payload) =>
+        callbacks.onReactionInserted((payload.new as MessageReaction).message_id),
+      )
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'message_reactions' }, (payload) =>
+        callbacks.onReactionDeleted((payload.old as { id: string }).id),
       )
       .subscribe();
   }
@@ -473,9 +448,7 @@ export class SupabaseService {
     return client
       .channel('rooms-list-sync')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'rooms' }, () => onChange())
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members' }, () =>
-        onChange()
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members' }, () => onChange())
       .subscribe();
   }
 
