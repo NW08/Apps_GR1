@@ -58,6 +58,7 @@ import type { ChatMessage, LiveBeacon, Room, RoomMember, TypingState } from '../
 import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
 import { isExpired, SupabaseService } from '../../services/supabase.service';
+import { traducirError } from '../../utils/error-es';
 
 interface ReactionGroup {
   emoji: string;
@@ -240,8 +241,7 @@ export class ChatPage implements OnInit, OnDestroy {
       this.messages.set(messages);
       this.scrollToBottom();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error al cargar el chat';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'Error al cargar el chat'), 'danger');
     } finally {
       this.loading.set(false);
     }
@@ -329,8 +329,7 @@ export class ChatPage implements OnInit, OnDestroy {
       if (uid) void this.firebase.clearTyping(this.roomId, uid);
       await this.refreshMessages();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo enviar el mensaje';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudo enviar el mensaje'), 'danger');
     } finally {
       this.sending.set(false);
     }
@@ -436,8 +435,7 @@ export class ChatPage implements OnInit, OnDestroy {
       await this.haptics.notify();
       await this.refreshMessages();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error subiendo archivo';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'Error subiendo archivo'), 'danger');
     } finally {
       this.sending.set(false);
     }
@@ -478,8 +476,7 @@ export class ChatPage implements OnInit, OnDestroy {
       await this.haptics.notify();
       await this.refreshMessages();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo obtener tu ubicación';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudo obtener tu ubicación'), 'danger');
     } finally {
       this.sending.set(false);
     }
@@ -522,8 +519,7 @@ export class ChatPage implements OnInit, OnDestroy {
       this.showBeacons.set(true);
       await this.showToast('Ubicación GPS en vivo activada por 15 minutos', 'success');
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo activar la ubicación GPS en vivo';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudo activar la ubicación GPS en vivo'), 'danger');
     }
   }
 

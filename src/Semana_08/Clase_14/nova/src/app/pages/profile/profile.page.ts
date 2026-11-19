@@ -32,6 +32,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
+import { traducirError } from '../../utils/error-es';
 
 @Component({
   selector: 'app-profile',
@@ -137,8 +138,7 @@ export class ProfilePage implements OnInit {
       await this.haptics.notify();
       await this.showToast('Avatar actualizado', 'success');
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error subiendo avatar';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'Error subiendo avatar'), 'danger');
     } finally {
       this.saving.set(false);
     }
@@ -165,9 +165,7 @@ export class ProfilePage implements OnInit {
       const isDuplicate = (err as { code?: string }).code === '23505';
       const msg = isDuplicate
         ? 'Ese nombre de usuario ya está en uso'
-        : err instanceof Error
-          ? err.message
-          : 'No se pudo guardar el perfil';
+        : traducirError(err, 'No se pudo guardar el perfil');
       await this.showToast(msg, 'danger');
     } finally {
       this.saving.set(false);

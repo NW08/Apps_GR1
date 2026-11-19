@@ -29,6 +29,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
+import { traducirError } from '../../utils/error-es';
 
 @Component({
   selector: 'app-auth',
@@ -140,8 +141,7 @@ export class AuthPage {
         this.mode.set('login');
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error de autenticación';
-      await this.showToast(message, 'danger');
+      await this.showToast(traducirError(err, 'Error de autenticación'), 'danger');
     } finally {
       this.loading.set(false);
     }
@@ -166,8 +166,7 @@ export class AuthPage {
       await this.showToast('Contraseña actualizada.', 'success');
       await this.navCtrl.navigateRoot('/rooms');
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'No se pudo actualizar la contraseña';
-      await this.showToast(message, 'danger');
+      await this.showToast(traducirError(err, 'No se pudo actualizar la contraseña'), 'danger');
     } finally {
       this.loading.set(false);
     }

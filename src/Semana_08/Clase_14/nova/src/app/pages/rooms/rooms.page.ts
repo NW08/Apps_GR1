@@ -40,6 +40,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { HapticsService } from '../../services/haptics.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
+import { traducirError } from '../../utils/error-es';
 
 @Component({
   selector: 'app-rooms',
@@ -129,8 +130,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       const list = await this.supabase.getRooms();
       this.rooms.set(list);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudieron cargar las salas';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudieron cargar las salas'), 'danger');
     } finally {
       this.loading.set(false);
     }
@@ -185,8 +185,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       await this.showToast(`Sala creada · Código ${room.invite_code}`, 'success');
       await this.router.navigate(['/chat', room.id]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error al crear sala';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'Error al crear la sala'), 'danger');
     }
   }
 
@@ -213,8 +212,7 @@ export class RoomsPage implements OnInit, OnDestroy {
               await this.loadRooms(false);
               await this.router.navigate(['/chat', room.id]);
             } catch (err) {
-              const msg = err instanceof Error ? err.message : 'Código inválido';
-              await this.showToast(msg, 'danger');
+              await this.showToast(traducirError(err, 'Código inválido'), 'danger');
             }
           },
         },
@@ -231,8 +229,7 @@ export class RoomsPage implements OnInit, OnDestroy {
       await this.haptics.impact();
       await this.router.navigate(['/chat', room.id]);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'No se pudo abrir la sala';
-      await this.showToast(msg, 'danger');
+      await this.showToast(traducirError(err, 'No se pudo abrir la sala'), 'danger');
     }
   }
 
