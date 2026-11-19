@@ -1,15 +1,9 @@
-const ERROR_TRANSLATIONS: Array<[RegExp, string]> = [
+const ERROR_TRANSLATIONS: [RegExp, string][] = [
   [/user already registered/i, 'Este correo ya está registrado.'],
   [/invalid login credentials/i, 'Correo o contraseña incorrectos.'],
   [/email not confirmed/i, 'Debes confirmar tu correo electrónico antes de ingresar.'],
-  [
-    /password should be at least (\d+) characters/i,
-    'La contraseña debe tener al menos 6 caracteres.',
-  ],
-  [
-    /new password should be different from the old password/i,
-    'La nueva contraseña debe ser diferente a la anterior.',
-  ],
+  [/password should be at least (\d+) characters/i, 'La contraseña debe tener al menos 6 caracteres.'],
+  [/new password should be different from the old password/i, 'La nueva contraseña debe ser diferente a la anterior.'],
   [/unable to validate email address/i, 'El formato del correo electrónico no es válido.'],
   [
     /rate limit|too many requests|only request this after/i,
@@ -19,7 +13,10 @@ const ERROR_TRANSLATIONS: Array<[RegExp, string]> = [
   [/signup is disabled/i, 'El registro de nuevos usuarios está deshabilitado.'],
   [/row-level security policy/i, 'No tienes permisos para realizar esta acción.'],
   [/duplicate key value/i, 'Ya existe un registro con ese valor (por ejemplo, ese nombre de usuario).'],
-  [/failed to fetch|networkerror|network request failed/i, 'Error de conexión. Verifica tu internet e intenta de nuevo.'],
+  [
+    /failed to fetch|networkerror|network request failed/i,
+    'Error de conexión. Verifica tu internet e intenta de nuevo.',
+  ],
   [/user denied geolocation|location permission denied/i, 'Permiso de ubicación denegado.'],
   [/permission denied/i, 'Permiso denegado en el servidor (revisa las políticas SQL en Supabase).'],
   [/timeout expired/i, 'Se agotó el tiempo de espera para obtener la ubicación.'],

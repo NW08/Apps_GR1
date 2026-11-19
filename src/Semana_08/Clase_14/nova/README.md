@@ -221,7 +221,7 @@ npm install
 
 2. **Configurar Supabase**
    1. Crea un proyecto en [Supabase](https://supabase.com/).
-   2. En **SQL Editor**, ejecuta todo [`supabase/schema.sql`](./supabase/schema.sql). Crea las tablas, las políticas RLS, el trigger `handle_new_user`, la función `join_room_by_code`, los _buckets_ `avatars` y `chat-media`, y habilita Realtime.
+   2. En **SQL Editor**, ejecuta todo [`supabase/schema.sql`](./supabase/schema.sql) (se puede volver a ejecutar sin errores para aplicar cambios). Crea las tablas, las políticas RLS, el trigger `handle_new_user`, la función `join_room_by_code`, los _buckets_ `avatars` y `chat-media`, y habilita Realtime.
    3. En **Project Settings → API** copia la **Project URL** y la clave pública **anon**.
    4. En **Authentication → URL Configuration**, pon la URL de la app web como **Site URL** y agrega `https://<proyecto>.web.app/**`, `http://localhost:8100/**` y `http://localhost:4200/**` en **Redirect URLs**. Sin esto, los correos de confirmación y recuperación apuntan a `localhost:3000`.
 
@@ -366,7 +366,6 @@ Como el inicio de sesión ocurre en Supabase, Firebase no sabe quién es el usua
 - Los mensajes efímeros se **ocultan en el cliente** al vencer (se revisa cada 10 s), pero siguen guardados en la tabla `messages`.
 - Los _buckets_ `avatars` y `chat-media` son públicos: cualquiera con el enlace puede ver la imagen o el archivo. Para subir, las políticas exigen que la carpeta sea la del propio usuario (`avatars/{uid}/…`, `chat-media/{images|files}/{uid}/…`).
 - Las reacciones (`message_reactions`) son legibles por cualquier usuario autenticado, incluso las de salas privadas.
-- `schema.sql` está pensado para ejecutarse una sola vez en un proyecto nuevo: volver a correrlo falla en las políticas y publicaciones que ya existen.
 - Los avatares por defecto se generan con DiceBear (servicio externo) a partir del nombre visible.
 - La carpeta `android/` no se versiona; los permisos de cámara y ubicación se agregan al generar el proyecto nativo.
 
