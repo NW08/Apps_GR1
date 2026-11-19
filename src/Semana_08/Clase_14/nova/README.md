@@ -2,6 +2,12 @@
 
 > Aplicación de mensajería en tiempo real con Ionic que integra **Supabase** y **Firebase** de forma complementaria: Supabase para los datos persistentes y Firebase Realtime Database para el estado efímero.
 
+| Entregable         | Enlace                                   |
+| ------------------ | ---------------------------------------- |
+| App web            | _Pendiente: `https://<proyecto>.web.app`_ |
+| Video demostrativo | _Pendiente: enlace a la publicación_      |
+| APK                | [Descargar APK](app-debug.apk)            |
+
 ---
 
 ## 1. Contexto del Proyecto
@@ -34,7 +40,7 @@ EPN · Periodo 2026B. Los aportes de cada uno están en [Distribución del Traba
 
 | #   | Funcionalidad                       | Implementación                                                                                                   | Motor            |
 | --- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
-| 1   | Inicio de sesión, registro y recuperación | Supabase Auth (`signUp`, `signInWithPassword`, `resetPasswordForEmail`) y _guard_ de rutas.                 | Supabase         |
+| 1   | Inicio de sesión, registro y recuperación | Supabase Auth (`signUp`, `signInWithPassword`, `resetPasswordForEmail` + `updateUser` para la nueva contraseña) y _guard_ de rutas. | Supabase         |
 | 2   | Perfil editable                     | Nombre visible, `@usuario`, biografía, estado y disponibilidad (en línea, ocupado, ausente, no molestar).       | Supabase         |
 | 3   | Avatar                              | Foto con la cámara o la galería (`@capacitor/camera`), guardada en el _bucket_ `avatars`.                       | Supabase Storage |
 | 4   | Salas públicas y privadas           | Creación con nombre, tema y descripción; el creador queda como `owner`.                                         | Supabase         |
@@ -107,6 +113,7 @@ EPN · Periodo 2026B. Los aportes de cada uno están en [Distribución del Traba
 nova/
 ├── docs/evidencias/                      # Capturas de la app y de las consolas
 ├── firebase/database.rules.json          # Reglas de Realtime Database
+├── firebase.json                         # Firebase Hosting (www/) y ruta de las reglas
 ├── scripts/generar-env.mjs               # Genera la configuración desde .env
 ├── supabase/schema.sql                   # Tablas, RLS, trigger, RPC, buckets y Realtime
 ├── src/
@@ -216,12 +223,13 @@ npm install
    1. Crea un proyecto en [Supabase](https://supabase.com/).
    2. En **SQL Editor**, ejecuta todo [`supabase/schema.sql`](./supabase/schema.sql). Crea las tablas, las políticas RLS, el trigger `handle_new_user`, la función `join_room_by_code`, los _buckets_ `avatars` y `chat-media`, y habilita Realtime.
    3. En **Project Settings → API** copia la **Project URL** y la clave pública **anon**.
+   4. En **Authentication → URL Configuration**, pon la URL de la app web como **Site URL** y agrega `https://<proyecto>.web.app/**`, `http://localhost:8100/**` y `http://localhost:4200/**` en **Redirect URLs**. Sin esto, los correos de confirmación y recuperación apuntan a `localhost:3000`.
 
 > Si la confirmación de correo está activada en **Authentication**, cada usuario debe confirmar su correo antes de iniciar sesión.
 
 3. **Configurar Firebase**
    1. Crea un proyecto en la [consola de Firebase](https://console.firebase.google.com/) y habilita **Realtime Database**.
-   2. En **Realtime Database → Reglas**, pega el contenido de [`firebase/database.rules.json`](./firebase/database.rules.json) y publícalo.
+   2. En **Realtime Database → Reglas**, pega el contenido de [`firebase/database.rules.json`](./firebase/database.rules.json) y publícalo (o usa `firebase deploy --only database`, ver paso 7).
    3. Registra una **app web** (Configuración del proyecto → General → Tus apps) y copia su configuración.
 
 4. **Crear el archivo `.env`**
@@ -240,6 +248,7 @@ FIREBASE_PROJECT_ID=...
 FIREBASE_STORAGE_BUCKET=...
 FIREBASE_MESSAGING_SENDER_ID=...
 FIREBASE_APP_ID=...
+APP_URL=https://<proyecto>.web.app   # opcional; destino del enlace de recuperación
 ```
 
 `src/environments/env.config.ts` se genera desde `.env` antes de `ionic serve`, `ionic build`, `npm start`, `npm run build`, el lint y las pruebas (manualmente: `npm run env`). Ninguno de los dos archivos se versiona. Si falta alguna variable, la app compila igual pero muestra que ese servicio no está configurado.
@@ -260,6 +269,18 @@ npx cap open android
 ```
 
 Agrega en `android/app/src/main/AndroidManifest.xml` los permisos `CAMERA`, `ACCESS_COARSE_LOCATION` y `ACCESS_FINE_LOCATION` (`INTERNET` ya viene incluido) y genera el APK desde **Build → Build APK(s)**.
+
+7. **Desplegar en la web (Firebase Hosting)**
+
+```bash
+npm i -g firebase-tools
+firebase login
+firebase use --add            # elige el proyecto de Firebase (crea .firebaserc)
+npm run build                 # genera www/ con las variables de .env
+firebase deploy --only hosting,database
+```
+
+La app queda en `https://<proyecto>.web.app`. `firebase.json` redirige todas las rutas a `index.html` para que funcionen `/rooms`, `/chat/:id`, etc. Después del primer despliegue, actualiza `APP_URL` en `.env` y la **URL Configuration** de Supabase, y vuelve a compilar el APK para que el enlace de recuperación abra la web.
 
 Calidad de código: `npm run lint` (ESLint, tipos de e2e y Prettier) y `npm run test:unit` (Vitest).
 

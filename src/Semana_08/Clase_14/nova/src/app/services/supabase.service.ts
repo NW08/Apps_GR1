@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 import type { RealtimeChannel, Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js';
 
@@ -43,6 +44,7 @@ export class SupabaseService {
   readonly session = signal<Session | null>(null);
   readonly currentUser = signal<User | null>(null);
   readonly currentProfile = signal<Profile | null>(null);
+  readonly passwordRecovery = signal<boolean>(false);
 
   private client: SupabaseClient | null = null;
   private sessionInitPromise: Promise<Session | null> | null = null;
@@ -69,7 +71,8 @@ export class SupabaseService {
 
   private initAuthListener(): void {
     const client = this.getClient();
-    client.auth.onAuthStateChange((_event, session) => {
+    client.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') this.passwordRecovery.set(true);
       this.session.set(session);
       this.currentUser.set(session?.user ?? null);
       if (session?.user) {
@@ -134,8 +137,18 @@ export class SupabaseService {
 
   async resetPassword(email: string): Promise<void> {
     const client = this.getClient();
-    const { error } = await client.auth.resetPasswordForEmail(email);
+    // En el APK el origen es http://localhost, así que el enlace del correo debe abrir la app web.
+    const baseUrl = environment.appUrl || (Capacitor.isNativePlatform() ? '' : window.location.origin);
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo: baseUrl ? `${baseUrl}/auth` : undefined,
+    });
     if (error) throw error;
+  }
+
+  async updatePassword(password: string): Promise<void> {
+    const { error } = await this.getClient().auth.updateUser({ password });
+    if (error) throw error;
+    this.passwordRecovery.set(false);
   }
 
   async signOut(): Promise<void> {

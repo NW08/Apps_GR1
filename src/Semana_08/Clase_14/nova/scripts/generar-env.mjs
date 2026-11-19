@@ -1,5 +1,6 @@
 // Genera src/environments/env.config.ts desde .env. Las variables del sistema tienen prioridad (CI).
 // Si falta una, se usa un valor de ejemplo que los servicios detectan como "no configurado".
+// El tercer elemento marca las variables opcionales (no generan advertencia).
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +10,9 @@ const archivoEnv = resolve(raiz, '.env');
 const destino = resolve(raiz, 'src/environments/env.config.ts');
 
 const GRUPOS = {
+  appConfig: {
+    url: ['APP_URL', '', true],
+  },
   supabaseConfig: {
     url: ['SUPABASE_URL', 'https://YOUR_PROJECT_ID.supabase.co'],
     anonKey: ['SUPABASE_ANON_KEY', 'YOUR_SUPABASE_ANON_KEY'],
@@ -49,9 +53,9 @@ const faltantes = [];
 let contenido = '// Archivo GENERADO por scripts/generar-env.mjs a partir de .env. No editar ni versionar.\n';
 
 for (const [nombre, campos] of Object.entries(GRUPOS)) {
-  const lineas = Object.entries(campos).map(([campo, [variable, ejemplo]]) => {
+  const lineas = Object.entries(campos).map(([campo, [variable, ejemplo, opcional]]) => {
     const valor = process.env[variable] || deArchivo[variable] || '';
-    if (!valor) faltantes.push(variable);
+    if (!valor && !opcional) faltantes.push(variable);
     return `  ${campo}: '${escapar(valor || ejemplo)}',`;
   });
   contenido += `\nexport const ${nombre} = {\n${lineas.join('\n')}\n};\n`;

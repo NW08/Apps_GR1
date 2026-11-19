@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -55,15 +55,30 @@ export class AuthPage {
   private readonly toastCtrl = inject(ToastController);
   private readonly haptics = inject(HapticsService);
 
-  mode = signal<'login' | 'register' | 'reset'>('login');
+  mode = signal<'login' | 'register' | 'reset' | 'update'>('login');
   loading = signal<boolean>(false);
+
+  readonly submitLabel = computed(() => {
+    const labels = {
+      login: 'Iniciar sesión',
+      register: 'Crear cuenta',
+      reset: 'Enviar enlace',
+      update: 'Guardar nueva contraseña',
+    };
+    return labels[this.mode()];
+  });
 
   email = '';
   password = '';
   displayName = '';
   username = '';
+  confirmPassword = '';
 
   constructor() {
+    effect(() => {
+      if (this.supabase.passwordRecovery()) this.mode.set('update');
+    });
+
     addIcons({
       planetOutline,
       mailOutline,
@@ -85,6 +100,11 @@ export class AuthPage {
   async submit(): Promise<void> {
     if (!this.supabase.isConfigured()) {
       await this.showToast('Configura tus credenciales de Supabase en el archivo .env primero.', 'warning');
+      return;
+    }
+
+    if (this.mode() === 'update') {
+      await this.updatePassword();
       return;
     }
 
@@ -121,6 +141,32 @@ export class AuthPage {
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Error de autenticación';
+      await this.showToast(message, 'danger');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  private async updatePassword(): Promise<void> {
+    if (this.password.length < 6) {
+      await this.showToast('La contraseña debe tener al menos 6 caracteres.', 'warning');
+      return;
+    }
+    if (this.password !== this.confirmPassword) {
+      await this.showToast('Las contraseñas no coinciden.', 'warning');
+      return;
+    }
+
+    this.loading.set(true);
+    try {
+      await this.supabase.updatePassword(this.password);
+      this.password = '';
+      this.confirmPassword = '';
+      await this.haptics.notify();
+      await this.showToast('Contraseña actualizada.', 'success');
+      await this.navCtrl.navigateRoot('/rooms');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'No se pudo actualizar la contraseña';
       await this.showToast(message, 'danger');
     } finally {
       this.loading.set(false);
