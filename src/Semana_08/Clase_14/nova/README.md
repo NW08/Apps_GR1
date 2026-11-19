@@ -4,7 +4,7 @@
 
 | Entregable         | Enlace                                   |
 | ------------------ | ---------------------------------------- |
-| App web            | _Pendiente: `https://<proyecto>.web.app`_ |
+| App web            | <https://novasync-54e1b.web.app>          |
 | Video demostrativo | _Pendiente: enlace a la publicación_      |
 | APK                | [Descargar APK](app-debug.apk)            |
 
@@ -229,7 +229,7 @@ npm install
 
 3. **Configurar Firebase**
    1. Crea un proyecto en la [consola de Firebase](https://console.firebase.google.com/) y habilita **Realtime Database**.
-   2. En **Realtime Database → Reglas**, pega el contenido de [`firebase/database.rules.json`](./firebase/database.rules.json) y publícalo (o usa `firebase deploy --only database`, ver paso 7).
+   2. En **Realtime Database → Reglas**, pega el contenido de [`firebase/database.rules.json`](./firebase/database.rules.json) y publícalo (o usa `npm run deploy:rules`, ver paso 7).
    3. Registra una **app web** (Configuración del proyecto → General → Tus apps) y copia su configuración.
 
 4. **Crear el archivo `.env`**
@@ -273,12 +273,12 @@ Agrega en `android/app/src/main/AndroidManifest.xml` los permisos `CAMERA`, `ACC
 7. **Desplegar en la web (Firebase Hosting)**
 
 ```bash
-npm i -g firebase-tools
-firebase login
-firebase use --add            # elige el proyecto de Firebase (crea .firebaserc)
-npm run build                 # genera www/ con las variables de .env
-firebase deploy --only hosting,database
+npx firebase login           # solo la primera vez; firebase-tools está en devDependencies
+npm run deploy:rules         # publica firebase/database.rules.json
+npm run deploy               # compila www/ con las variables de .env y lo sube a Hosting
 ```
+
+El proyecto de Firebase está fijado en `.firebaserc` (`novasync-54e1b`); para usar otro, `npx firebase use --add`.
 
 La app queda en `https://<proyecto>.web.app`. `firebase.json` redirige todas las rutas a `index.html` para que funcionen `/rooms`, `/chat/:id`, etc. Después del primer despliegue, actualiza `APP_URL` en `.env` y la **URL Configuration** de Supabase, y vuelve a compilar el APK para que el enlace de recuperación abra la web.
 
