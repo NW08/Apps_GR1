@@ -2,11 +2,11 @@
 
 > Aplicación de mensajería en tiempo real con Ionic que integra **Supabase** y **Firebase** de forma complementaria: Supabase para los datos persistentes y Firebase Realtime Database para el estado efímero.
 
-| Entregable         | Enlace                                   |
-| ------------------ | ---------------------------------------- |
-| App web            | <https://novasync-54e1b.web.app>          |
-| Video demostrativo | _Pendiente: enlace a la publicación_      |
-| APK                | [Descargar APK](app-debug.apk)            |
+| Entregable         | Enlace                               |
+| ------------------ | ------------------------------------ |
+| App web            | <https://novasync-54e1b.web.app>     |
+| Video demostrativo | _Pendiente: enlace a la publicación_ |
+| APK                | [Descargar APK](app-debug.apk)       |
 
 ---
 
@@ -38,22 +38,22 @@ EPN · Periodo 2026B. Los aportes de cada uno están en [Distribución del Traba
 
 **Objetivo:** construir una aplicación Ionic de mensajería que combine Supabase y Firebase en tiempo real, con funciones nativas del dispositivo (cámara, GPS y vibración).
 
-| #   | Funcionalidad                       | Implementación                                                                                                   | Motor            |
-| --- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
+| #   | Funcionalidad                             | Implementación                                                                                                                      | Motor            |
+| --- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | 1   | Inicio de sesión, registro y recuperación | Supabase Auth (`signUp`, `signInWithPassword`, `resetPasswordForEmail` + `updateUser` para la nueva contraseña) y _guard_ de rutas. | Supabase         |
-| 2   | Perfil editable                     | Nombre visible, `@usuario`, biografía, estado y disponibilidad (en línea, ocupado, ausente, no molestar).       | Supabase         |
-| 3   | Avatar                              | Foto con la cámara o la galería (`@capacitor/camera`), guardada en el _bucket_ `avatars`.                       | Supabase Storage |
-| 4   | Salas públicas y privadas           | Creación con nombre, tema y descripción; el creador queda como `owner`.                                         | Supabase         |
-| 5   | Códigos de invitación `NOVA-XXXX`   | Función RPC `join_room_by_code` (`security definer`) que valida el código y agrega al usuario a la sala privada. | Supabase         |
-| 6   | Mensajes en tiempo real             | Supabase Realtime (`postgres_changes`) actualiza la conversación al insertar, editar o borrar mensajes y reacciones. | Supabase         |
-| 7   | Imágenes                            | Envío desde la cámara o la galería y visor a pantalla completa (`chat-media/images`).                            | Supabase Storage |
-| 8   | Archivos                            | PDF, DOCX, ZIP o TXT con nombre, tamaño y descarga directa (`chat-media/files`).                                | Supabase Storage |
-| 9   | Ubicación puntual                   | `@capacitor/geolocation` + mapa Leaflet / OpenStreetMap dentro del mensaje.                                     | Supabase         |
-| 10  | Ubicación en vivo (15 min)          | `watchPosition` publica las coordenadas en `beacons/` mientras dura la transmisión.                             | Firebase RTDB    |
-| 11  | Presencia en línea                  | `presence/` con `onDisconnect()` para marcar al usuario como ausente si se cierra la app o pierde conexión.     | Firebase RTDB    |
-| 12  | Indicador "escribiendo..."          | `typing/` con expiración de 3.5 s y limpieza automática al desconectarse.                                       | Firebase RTDB    |
-| 13  | Respuestas, mensajes fijados y reacciones | Respuesta citada (`reply_to_id`), fijar (`is_pinned`) y reacciones 👍 🔥 ❤️ 😂 🚀.                         | Supabase         |
-| 14  | Mensajes efímeros, búsqueda y tema  | Mensajes de 1 o 5 minutos (`expires_at`), búsqueda en la sala, modo oscuro/claro y vibración (`@capacitor/haptics`). | Supabase     |
+| 2   | Perfil editable                           | Nombre visible, `@usuario`, biografía, estado y disponibilidad (en línea, ocupado, ausente, no molestar).                           | Supabase         |
+| 3   | Avatar                                    | Foto con la cámara o la galería (`@capacitor/camera`), guardada en el _bucket_ `avatars`.                                           | Supabase Storage |
+| 4   | Salas públicas y privadas                 | Creación con nombre, tema y descripción; el creador queda como `owner`.                                                             | Supabase         |
+| 5   | Códigos de invitación `NOVA-XXXX`         | Función RPC `join_room_by_code` (`security definer`) que valida el código y agrega al usuario a la sala privada.                    | Supabase         |
+| 6   | Mensajes en tiempo real                   | Supabase Realtime (`postgres_changes`) actualiza la conversación al insertar, editar o borrar mensajes y reacciones.                | Supabase         |
+| 7   | Imágenes                                  | Envío desde la cámara o la galería y visor a pantalla completa (`chat-media/images`).                                               | Supabase Storage |
+| 8   | Archivos                                  | PDF, DOCX, ZIP o TXT con nombre, tamaño y descarga directa (`chat-media/files`).                                                    | Supabase Storage |
+| 9   | Ubicación puntual                         | `@capacitor/geolocation` + mapa Leaflet / OpenStreetMap dentro del mensaje.                                                         | Supabase         |
+| 10  | Ubicación en vivo (15 min)                | `watchPosition` publica las coordenadas en `beacons/` mientras dura la transmisión.                                                 | Firebase RTDB    |
+| 11  | Presencia en línea                        | `presence/` con `onDisconnect()` para marcar al usuario como ausente si se cierra la app o pierde conexión.                         | Firebase RTDB    |
+| 12  | Indicador "escribiendo..."                | `typing/` con expiración de 3.5 s y limpieza automática al desconectarse.                                                           | Firebase RTDB    |
+| 13  | Respuestas, mensajes fijados y reacciones | Respuesta citada (`reply_to_id`), fijar (`is_pinned`) y reacciones 👍 🔥 ❤️ 😂 🚀.                                                  | Supabase         |
+| 14  | Mensajes efímeros, búsqueda y tema        | Mensajes de 1 o 5 minutos (`expires_at`), búsqueda en la sala, modo oscuro/claro y vibración (`@capacitor/haptics`).                | Supabase         |
 
 ---
 
@@ -61,30 +61,30 @@ EPN · Periodo 2026B. Los aportes de cada uno están en [Distribución del Traba
 
 ### Tecnologías
 
-| Tecnología                                                         | Uso                                                              |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| [Ionic 9](https://ionicframework.com/)                             | Componentes de interfaz móvil                                    |
-| [Angular 22](https://angular.dev/) (standalone)                    | Páginas standalone, signals, _guards_ y rutas diferidas          |
-| [Supabase JS](https://supabase.com/docs/reference/javascript)      | Auth, PostgreSQL con RLS, Realtime, Storage y funciones RPC      |
-| [Firebase JS SDK](https://firebase.google.com/docs/database)       | Realtime Database (presencia, escritura y ubicación en vivo)     |
-| [Capacitor 8](https://capacitorjs.com/)                            | Cámara, geolocalización, vibración y compilación para Android    |
-| [Leaflet](https://leafletjs.com/) + OpenStreetMap                  | Mapas de las ubicaciones compartidas                             |
-| ESLint · Prettier · Vitest · Playwright                            | Calidad de código y pruebas                                      |
+| Tecnología                                                    | Uso                                                           |
+| ------------------------------------------------------------- | ------------------------------------------------------------- |
+| [Ionic 9](https://ionicframework.com/)                        | Componentes de interfaz móvil                                 |
+| [Angular 22](https://angular.dev/) (standalone)               | Páginas standalone, signals, _guards_ y rutas diferidas       |
+| [Supabase JS](https://supabase.com/docs/reference/javascript) | Auth, PostgreSQL con RLS, Realtime, Storage y funciones RPC   |
+| [Firebase JS SDK](https://firebase.google.com/docs/database)  | Realtime Database (presencia, escritura y ubicación en vivo)  |
+| [Capacitor 8](https://capacitorjs.com/)                       | Cámara, geolocalización, vibración y compilación para Android |
+| [Leaflet](https://leafletjs.com/) + OpenStreetMap             | Mapas de las ubicaciones compartidas                          |
+| ESLint · Prettier · Vitest · Playwright                       | Calidad de código y pruebas                                   |
 
 ### Componentes Ionic utilizados
 
-| Componente                                                                    | Dónde se usa                                                          |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `ion-input`                                                                   | Correo, contraseña, nombre, `@usuario`, estado y mensajes del chat    |
-| `ion-textarea`, `ion-select` / `ion-select-option`, `ion-toggle`              | Biografía, disponibilidad y modo oscuro en el perfil                   |
-| `ion-segment` / `ion-segment-button`                                          | Alternar entre inicio de sesión, registro y recuperación              |
-| `ion-item` / `ion-label`, `ion-avatar`, `ion-badge`, `ion-chip`               | Salas, miembros, estados, códigos de invitación y opciones del chat   |
-| `ion-searchbar`                                                               | Búsqueda de salas y de mensajes dentro de una sala                    |
-| `ion-refresher`, `ion-skeleton-text`, `ion-spinner`                           | Recarga manual y estados de carga del listado de salas                |
-| `ion-modal`                                                                   | Visor de imágenes a pantalla completa                                 |
-| `ion-alert` (`AlertController`)                                              | Crear una sala y unirse con un código NOVA                            |
-| `ion-action-sheet`, `ion-toast`                                              | Menú de adjuntos, opciones de cada mensaje y avisos de éxito o error  |
-| `ion-header` / `ion-toolbar` / `ion-title` / `ion-buttons` / `ion-back-button` / `ion-content` / `ion-footer` / `ion-icon` | Estructura y navegación de las páginas |
+| Componente                                                                                                                 | Dónde se usa                                                         |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `ion-input`                                                                                                                | Correo, contraseña, nombre, `@usuario`, estado y mensajes del chat   |
+| `ion-textarea`, `ion-select` / `ion-select-option`, `ion-toggle`                                                           | Biografía, disponibilidad y modo oscuro en el perfil                 |
+| `ion-segment` / `ion-segment-button`                                                                                       | Alternar entre inicio de sesión, registro y recuperación             |
+| `ion-item` / `ion-label`, `ion-avatar`, `ion-badge`, `ion-chip`                                                            | Salas, miembros, estados, códigos de invitación y opciones del chat  |
+| `ion-searchbar`                                                                                                            | Búsqueda de salas y de mensajes dentro de una sala                   |
+| `ion-refresher`, `ion-skeleton-text`, `ion-spinner`                                                                        | Recarga manual y estados de carga del listado de salas               |
+| `ion-modal`                                                                                                                | Visor de imágenes a pantalla completa                                |
+| `ion-alert` (`AlertController`)                                                                                            | Crear una sala y unirse con un código NOVA                           |
+| `ion-action-sheet`, `ion-toast`                                                                                            | Menú de adjuntos, opciones de cada mensaje y avisos de éxito o error |
+| `ion-header` / `ion-toolbar` / `ion-title` / `ion-buttons` / `ion-back-button` / `ion-content` / `ion-footer` / `ion-icon` | Estructura y navegación de las páginas                               |
 
 ---
 
@@ -147,33 +147,33 @@ Rutas: `/auth`, `/rooms`, `/chat/:id` y `/profile`. Todas menos `/auth` están p
 
 ### Supabase (`SupabaseService`)
 
-| Área         | Cómo se usa                                                                                                                             |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| **Auth**     | Registro con correo y contraseña; el trigger `handle_new_user` crea el perfil automáticamente. La sesión persiste y se renueva sola.   |
-| **Database** | Tablas `profiles`, `rooms`, `room_members`, `messages` y `message_reactions`, todas con **Row Level Security**.                          |
-| **RPC**      | `join_room_by_code(p_code)` busca la sala por código y agrega al usuario, sin exponer las salas privadas en las consultas normales.     |
+| Área         | Cómo se usa                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Auth**     | Registro con correo y contraseña; el trigger `handle_new_user` crea el perfil automáticamente. La sesión persiste y se renueva sola.         |
+| **Database** | Tablas `profiles`, `rooms`, `room_members`, `messages` y `message_reactions`, todas con **Row Level Security**.                              |
+| **RPC**      | `join_room_by_code(p_code)` busca la sala por código y agrega al usuario, sin exponer las salas privadas en las consultas normales.          |
 | **Realtime** | Canales `postgres_changes` sobre `messages`, `message_reactions`, `rooms` y `room_members` para actualizar el chat y el listado al instante. |
-| **Storage**  | _Buckets_ `avatars` (fotos de perfil) y `chat-media` (imágenes y archivos del chat).                                                    |
+| **Storage**  | _Buckets_ `avatars` (fotos de perfil) y `chat-media` (imágenes y archivos del chat).                                                         |
 
-| Método principal                                  | Operación                                                   |
-| ------------------------------------------------- | ----------------------------------------------------------- |
-| `signUp` / `signIn` / `resetPassword` / `signOut` | Supabase Auth                                               |
-| `loadCurrentProfile` / `updateProfile`            | `select` / `update` en `profiles`                           |
-| `uploadAvatar` / `uploadChatMedia`                | `storage.upload()` + `getPublicUrl()`                       |
-| `getRooms` / `createRoom` / `joinPublicRoom`      | `select` con conteo de miembros / `insert` / `upsert`       |
-| `joinRoomByCode`                                  | `rpc('join_room_by_code')`                                  |
-| `getMessages` / `sendMessage`                     | `select` con remitente y reacciones / `insert`              |
-| `togglePinMessage` / `toggleReaction`             | `update` en `messages` / `insert` o `delete` en reacciones  |
-| `subscribeToRoom` / `subscribeToRoomsList`        | Canales de Supabase Realtime                                |
+| Método principal                                  | Operación                                                  |
+| ------------------------------------------------- | ---------------------------------------------------------- |
+| `signUp` / `signIn` / `resetPassword` / `signOut` | Supabase Auth                                              |
+| `loadCurrentProfile` / `updateProfile`            | `select` / `update` en `profiles`                          |
+| `uploadAvatar` / `uploadChatMedia`                | `storage.upload()` + `getPublicUrl()`                      |
+| `getRooms` / `createRoom` / `joinPublicRoom`      | `select` con conteo de miembros / `insert` / `upsert`      |
+| `joinRoomByCode`                                  | `rpc('join_room_by_code')`                                 |
+| `getMessages` / `sendMessage`                     | `select` con remitente y reacciones / `insert`             |
+| `togglePinMessage` / `toggleReaction`             | `update` en `messages` / `insert` o `delete` en reacciones |
+| `subscribeToRoom` / `subscribeToRoomsList`        | Canales de Supabase Realtime                               |
 
 ### Firebase Realtime Database (`FirebaseService`)
 
-| Nodo                       | Contenido                                               | Ciclo de vida                                                           |
-| -------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `presence/{uid}`           | Nombre, disponibilidad, `online` y última conexión      | `onDisconnect()` lo marca como ausente al cerrar la app o perder conexión |
-| `typing/{roomId}/{uid}`    | Quién escribe y desde cuándo                            | Se borra a los 3.5 s sin escribir o al desconectarse                    |
-| `beacons/{roomId}/{uid}`   | Latitud, longitud, avatar y hora de expiración          | Dura 15 minutos; se borra al detenerlo o al desconectarse               |
-| `.info/connected`          | Estado de conexión con Firebase                         | Lo provee Firebase; se muestra en la interfaz                           |
+| Nodo                     | Contenido                                          | Ciclo de vida                                                             |
+| ------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------- |
+| `presence/{uid}`         | Nombre, disponibilidad, `online` y última conexión | `onDisconnect()` lo marca como ausente al cerrar la app o perder conexión |
+| `typing/{roomId}/{uid}`  | Quién escribe y desde cuándo                       | Se borra a los 3.5 s sin escribir o al desconectarse                      |
+| `beacons/{roomId}/{uid}` | Latitud, longitud, avatar y hora de expiración     | Dura 15 minutos; se borra al detenerlo o al desconectarse                 |
+| `.info/connected`        | Estado de conexión con Firebase                    | Lo provee Firebase; se muestra en la interfaz                             |
 
 ### Por qué dos motores
 
@@ -185,13 +185,13 @@ Rutas: `/auth`, `/rooms`, `/chat/:id` y `/profile`. Todas menos `/auth` están p
 
 ## 7. Modelo de Datos (Supabase)
 
-| Tabla               | Campos principales                                                                                                     | Acceso (RLS)                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `profiles`          | `id` (= `auth.users.id`), `username` (único; al registrarse se le agrega un sufijo de 4 caracteres), `display_name`, `avatar_url`, `bio`, `status_text`, `availability` | Lectura para autenticados; cada uno crea y edita solo el suyo     |
-| `rooms`             | `id`, `name`, `description`, `topic`, `is_private`, `invite_code` (único), `created_by`, `created_at`                  | Visibles si son públicas, si el usuario es miembro o si las creó   |
-| `room_members`      | `room_id`, `user_id`, `role` (`owner`, `admin`, `member`), `joined_at`                                                 | Visible para los miembros y en salas públicas; cada uno puede salir de una sala |
+| Tabla               | Campos principales                                                                                                                                                                                        | Acceso (RLS)                                                                                                                     |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `profiles`          | `id` (= `auth.users.id`), `username` (único; al registrarse se le agrega un sufijo de 4 caracteres), `display_name`, `avatar_url`, `bio`, `status_text`, `availability`                                   | Lectura para autenticados; cada uno crea y edita solo el suyo                                                                    |
+| `rooms`             | `id`, `name`, `description`, `topic`, `is_private`, `invite_code` (único), `created_by`, `created_at`                                                                                                     | Visibles si son públicas, si el usuario es miembro o si las creó                                                                 |
+| `room_members`      | `room_id`, `user_id`, `role` (`owner`, `admin`, `member`), `joined_at`                                                                                                                                    | Visible para los miembros y en salas públicas; cada uno puede salir de una sala                                                  |
 | `messages`          | `id`, `room_id`, `sender_id`, `type` (`text`, `image`, `file`, `location`, `system`), `content`, `media_url`, `file_name`, `file_size`, `latitude`, `longitude`, `reply_to_id`, `is_pinned`, `expires_at` | Miembros (o cualquiera en salas públicas) leen y envían; los miembros solo pueden cambiar `is_pinned`; el remitente puede borrar |
-| `message_reactions` | `message_id`, `user_id`, `emoji` (único por mensaje, usuario y emoji)                                                  | Lectura para autenticados; cada uno agrega o quita las suyas       |
+| `message_reactions` | `message_id`, `user_id`, `emoji` (único por mensaje, usuario y emoji)                                                                                                                                     | Lectura para autenticados; cada uno agrega o quita las suyas                                                                     |
 
 El script completo está en [`supabase/schema.sql`](./supabase/schema.sql).
 
@@ -201,13 +201,13 @@ El script completo está en [`supabase/schema.sql`](./supabase/schema.sql).
 
 ### Requisitos
 
-| Herramienta                                                     | Versión                                  |
-| --------------------------------------------------------------- | ---------------------------------------- |
-| [Node.js](https://nodejs.org/) y npm                            | Node 22.22+, 24.15+ o 26+                |
-| [Ionic CLI](https://ionicframework.com/docs/intro/cli)          | Global (`npm i -g @ionic/cli`) o `npx`   |
-| Proyecto de [Supabase](https://supabase.com/)                   | Plan gratuito                            |
-| Proyecto de [Firebase](https://console.firebase.google.com/)    | Con **Realtime Database** habilitado     |
-| [Android Studio](https://developer.android.com/studio)          | Solo para compilar en Android            |
+| Herramienta                                                  | Versión                                |
+| ------------------------------------------------------------ | -------------------------------------- |
+| [Node.js](https://nodejs.org/) y npm                         | Node 22.22+, 24.15+ o 26+              |
+| [Ionic CLI](https://ionicframework.com/docs/intro/cli)       | Global (`npm i -g @ionic/cli`) o `npx` |
+| Proyecto de [Supabase](https://supabase.com/)                | Plan gratuito                          |
+| Proyecto de [Firebase](https://console.firebase.google.com/) | Con **Realtime Database** habilitado   |
+| [Android Studio](https://developer.android.com/studio)       | Solo para compilar en Android          |
 
 ### Pasos
 
@@ -292,28 +292,28 @@ Capturas sin datos sensibles (sin claves, URLs de proyecto ni correos reales), g
 
 ### Acceso, perfil y salas
 
-| Inicio de sesión y registro | Perfil y avatar | Listado de salas |
-| :---: | :---: | :---: |
-| ![Acceso](docs/evidencias/01-acceso.jpg) | ![Perfil](docs/evidencias/02-perfil-avatar.jpg) | ![Salas](docs/evidencias/03-salas.jpg) |
+|        Inicio de sesión y registro        |                 Perfil y avatar                  |            Listado de salas             |
+| :---------------------------------------: | :----------------------------------------------: | :-------------------------------------: |
+| ![Acceso](docs/evidencias/01-acceso.jpeg) | ![Perfil](docs/evidencias/02-perfil-avatar.jpeg) | ![Salas](docs/evidencias/03-salas.jpeg) |
 
-| Sala privada y código NOVA | Unirse con código |
-| :---: | :---: |
-| ![Sala privada](docs/evidencias/04-sala-privada-codigo.jpg) | ![Unirse con código](docs/evidencias/05-unirse-codigo.jpg) |
+|                  Sala privada y código NOVA                  |                      Unirse con código                      |
+| :----------------------------------------------------------: | :---------------------------------------------------------: |
+| ![Sala privada](docs/evidencias/04-sala-privada-codigo.jpeg) | ![Unirse con código](docs/evidencias/05-unirse-codigo.jpeg) |
 
 ### Chat
 
-| Mensajes en tiempo real | Imágenes y archivos | Respuestas, fijados y reacciones |
-| :---: | :---: | :---: |
-| ![Chat](docs/evidencias/06-chat-tiempo-real.jpg) | ![Multimedia](docs/evidencias/07-imagenes-archivos.jpg) | ![Respuestas y reacciones](docs/evidencias/08-respuestas-reacciones.jpg) |
+|              Mensajes en tiempo real              |                   Imágenes y archivos                    |                     Respuestas, fijados y reacciones                     |
+| :-----------------------------------------------: | :------------------------------------------------------: | :----------------------------------------------------------------------: |
+| ![Chat](docs/evidencias/06-chat-tiempo-real.jpeg) | ![Multimedia](docs/evidencias/07-imagenes-archivos.jpeg) | ![Respuestas y reacciones](docs/evidencias/08-respuestas-reacciones.jpg) |
 
-| Ubicación en mapa | Ubicación en vivo | Presencia y "escribiendo..." | Mensajes efímeros y modo oscuro |
-| :---: | :---: | :---: | :---: |
+|                  Ubicación en mapa                  |                       Ubicación en vivo                        |                Presencia y "escribiendo..."                |                 Mensajes efímeros y modo oscuro                 |
+| :-------------------------------------------------: | :------------------------------------------------------------: | :--------------------------------------------------------: | :-------------------------------------------------------------: |
 | ![Ubicación](docs/evidencias/09-ubicacion-mapa.jpg) | ![Ubicación en vivo](docs/evidencias/10-ubicacion-en-vivo.jpg) | ![Presencia](docs/evidencias/11-presencia-escribiendo.jpg) | ![Efímeros y tema](docs/evidencias/12-efimeros-modo-oscuro.jpg) |
 
 ### Consolas de Supabase y Firebase
 
-| Tablas en Supabase | Storage en Supabase | Realtime Database en Firebase |
-| :---: | :---: | :---: |
+|                Tablas en Supabase                 |                 Storage en Supabase                 |             Realtime Database en Firebase              |
+| :-----------------------------------------------: | :-------------------------------------------------: | :----------------------------------------------------: |
 | ![Tablas](docs/evidencias/13-supabase-tablas.jpg) | ![Storage](docs/evidencias/14-supabase-storage.jpg) | ![Firebase RTDB](docs/evidencias/15-firebase-rtdb.jpg) |
 
 ---
@@ -344,12 +344,12 @@ Capturas sin datos sensibles (sin claves, URLs de proyecto ni correos reales), g
 
 ### Reglas de Firebase Realtime Database
 
-| Nodo        | Lectura | Escritura                      |
-| ----------- | :-----: | ------------------------------ |
-| `presence`  | ✅      | ✅ en cualquier `presence/{uid}` |
-| `typing`    | ✅      | ✅ en cualquier `typing/{roomId}/{uid}` |
-| `beacons`   | ✅      | ✅ en cualquier `beacons/{roomId}/{uid}` |
-| Otros nodos | ❌      | ❌                              |
+| Nodo        | Lectura | Escritura                                |
+| ----------- | :-----: | ---------------------------------------- |
+| `presence`  |   ✅    | ✅ en cualquier `presence/{uid}`         |
+| `typing`    |   ✅    | ✅ en cualquier `typing/{roomId}/{uid}`  |
+| `beacons`   |   ✅    | ✅ en cualquier `beacons/{roomId}/{uid}` |
+| Otros nodos |   ❌    | ❌                                       |
 
 Como el inicio de sesión ocurre en Supabase, Firebase no sabe quién es el usuario (`auth` es nulo) y las reglas no pueden comparar `$uid` con su identidad. Por eso, **cualquiera que conozca la URL de la base puede leer las ubicaciones en vivo y escribir la presencia de otro usuario**. Es aceptable para una práctica con datos ficticios, pero no para producción.
 
@@ -373,7 +373,7 @@ Como el inicio de sesión ocurre en Supabase, Firebase no sabe quién es el usua
 
 ## 12. Distribución del Trabajo
 
-| Integrante           | Aportes                                                                                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Ganchala Eduardo** | Creación del proyecto, arquitectura con Supabase y Firebase, esquema SQL con RLS y RPC, reglas de Realtime Database,  chat y perfil.  |
+| Integrante           | Aportes                                                                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ganchala Eduardo** | Creación del proyecto, arquitectura con Supabase y Firebase, esquema SQL con RLS y RPC, reglas de Realtime Database, chat y perfil.                           |
 | **Ortiz Josué**      | Configuración de credenciales con `.env`, revisión de seguridad, servicios, páginas de acceso, salas, integración con el repositorio general y documentación. |
