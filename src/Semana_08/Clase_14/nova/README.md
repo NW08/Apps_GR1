@@ -4,8 +4,8 @@
 
 | Entregable         | Enlace                               |
 | ------------------ | ------------------------------------ |
-| App web            | <https://novasync-54e1b.web.app>     |
-| Video demostrativo | _Pendiente: enlace a la publicación_ |
+| App Web            | <https://novasync-54e1b.web.app>     |
+| Video Demostrativo | <https://youtu.be/joumXFcxzhE> |
 | APK                | [Descargar APK](app-debug.apk)       |
 
 ---
