@@ -1,6 +1,6 @@
 # PokéAPP || `SEMANA 04 - CLASE 06 (21|10|2026)`
 
-> Pokédex en Ionic y Angular que consume la **PokéAPI**, personalizada, firmada y **publicada en Aptoide** como tienda de distribución alternativa a Google Play.
+> Pokédex en Ionic y Angular que consume la **PokéAPI**, personalizada, firmada y **enviada a Aptoide** (en revisión) como tienda de distribución alternativa a Google Play.
 
 ---
 
@@ -11,7 +11,7 @@ Práctica **Parte 2: Publicación de la Pokédex** de la materia de Desarrollo d
 Alcance:
 
 - La información, imágenes y sonidos se consultan en tiempo real a [PokéAPI](https://pokeapi.co/); la app no guarda datos del usuario.
-- Se eligió **Aptoide**, que no exige pagar una cuenta de desarrollador y acepta APK firmados (ver [Plataforma de Distribución](#6-plataforma-de-distribución)).
+- Se eligió **Aptoide**, que permite registrar y subir la app sin pagar una cuenta de desarrollador y acepta APK firmados (ver [Plataforma de Distribución](#6-plataforma-de-distribución)). Al momento de la entrega, la versión `1.0.0` está **Pendiente** de revisión (ver [Estado de Publicación](#10-estado-de-publicación)).
 - La investigación completa, la tabla comparativa y el procedimiento detallado se entregan en el **informe PDF**.
 
 ---
@@ -33,8 +33,8 @@ EPN · Periodo 2026B. Los aportes de cada uno están en [Distribución del Traba
 | 2   | Consumir la API pública de Pokémon; listado y vista de detalles  | Servicio `Pokemon` sobre PokéAPI: listado inicial, buscador y detalle con tipos, estadísticas, descripción, galería y sonido. |
 | 3   | Personalizar nombre, ícono y pantalla de inicio                  | Nombre **PokéAPP**, ícono y _splash_ propios generados desde `resources/` (ver [Personalización](#5-personalización-e-identidad)). |
 | 4   | Identificador y versión; APK firmado y AAB                       | `ec.edu.epn.pokeapp`, versión `1.0.0` (`versionCode 1`); firma de release con keystore propio (ver [Compilación y Firma](#8-compilación-y-firma)). |
-| 5   | Elegir una plataforma y completar el envío                       | App enviada a **Aptoide** mediante Aptoide Connect (ver [Estado de Publicación](#10-estado-de-publicación)).        |
-| 6   | Documentar con capturas compilación, firma, carga y estado       | Capturas en [`docs/evidencias/`](./docs/evidencias/) (ver [Evidencias](#9-evidencias)).                              |
+| 5   | Elegir una plataforma y completar el envío                       | App enviada a **Aptoide** mediante Aptoide Connect; versión `1.0.0` en estado **Pendiente** (ver [Estado de Publicación](#10-estado-de-publicación)). |
+| 6   | Documentar con capturas compilación, firma, carga y estado       | 13 capturas en [`docs/evidencias/`](./docs/evidencias/): app en el dispositivo, compilación, configuración de firma, APK/AAB generados y estado en Aptoide (ver [Evidencias](#9-evidencias)). |
 
 ---
 
@@ -92,12 +92,12 @@ Resumen de las opciones evaluadas (el análisis completo está en el informe PDF
 | Plataforma                  | Costo para el desarrollador | Formato        | Consideraciones                                                                                 |
 | --------------------------- | --------------------------- | -------------- | ----------------------------------------------------------------------------------------------- |
 | Google Play                 | Pago único de 25 USD        | AAB            | Revisión de la app; las cuentas personales nuevas deben completar una prueba cerrada antes de producción. |
-| **Aptoide** ✅              | Gratuito                    | APK firmado    | Carga desde Aptoide Connect, análisis de seguridad automático y enlace público de la app.       |
+| **Aptoide** ✅              | Gratuito para registrar y subir la app | APK firmado    | Carga desde Aptoide Connect, análisis de seguridad automático y enlace público una vez aprobada. La revisión de la _solicitud de propiedad_ del paquete exige una suscripción activa. |
 | F-Droid                     | Gratuito                    | Código fuente  | Solo apps de código abierto; F-Droid compila la app desde el repositorio, con un proceso más lento. |
 | Huawei AppGallery           | Gratuito                    | APK / AAB      | Requiere verificación de identidad del desarrollador y revisión manual.                         |
 | Distribución directa (GitHub Releases) | Gratuito         | APK firmado    | Sin revisión ni ficha de tienda; el usuario debe permitir la instalación de orígenes desconocidos. |
 
-**Selección: Aptoide.** Cumple la consigna sin pagar una cuenta de desarrollador, acepta directamente el APK firmado, ofrece una ficha pública con enlace para compartir y realiza un análisis de seguridad del archivo, lo que acerca el proceso al de una tienda oficial.
+**Selección: Aptoide.** Permite completar el envío sin pagar una cuenta de desarrollador, acepta directamente el APK firmado, ofrece una ficha pública con enlace para compartir y realiza un análisis de seguridad del archivo, lo que acerca el proceso al de una tienda oficial. Durante el envío se encontró una limitación: la _solicitud de propiedad_ de la app solo se revisa con una suscripción activa, por lo que la publicación quedó pendiente (ver [Estado de Publicación](#10-estado-de-publicación)).
 
 ---
 
@@ -183,37 +183,41 @@ apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
 
 `apksigner` está en `Android/Sdk/build-tools/<versión>/`. Aptoide usa el **APK**; el **AAB** queda listo por si la app se publica después en Google Play.
 
-### APK firmado
+### Artefactos generados
 
-> [Descargar PokéAPP v1.0.0 (APK firmado)](PokeAPP-v1.0.0.apk)
+El APK y el AAB firmados se generaron en `android/app/build/outputs/` (ver evidencia 09) y el APK se subió a Aptoide Connect (ver evidencia 10). Los binarios, el keystore y `keystore.properties` **no se versionan**: la app se distribuye desde Aptoide.
 
 ---
 
 ## 9. Evidencias
 
-Capturas sin datos sensibles (sin contraseñas ni rutas del keystore), guardadas en [`docs/evidencias/`](./docs/evidencias/).
+Capturas sin datos sensibles (sin contraseñas, contenido del keystore ni correos personales), guardadas en [`docs/evidencias/`](./docs/evidencias/).
 
 ### Aplicación personalizada
 
-| Ícono en el launcher | Pantalla de inicio | Listado |
+| Ícono de la app | Pantalla de inicio (dispositivo) | Listado (dispositivo) |
 | :---: | :---: | :---: |
-| ![Ícono](docs/evidencias/01-icono-launcher.jpg) | ![Splash](docs/evidencias/02-pantalla-inicio.jpg) | ![Listado](docs/evidencias/03-listado.jpg) |
+| ![Ícono](docs/evidencias/01-icono.jpg) | ![Splash](docs/evidencias/02-pantalla-inicio.jpg) | ![Listado](docs/evidencias/03-listado.jpg) |
 
-| Detalle | Galería y GIF | Comparar & Batalla |
+| Detalle | Galería y multimedia | Comparar & Batalla |
 | :---: | :---: | :---: |
 | ![Detalle](docs/evidencias/04-detalle.jpg) | ![Galería](docs/evidencias/05-galeria.jpg) | ![Batalla](docs/evidencias/06-batalla.jpg) |
 
 ### Compilación y firma
 
-| Compilación | Firma (keystore) | APK y AAB generados | Verificación de firma |
-| :---: | :---: | :---: | :---: |
-| ![Compilación](docs/evidencias/07-compilacion.jpg) | ![Firma](docs/evidencias/08-firma.jpg) | ![APK y AAB](docs/evidencias/09-apk-aab-generados.jpg) | ![Verificación](docs/evidencias/10-verificacion-firma.jpg) |
+| Compilación en Android Studio | Identificador, versión y firma (`build.gradle`) | APK y AAB generados |
+| :---: | :---: | :---: |
+| ![Compilación](docs/evidencias/07-compilacion.jpg) | ![Configuración](docs/evidencias/08-configuracion-compilacion.jpg) | ![APK y AAB](docs/evidencias/09-apk-aab-generados.jpg) |
 
-### Carga y publicación en Aptoide
+### Carga y estado en Aptoide
 
-| Carga del APK | Ficha de la app | Estado de publicación | Instalación desde Aptoide |
-| :---: | :---: | :---: | :---: |
-| ![Carga](docs/evidencias/11-aptoide-carga.jpg) | ![Ficha](docs/evidencias/12-aptoide-ficha.jpg) | ![Estado](docs/evidencias/13-aptoide-estado.jpg) | ![Instalación](docs/evidencias/14-aptoide-instalacion.jpg) |
+| Carga en Aptoide Connect | Configuración de la ficha |
+| :---: | :---: |
+| ![Carga](docs/evidencias/10-aptoide-carga.jpg) | ![Ficha](docs/evidencias/11-aptoide-ficha.jpg) |
+
+| Estado: Pendiente | Solicitud de propiedad |
+| :---: | :---: |
+| ![Estado](docs/evidencias/12-aptoide-estado.jpg) | ![Propiedad](docs/evidencias/13-aptoide-propiedad.jpg) |
 
 ---
 
@@ -224,10 +228,14 @@ Capturas sin datos sensibles (sin contraseñas ni rutas del keystore), guardadas
 | Plataforma            | Aptoide                                   |
 | Paquete               | `ec.edu.epn.pokeapp`                      |
 | Versión enviada       | `1.0.0` (`versionCode 1`)                 |
-| Estado                | Publicada                                 |
-| Enlace público        | _(enlace de la ficha en Aptoide)_         |
+| Estado                | **Pendiente**                             |
+| Propiedad del paquete | Solicitada, en espera                     |
+| Canales seleccionados | 13 (Aptoide, Aptoide Web, APKPure, Xiaomi GetApps, OPPO, Huawei, entre otros) |
+| Enlace público        | No disponible hasta que se apruebe        |
 
-Si una revisión queda pendiente o es rechazada, se documenta aquí el estado, el motivo indicado por la plataforma y las acciones correctivas aplicadas (por ejemplo, subir un nuevo APK con `versionCode` incrementado).
+**Motivo del estado pendiente:** Aptoide Connect notificó que la _solicitud de propiedad_ de PokéAPP solo se revisa cuando la cuenta tiene una **suscripción activa** (evidencia 13). Hasta entonces la versión `1.0.0` queda en revisión y sin ficha pública.
+
+**Acciones previstas:** activar la suscripción o esperar la revisión del equipo de Aptoide. Cuando la app se apruebe, se agregará aquí el enlace público. Si es rechazada, se registrará el motivo y se subirá un nuevo APK con `versionCode` incrementado.
 
 ---
 
@@ -247,7 +255,7 @@ La app no recopila datos personales. Las consultas a PokéAPI solo envían el no
 - Requiere conexión a internet; no hay caché sin conexión.
 - Depende de la disponibilidad de PokéAPI y de que cada Pokémon tenga sprites, GIF o grito disponibles (si faltan, se omiten).
 - La simulación de combate es una fórmula ponderada de estadísticas base: no considera tipos, movimientos ni niveles.
-- Al instalar desde Aptoide, Android pide permitir la instalación desde esa tienda por ser un origen distinto a Google Play.
+- Mientras la publicación esté pendiente, la app aún no se puede instalar desde Aptoide. Cuando esté disponible, Android pedirá permitir la instalación desde esa tienda por ser un origen distinto a Google Play.
 
 ---
 
