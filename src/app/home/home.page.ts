@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import type { OnInit } from '@angular/core';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonAvatar,
@@ -128,6 +128,8 @@ export interface FighterData {
 })
 export class HomePage implements OnInit {
   private readonly pokemon = inject(Pokemon);
+  // La app es zoneless: tras cada respuesta asíncrona hay que avisar a Angular que redibuje la vista.
+  private readonly cdr = inject(ChangeDetectorRef);
 
   seccionActiva = 'pokedex';
 
@@ -188,9 +190,11 @@ export class HomePage implements OnInit {
       next: (res) => {
         this.pokemonList = res.results || [];
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
     });
   }
@@ -220,6 +224,7 @@ export class HomePage implements OnInit {
       spritesData: this.pokemon.pokemonSprites(texto).pipe(catchError(() => of(null))),
     }).subscribe(({ details, species, spritesData }) => {
       this.isLoading = false;
+      this.cdr.markForCheck();
 
       if (!details) {
         this.thisPokemon = null;
@@ -310,6 +315,7 @@ export class HomePage implements OnInit {
       .subscribe((details) => {
         if (posicion === 1) this.cargandoLuchador1 = false;
         else this.cargandoLuchador2 = false;
+        this.cdr.markForCheck();
 
         if (!details) return;
 
@@ -362,6 +368,7 @@ export class HomePage implements OnInit {
 
     setTimeout(() => {
       this.peleando = false;
+      this.cdr.markForCheck();
       if (!this.luchador1 || !this.luchador2) return;
 
       const poder1 =

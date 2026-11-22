@@ -75,6 +75,13 @@ Thumbs.db
 /blob-report/
 /playwright/.cache/
 
-# Android Release Signing
+# Android Release Signing (las credenciales viven solo en local)
 android/keystore.properties
 android/keystore/
+*.jks
+*.keystore
+
+# Environment variables
+.env
+.env.*
+!.env.example
