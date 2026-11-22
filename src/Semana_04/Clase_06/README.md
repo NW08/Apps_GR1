@@ -2,7 +2,7 @@
 
 ### Ganchala Eduardo & Ortiz Josué
 
-Se realizó esta práctica en la materia de Desarrollo de Aplicaciones Móviles como **Parte 2: Publicación de la Pokédex**. A partir del repositorio de referencia [jzaldumbide/pokedex-2026b](https://github.com/jzaldumbide/pokedex-2026b) se desarrolló una versión propia con **Ionic**, **Angular (Standalone Components)** y **Capacitor**. La app consume la **PokéAPI** (listado, búsqueda, detalle, multimedia y comparador de combate), se personalizó con nombre, ícono y pantalla de inicio propios, se configuró su identificador y versión, se generó su **APK firmado** y **AAB**, y finalmente se **publicó en Aptoide** como tienda alternativa a Google Play.
+Se realizó esta práctica en la materia de Desarrollo de Aplicaciones Móviles como **Parte 2: Publicación de la Pokédex**. A partir del repositorio de referencia [jzaldumbide/pokedex-2026b](https://github.com/jzaldumbide/pokedex-2026b) se desarrolló una versión propia con **Ionic**, **Angular (Standalone Components)** y **Capacitor**. La app consume la **PokéAPI** (listado, búsqueda, detalle, multimedia y comparador de combate), se personalizó con nombre, ícono y pantalla de inicio propios, se configuró su identificador y versión, se generó su **APK firmado** y **AAB**, y finalmente se **envió a Aptoide** como tienda alternativa a Google Play, donde la versión `1.0.0` está **pendiente de revisión**.
 
 La documentación completa de la publicación (requisitos, comparativa de plataformas, compilación, firma, evidencias y estado) está en el [README de la aplicación](./poke/README.md).
 
@@ -85,18 +85,21 @@ cd android
 
 > **Importante:** el keystore (`.jks`) y `keystore.properties` nunca se suben al repositorio; ambos están excluidos en `.gitignore`.
 
+Los artefactos firmados de la versión `1.0.0` ya están listos en la carpeta de la app: [`PokeAPP-v1.0.0.apk`](./poke/PokeAPP-v1.0.0.apk) y [`PokeAPP-v1.0.0.aab`](./poke/PokeAPP-v1.0.0.aab).
+
 ---
 
 ## Publicación en Aptoide
 
 | Paso                     | Detalle                                                                                                 |
 | ------------------------ | ------------------------------------------------------------------------------------------------------- |
-| Selección de plataforma  | Aptoide: gratuita, acepta APK firmados y genera un enlace público (Google Play exige un pago de 25 USD y AAB). |
+| Selección de plataforma  | Aptoide: registro y carga gratuitos, acepta APK firmados y genera un enlace público al aprobarse (Google Play exige un pago de 25 USD y AAB). |
 | Personalización          | Nombre **PokéAPP**, ícono y _splash_ generados desde `poke/resources/` con `@capacitor/assets`.          |
 | Identidad                | `appId` `ec.edu.epn.pokeapp`, versión `1.0.0` (`versionCode 1`).                                         |
 | Firma                    | Keystore propio con `keytool`; credenciales leídas desde `android/keystore.properties`.                  |
 | Envío                    | Carga del APK firmado en Aptoide Connect, con ficha, capturas y [política de privacidad](./poke/PRIVACY.md). |
-| Evidencias               | Capturas de compilación, firma, carga y estado en [`poke/docs/evidencias/`](./poke/docs/evidencias/).    |
+| Estado                   | **Pendiente.** La _solicitud de propiedad_ del paquete solo se revisa con una suscripción activa en Aptoide Connect, así que aún no hay enlace público. |
+| Evidencias               | 13 capturas de la app, compilación, configuración de firma, carga y estado en [`poke/docs/evidencias/`](./poke/docs/evidencias/). |
 
 ---
 
@@ -111,6 +114,7 @@ cd android
 | `poke/android/keystore.properties.example`   | Plantilla de credenciales de firma (el archivo real no se versiona).                                      |
 | `poke/resources/`                            | Ícono y pantalla de inicio fuente para generar los recursos de Android.                                   |
 | `poke/PRIVACY.md`                            | Política de privacidad requerida para la publicación.                                                     |
+| `poke/PokeAPP-v1.0.0.apk` / `.aab`           | APK y AAB firmados de la versión `1.0.0`.                                                                  |
 | `poke/README.md`                             | Documentación del repositorio compartido: requisitos, publicación, evidencias y estado.                   |
 
 ---

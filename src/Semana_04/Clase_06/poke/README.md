@@ -183,9 +183,14 @@ apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
 
 `apksigner` está en `Android/Sdk/build-tools/<versión>/`. Aptoide usa el **APK**; el **AAB** queda listo por si la app se publica después en Google Play.
 
-### Artefactos generados
+### Artefactos firmados
 
-El APK y el AAB firmados se generaron en `android/app/build/outputs/` (ver evidencia 09) y el APK se subió a Aptoide Connect (ver evidencia 10). Los binarios, el keystore y `keystore.properties` **no se versionan**: la app se distribuye desde Aptoide.
+| Archivo | Uso |
+| ------- | --- |
+| [`PokeAPP-v1.0.0.apk`](./PokeAPP-v1.0.0.apk) | APK firmado (esquema v2), el que se subió a Aptoide Connect. Se puede instalar directamente en Android 7.0+ (`minSdk 24`). |
+| [`PokeAPP-v1.0.0.aab`](./PokeAPP-v1.0.0.aab) | Android App Bundle firmado, listo por si la app se publica después en Google Play. |
+
+Ambos se generaron en `android/app/build/outputs/` (ver evidencia 09) y corresponden a `ec.edu.epn.pokeapp` versión `1.0.0` (`versionCode 1`). El keystore y `keystore.properties` **no se versionan**.
 
 ---
 
