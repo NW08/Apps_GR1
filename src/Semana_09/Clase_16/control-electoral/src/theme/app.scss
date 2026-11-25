@@ -1,0 +1,266 @@
+ion-header {
+  box-shadow: none;
+
+  ion-toolbar {
+    --background: rgba(18, 17, 16, 0.92);
+    --border-width: 0 0 1px 0;
+    --border-color: var(--ce-borde);
+    --color: var(--ce-texto);
+    backdrop-filter: blur(8px);
+  }
+
+  ion-title {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+}
+
+ion-content:not(.auth-content) {
+  --background: radial-gradient(140% 60% at 50% 0%, #1a1917 0%, var(--ce-fondo) 60%);
+}
+
+ion-content:not(.auth-content)::part(scroll) {
+  animation: ce-entrar 0.35s ease both;
+}
+
+ion-card {
+  margin: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid var(--ce-borde);
+  background: var(--ce-superficie);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  animation: ce-entrar 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: transform 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    border-color: rgba(214, 198, 162, 0.3);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  &:active {
+    transform: scale(0.995);
+  }
+
+  @for $i from 1 through 12 {
+    &:nth-of-type(#{$i}) {
+      animation-delay: #{$i * 0.04}s;
+    }
+  }
+}
+
+ion-card-title {
+  color: var(--ce-texto);
+  font-weight: 600;
+}
+
+ion-card-subtitle {
+  color: var(--ce-tenue);
+}
+
+ion-list {
+  background: transparent !important;
+  padding: 4px 10px;
+
+  &.list-inset,
+  &[inset='true'] {
+    border-radius: 18px;
+  }
+}
+
+ion-item {
+  --background: var(--ce-superficie);
+  --background-hover: #1e1c1a;
+  --background-hover-opacity: 1;
+  --border-color: var(--ce-borde);
+  --border-radius: 14px;
+  --inner-border-width: 0;
+  --color: var(--ce-texto);
+  margin: 6px 0;
+  border: 1px solid var(--ce-borde);
+  border-radius: 14px;
+  transition: border-color 0.25s ease, transform 0.15s ease;
+
+  &:hover {
+    border-color: rgba(214, 198, 162, 0.28);
+  }
+
+  &.item-has-focus {
+    border-color: var(--ce-beige);
+  }
+}
+
+ion-card ion-item {
+  --background: #1b1a18;
+}
+
+ion-button {
+  --border-radius: 12px;
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: transform 0.15s ease, filter 0.2s ease, opacity 0.2s ease;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &[fill='outline'] {
+    --border-color: rgba(214, 198, 162, 0.45);
+    --border-width: 1px;
+  }
+}
+
+ion-button:not([fill]),
+ion-button[fill='solid'] {
+  --background: var(--ce-texto);
+  --background-hover: var(--ce-beige);
+  --background-activated: var(--ce-beige);
+  --color: #111110;
+  --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+ion-button[color='danger'] {
+  --background: transparent;
+  --color: var(--ce-error);
+  --box-shadow: none;
+}
+
+ion-input,
+ion-select,
+ion-textarea {
+  --highlight-color-focused: var(--ce-beige);
+  --highlight-color-invalid: var(--ce-error);
+  --border-radius: 12px;
+}
+
+ion-select::part(container) {
+  transition: color 0.2s ease;
+}
+
+ion-badge,
+ion-chip {
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+ion-chip {
+  --background: rgba(236, 231, 220, 0.08);
+  --color: var(--ce-texto);
+  border: 1px solid var(--ce-borde);
+}
+
+ion-segment {
+  --background: #141311;
+  margin: 12px 14px;
+  padding: 3px;
+  border-radius: 14px;
+  border: 1px solid var(--ce-borde);
+  width: auto;
+}
+
+ion-segment-button {
+  --indicator-color: var(--ce-texto);
+  --color: var(--ce-tenue);
+  --color-checked: #111110;
+  --border-radius: 11px;
+  --indicator-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  min-height: 36px;
+  text-transform: none;
+  font-weight: 600;
+  transition: color 0.25s ease;
+}
+
+ion-tab-bar {
+  --background: rgba(18, 17, 16, 0.95);
+  --border: 1px solid var(--ce-borde);
+  height: 62px;
+  padding: 6px 10px;
+  backdrop-filter: blur(8px);
+}
+
+ion-tab-button {
+  --color: var(--ce-tenue);
+  --color-selected: var(--ce-texto);
+  --ripple-color: var(--ce-beige);
+  border-radius: 14px;
+  transition: background 0.25s ease, color 0.25s ease;
+
+  &.tab-selected {
+    background: rgba(236, 231, 220, 0.08);
+  }
+
+  ion-icon {
+    transition: transform 0.25s ease;
+  }
+
+  &.tab-selected ion-icon {
+    transform: translateY(-1px) scale(1.06);
+  }
+}
+
+ion-progress-bar {
+  --background: rgba(236, 231, 220, 0.08);
+  --progress-background: var(--ce-beige);
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+ion-skeleton-text {
+  --background: rgba(236, 231, 220, 0.06);
+  --background-rgb: 236, 231, 220;
+  border-radius: 14px;
+}
+
+ion-toast {
+  --border-radius: 14px;
+  --box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+ion-modal {
+  --border-radius: 22px;
+  --background: var(--ce-superficie);
+}
+
+ion-alert {
+  --background: var(--ce-superficie);
+
+  .alert-wrapper {
+    border-radius: 18px !important;
+    border: 1px solid var(--ce-borde);
+  }
+}
+
+ion-refresher-content {
+  --color: var(--ce-beige);
+}
+
+ion-note {
+  color: var(--ce-tenue);
+}
+
+.leaflet-container {
+  border-radius: 18px;
+  border: 1px solid var(--ce-borde);
+  overflow: hidden;
+}
+
+@keyframes ce-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ion-card,
+  ion-content::part(scroll) {
+    animation: none !important;
+  }
+}
