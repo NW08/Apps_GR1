@@ -3,6 +3,8 @@ ion-header {
 
   ion-toolbar {
     --background: rgba(18, 17, 16, 0.92);
+    --ion-color-base: rgba(18, 17, 16, 0.92) !important;
+    --ion-color-contrast: var(--ce-texto) !important;
     --border-width: 0 0 1px 0;
     --border-color: var(--ce-borde);
     --color: var(--ce-texto);
@@ -161,15 +163,39 @@ ion-segment {
 }
 
 ion-segment-button {
-  --indicator-color: var(--ce-texto);
   --color: var(--ce-tenue);
   --color-checked: #111110;
+  --color-hover: var(--ce-texto);
+  --indicator-color: transparent;
   --border-radius: 11px;
-  --indicator-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   min-height: 36px;
   text-transform: none;
   font-weight: 600;
+  letter-spacing: 0.01em;
   transition: color 0.25s ease;
+
+  &::part(indicator) {
+    height: 100%;
+    padding: 0;
+    bottom: 0;
+  }
+
+  &::part(indicator-background) {
+    height: 100%;
+    border-radius: 11px;
+    background: var(--ce-texto);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition: background 0.25s ease;
+  }
+
+  &::part(native) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+ion-segment-button.segment-button-checked ion-label {
+  color: #111110;
 }
 
 ion-tab-bar {
