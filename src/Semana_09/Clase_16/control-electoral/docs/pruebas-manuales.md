@@ -1,7 +1,7 @@
 # Nivel 3 · Lista de Pruebas Manuales en Android (`ADR-010`)
 
-- **Dispositivo físico:** _[Completar modelo Android]_
-- **Versión Android:** _[Completar]_
+- **Dispositivo físico:** Redmi Note 12
+- **Versión Android:** Android 15
 - **Fecha de ejecución:** 2026-11-25
 - **APK probado:** `app-debug.apk` (raíz del proyecto)
 
@@ -17,4 +17,5 @@
 | 8 | **Permisos cámara y GPS denegados (R7)** | Denegar permiso de cámara (muestra instrucciones de Ajustes) y apagar GPS. | Permite guardar acta etiquetada como **«Ubicación no comprobable»**. | [ ] | `docs/evidencias/08-permisos.png` |
 | 9 | **Aislamiento de veedor (R8)** | Veedor A intenta abrir ruta `/veedor/acta/<jrv-de-veedor-B>/alcalde` o `/provincial/dashboard`. | `rolGuard` redirige en UI y Supabase RLS devuelve 0 filas / permiso denegado en API. | [ ] | `docs/evidencias/09-rls.png` |
 | 10 | **Dashboard provincial y mapa GPS (R4)** | Como provincial, consultar consolidado y por recinto, activar toggle «Excluir actas observadas» y abrir pestaña Mapa GPS. | Barras CSS y tabla actualizan totales; mapa OpenStreetMap muestra pines y lista muestra actas sin GPS. | [ ] | `docs/evidencias/10-dashboard.png` |
-| 11 | **Modo avión / Offline + conflicto (R10)** | Activar modo avión, registrar acta (queda en pestaña Pendientes), reactivar red. | Sincroniza automáticamente al volver la red; si el coordinador editó antes, marca `conflicto` y permite resolver. | [ ] | `docs/evidencias/11-offline.png` |
+
+> El caso de modo avión y sincronización (R10) no aplica: el componente offline es opcional y no se implementó (ADR-006).
