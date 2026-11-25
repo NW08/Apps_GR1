@@ -144,27 +144,27 @@ erDiagram
 
 | # | Caso | Dónde capturar | Archivo | Captura |
 |---|---|---|---|---|
-| 1 | Login con cédula (R3) | Pantalla de inicio con la cédula escrita, o el error con credenciales incorrectas | `docs/evidencias/01-login.png` | ![Login con cédula (R3)](docs/evidencias/01-login.png) |
-| 2 | Cambio obligatorio de contraseña (R3) | Pantalla «Nueva contraseña» con los requisitos marcados | `docs/evidencias/02-cambio-clave.png` | ![Cambio obligatorio de contraseña (R3)](docs/evidencias/02-cambio-clave.png) |
-| 3 | Recuperación por correo (R3) | Mensaje de confirmación tras «Enviar enlace» | `docs/evidencias/03-recuperar.png` | ![Recuperación por correo (R3)](docs/evidencias/03-recuperar.png) |
-| 4 | Creación de cuentas (R2) | Recinto > Veedores con el veedor recién creado (o Provincial > Recintos con el coordinador) | `docs/evidencias/04-cuentas.png` | ![Creación de cuentas (R2)](docs/evidencias/04-cuentas.png) |
-| 5 | Asignación de veedores (R5) | Recinto > Mesas con veedores asignados | `docs/evidencias/05-asignacion.png` | ![Asignación de veedores (R5)](docs/evidencias/05-asignacion.png) |
-| 6 | Acta con consistencia (R6) | Formulario del acta con «Faltan/Sobran N votos» o «El acta cuadra» | `docs/evidencias/06-acta.png` | ![Acta con consistencia (R6)](docs/evidencias/06-acta.png) |
-| 7 | Foto borrosa rechazada (R7) | Aviso de nitidez tras una foto movida | `docs/evidencias/07-nitidez.png` | ![Foto borrosa rechazada (R7)](docs/evidencias/07-nitidez.png) |
-| 8 | Ubicación no comprobable (R7) | Acta guardada sin GPS o permiso denegado | `docs/evidencias/08-permisos.png` | ![Ubicación no comprobable (R7)](docs/evidencias/08-permisos.png) |
-| 9 | Aislamiento del veedor (R8) | Salida de `npm run test:rls` con [OK], o «No tiene acceso a esta mesa» | `docs/evidencias/09-rls.png` | ![Aislamiento del veedor (R8)](docs/evidencias/09-rls.png) |
-| 10 | Dashboard y mapa GPS (R4) | Provincial > Dashboard con barras, y Avance > Mapa GPS | `docs/evidencias/10-dashboard.png` | ![Dashboard y mapa GPS (R4)](docs/evidencias/10-dashboard.png) |
+| 1 | Login con cédula (R3) | Pantalla de inicio con la cédula escrita, o el error con credenciales incorrectas | `docs/evidencias/01-login.jpg` | ![Login con cédula (R3)](docs/evidencias/01-login.jpg) |
+| 2 | Cambio obligatorio de contraseña (R3) | Pantalla «Nueva contraseña» con los requisitos marcados | `docs/evidencias/02-cambio-clave.jpg` | ![Cambio obligatorio de contraseña (R3)](docs/evidencias/02-cambio-clave.jpg) |
+| 3 | Recuperación por correo (R3) | No pasó: no aparece el mensaje de confirmación (pendiente de corrección) | — | — |
+| 4 | Creación de cuentas (R2) | Recinto > Veedores con el veedor recién creado (o Provincial > Recintos con el coordinador) | `docs/evidencias/04-cuentas.jpg` | ![Creación de cuentas (R2)](docs/evidencias/04-cuentas.jpg) |
+| 5 | Asignación de veedores (R5) | Recinto > Mesas con veedores asignados | `docs/evidencias/05-asignacion.jpg` | ![Asignación de veedores (R5)](docs/evidencias/05-asignacion.jpg) |
+| 6 | Acta con consistencia (R6) | Formulario del acta con «Faltan/Sobran N votos» o «El acta cuadra» | `docs/evidencias/06-acta.jpg` | ![Acta con consistencia (R6)](docs/evidencias/06-acta.jpg) |
+| 7 | Foto borrosa rechazada (R7) | Aviso de nitidez tras una foto movida | `docs/evidencias/07-nitidez.jpg` | ![Foto borrosa rechazada (R7)](docs/evidencias/07-nitidez.jpg) |
+| 8 | Ubicación no comprobable (R7) | Acta guardada sin GPS o permiso denegado | `docs/evidencias/08-permisos.jpg` | ![Ubicación no comprobable (R7)](docs/evidencias/08-permisos.jpg) |
+| 9 | Aislamiento del veedor (R8) | Salida de `npm run test:rls` con [OK], o «No tiene acceso a esta mesa» | `docs/evidencias/09-rls.jpg` | ![Aislamiento del veedor (R8)](docs/evidencias/09-rls.jpg) |
+| 10 | Dashboard y mapa GPS (R4) | Provincial > Dashboard con barras, y Avance > Mapa GPS | `docs/evidencias/10-dashboard.jpg` | ![Dashboard y mapa GPS (R4)](docs/evidencias/10-dashboard.jpg) |
 
 ## Credenciales de demostración
 
-| Rol | Cédula | Contraseña |
-|---|---|---|
-| Coordinador provincial | 1710034065 | [completar] |
-| Coordinador de recinto | [completar] | [completar] |
-| Veedor A | [completar] | [completar] |
-| Veedor B | [completar] | [completar] |
+| Rol | Cédula | Contraseña | Recinto |
+|---|---|---|---|
+| Coordinador provincial | Se entrega a los docentes por el canal privado | secreta | Todos |
+| Coordinador de recinto | 1710034065 | Ecuador20261 | Colegio Nacional 24 de Mayo |
+| Veedor | 1712345675 | Ecuador20262 | Colegio Nacional 24 de Mayo |
 
-Cuentas ficticias creadas solo para la demostración; las cédulas son sintéticas y válidas por módulo 10.
+Las cuentas de recinto y veedor son ficticias, creadas solo para la demostración; sus cédulas son sintéticas y válidas por módulo 10.
+La cuenta provincial es personal y no se publica.
 
 ## Uso de IA
 
