@@ -7,7 +7,8 @@ Desarrollo de Aplicaciones Móviles · ESFOT · EPN · Periodo 2026B · **Equipo
 desarrollo individual de **Josué Ortiz**.
 
 - **APK:** [`app-debug.apk`](app-debug.apk)
-- **ADR definitivos:** [`docs/adr/`](docs/adr/) · **Video de la deliberación:** https://youtu.be/Yn3_Y0NRamQ
+- **ADR definitivos:** [`docs/adr/`](docs/adr/) · **Propuestas individuales:** [`docs/adr-propuestas/`](docs/adr-propuestas/)
+- **Grupal:** [ADR consolidados](docs/grupal/ADR-CONSOLIDADO.md) · [Acta de consenso](docs/grupal/ACTA-CONSENSO.md) · **Video:** https://youtu.be/Yn3_Y0NRamQ
 - **Anexo de uso de IA:** [`docs/uso-ia.md`](docs/uso-ia.md)
 
 ---
@@ -138,6 +139,21 @@ erDiagram
 | 1 | Reglas del dominio (cédula, consistencia del acta, nitidez) | `npm run test:unit` |
 | 2 | RLS de Supabase con las cuentas de demostración | `npm run test:rls` (requiere `.env.test`, no versionado) |
 | 3 | Lista manual sobre el APK | [`docs/pruebas-manuales.md`](docs/pruebas-manuales.md) |
+
+## Evidencias
+
+| # | Caso | Dónde capturar | Archivo | Captura |
+|---|---|---|---|---|
+| 1 | Login con cédula (R3) | Pantalla de inicio con la cédula escrita, o el error con credenciales incorrectas | `docs/evidencias/01-login.png` | ![Login con cédula (R3)](docs/evidencias/01-login.png) |
+| 2 | Cambio obligatorio de contraseña (R3) | Pantalla «Nueva contraseña» con los requisitos marcados | `docs/evidencias/02-cambio-clave.png` | ![Cambio obligatorio de contraseña (R3)](docs/evidencias/02-cambio-clave.png) |
+| 3 | Recuperación por correo (R3) | Mensaje de confirmación tras «Enviar enlace» | `docs/evidencias/03-recuperar.png` | ![Recuperación por correo (R3)](docs/evidencias/03-recuperar.png) |
+| 4 | Creación de cuentas (R2) | Recinto > Veedores con el veedor recién creado (o Provincial > Recintos con el coordinador) | `docs/evidencias/04-cuentas.png` | ![Creación de cuentas (R2)](docs/evidencias/04-cuentas.png) |
+| 5 | Asignación de veedores (R5) | Recinto > Mesas con veedores asignados | `docs/evidencias/05-asignacion.png` | ![Asignación de veedores (R5)](docs/evidencias/05-asignacion.png) |
+| 6 | Acta con consistencia (R6) | Formulario del acta con «Faltan/Sobran N votos» o «El acta cuadra» | `docs/evidencias/06-acta.png` | ![Acta con consistencia (R6)](docs/evidencias/06-acta.png) |
+| 7 | Foto borrosa rechazada (R7) | Aviso de nitidez tras una foto movida | `docs/evidencias/07-nitidez.png` | ![Foto borrosa rechazada (R7)](docs/evidencias/07-nitidez.png) |
+| 8 | Ubicación no comprobable (R7) | Acta guardada sin GPS o permiso denegado | `docs/evidencias/08-permisos.png` | ![Ubicación no comprobable (R7)](docs/evidencias/08-permisos.png) |
+| 9 | Aislamiento del veedor (R8) | Salida de `npm run test:rls` con [OK], o «No tiene acceso a esta mesa» | `docs/evidencias/09-rls.png` | ![Aislamiento del veedor (R8)](docs/evidencias/09-rls.png) |
+| 10 | Dashboard y mapa GPS (R4) | Provincial > Dashboard con barras, y Avance > Mapa GPS | `docs/evidencias/10-dashboard.png` | ![Dashboard y mapa GPS (R4)](docs/evidencias/10-dashboard.png) |
 
 ## Credenciales de demostración
 

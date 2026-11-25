@@ -3,7 +3,7 @@
 **Integrantes:** Eduardo Ganchala · Josué Ortiz
 **Fecha de la reunión:** 2026-11-24 · **Hora de inicio:** 20:30 · **Duración del video:** 01:24:55 · **Plataforma:** Discord
 **Enlace al video íntegro:** https://youtu.be/Yn3_Y0NRamQ
-**Documento de ADR definitivos:** [ADR-CONSOLIDADO.md](ADR-CONSOLIDADO.md) (un archivo por decisión en `adr-final/`)
+**Documento de ADR definitivos:** [ADR-CONSOLIDADO.md](ADR-CONSOLIDADO.md) (un archivo por decisión en `../adr/`)
 
 Todos los integrantes reconocen esta línea base y documentarán cualquier sustitución mediante un nuevo ADR.
 

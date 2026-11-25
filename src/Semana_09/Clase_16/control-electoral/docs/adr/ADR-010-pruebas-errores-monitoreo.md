@@ -82,9 +82,9 @@ manual reproducible, y la app debe fallar de forma controlada con mensajes útil
 
 ## Trazabilidad
 
-- Propuestas: `adr-mio/ADR-010-pruebas-errores-monitoreo.md` (aceptada) · `adr-edu/ADR-008-pruebas-errores-monitoreo.md` (sustituida).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: specs, `scripts/test-rls`, `docs/pruebas-manuales.md`]
+- Propuestas: `docs/adr-propuestas/ADR-010-pruebas-errores-monitoreo.md` (aceptada) · propuesta de Eduardo Ganchala `ADR-008-pruebas-errores-monitoreo.md` (sustituida).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [be0ad16](https://github.com/NW08/Apps_GR1/commit/be0ad16)
 
 ## Consenso del equipo
 

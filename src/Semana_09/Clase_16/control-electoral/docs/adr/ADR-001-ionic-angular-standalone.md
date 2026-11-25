@@ -79,9 +79,9 @@ Se elige **Ionic Angular con componentes standalone** (sin NgModules), TypeScrip
 
 ## Trazabilidad
 
-- Propuestas: `adr-mio/ADR-001-ionic-angular-standalone.md` · `adr-edu/ADR-001-ionic-angular-standalone.md`.
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace al commit que crea el proyecto Ionic en el repositorio individual]
+- Propuestas: `docs/adr-propuestas/ADR-001-ionic-angular-standalone.md` · propuesta de Eduardo Ganchala `ADR-001-ionic-angular-standalone.md`.
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [9b229e5](https://github.com/NW08/Apps_GR1/commit/9b229e5)
 
 ## Consenso del equipo
 

@@ -67,9 +67,9 @@ Se elige **Supabase** en el plan **Free**, un proyecto por integrante (entregas 
 
 ## Trazabilidad
 
-- Propuestas: `adr-edu/ADR-002-supabase-auth-roles.md` (aceptada) · `adr-mio/ADR-002-firebase-backend.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: cliente de Supabase y primera migración]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-002-supabase-auth-roles.md` (aceptada) · `docs/adr-propuestas/ADR-002-firebase-backend.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [d3a09fe](https://github.com/NW08/Apps_GR1/commit/d3a09fe)
 
 ## Consenso del equipo
 

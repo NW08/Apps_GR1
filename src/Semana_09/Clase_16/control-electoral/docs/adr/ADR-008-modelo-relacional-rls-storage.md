@@ -92,9 +92,9 @@ organizaciones ficticias; cinco candidaturas a la alcaldía y cinco a la prefect
 
 ## Trazabilidad
 
-- Propuestas: `adr-edu/ADR-003-modelo-datos-storage-rls.md` (aceptada) · `adr-mio/ADR-008-modelo-datos-reglas-acceso.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: `supabase/migrations`, `supabase/seed.sql`]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-003-modelo-datos-storage-rls.md` (aceptada) · `docs/adr-propuestas/ADR-008-modelo-datos-reglas-acceso.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [d3a09fe](https://github.com/NW08/Apps_GR1/commit/d3a09fe)
 
 ## Consenso del equipo
 

@@ -82,9 +82,9 @@ src/app/
 
 ## Trazabilidad
 
-- Propuestas: `adr-mio/ADR-004-arquitectura-capas.md` (aceptada) · `adr-edu/ADR-004-arquitectura-por-capas.md` (sustituida).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: esqueleto de carpetas y primer repositorio]
+- Propuestas: `docs/adr-propuestas/ADR-004-arquitectura-capas.md` (aceptada) · propuesta de Eduardo Ganchala `ADR-004-arquitectura-por-capas.md` (sustituida).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [a560c2e](https://github.com/NW08/Apps_GR1/commit/a560c2e)
 
 ## Consenso del equipo
 

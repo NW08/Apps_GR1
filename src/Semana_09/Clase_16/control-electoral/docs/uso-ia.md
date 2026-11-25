@@ -6,7 +6,7 @@ Estudiante: **Josué Ortiz** · Equipo 6 · Prueba 2 (Control electoral)
 
 | Herramienta | Uso |
 |---|---|
-| Claude (Anthropic) | Borradores de los ADR individuales, comparación de alternativas, generación y revisión de código (Angular, SQL, Edge Functions), diagnóstico de errores de compilación y redacción de la documentación. |
+| Claude (Anthropic) | Borradores de los ADR individuales, comparación de alternativas, generación y revisión de código, diagnóstico de errores de compilación. |
 | Gemini (usado por Eduardo Ganchala) | Sus propuestas de ADR; quedan citadas en los ADR finales que provienen de él. |
 
 ## Ejemplos de consultas

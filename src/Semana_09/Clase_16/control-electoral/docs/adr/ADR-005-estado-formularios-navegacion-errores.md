@@ -102,10 +102,10 @@ incómoda y difícil de probar).
 
 ## Trazabilidad
 
-- Propuestas: `adr-mio/ADR-005-estado-formularios-navegacion-errores.md` (aceptada) · `adr-edu/ADR-006-estado-navegacion.md` y
-  `adr-edu/ADR-007-formularios-validacion-negocio.md` (integradas).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace]
+- Propuestas: `docs/adr-propuestas/ADR-005-estado-formularios-navegacion-errores.md` (aceptada) · propuesta de Eduardo Ganchala `ADR-006-estado-navegacion.md` y
+  propuesta de Eduardo Ganchala `ADR-007-formularios-validacion-negocio.md` (integradas).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [a560c2e](https://github.com/NW08/Apps_GR1/commit/a560c2e)
 
 ## Consenso del equipo
 

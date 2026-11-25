@@ -58,9 +58,9 @@ Se elige la alternativa **A**:
 
 ## Trazabilidad
 
-- Propuestas: `adr-edu/ADR-009-offline-cola-sincronizacion.md` (aceptada) · `adr-mio/ADR-006-offline-sincronizacion.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace, si se implementa R10]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-009-offline-cola-sincronizacion.md` (aceptada) · `docs/adr-propuestas/ADR-006-offline-sincronizacion.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: no aplica (R10 opcional, no implementado)
 
 ## Consenso del equipo
 

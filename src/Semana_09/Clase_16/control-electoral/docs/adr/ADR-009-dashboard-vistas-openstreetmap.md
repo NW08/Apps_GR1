@@ -68,9 +68,9 @@ correctas, rendimiento con conexión limitada, seguridad por rol, pocas dependen
 
 ## Trazabilidad
 
-- Propuestas: `adr-edu/ADR-010-dashboard.md` (aceptada con modificaciones) · `adr-mio/ADR-009-dashboard-consolidacion.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: vistas, `DashboardRepository`, `dashboard.page.ts`, mapa GPS]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-010-dashboard.md` (aceptada con modificaciones) · `docs/adr-propuestas/ADR-009-dashboard-consolidacion.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [b3654b3](https://github.com/NW08/Apps_GR1/commit/b3654b3)
 
 ## Consenso del equipo
 

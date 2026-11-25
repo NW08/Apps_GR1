@@ -4,8 +4,7 @@
 **Fecha de la deliberación:** 2026-11-24 · **Video:** https://youtu.be/Yn3_Y0NRamQ · **Acta:** [ACTA-CONSENSO.md](ACTA-CONSENSO.md)
 
 Documento consolidado de la línea base arquitectónica común. Cada ADR indica de qué propuesta individual proviene, las alternativas,
-el riesgo aceptado, cómo se verifica y el acuerdo alcanzado. Las propuestas originales se conservan en `adr-mio/` (Josué Ortiz) y
-`adr-edu/` (Eduardo Ganchala). Cualquier sustitución posterior se registra con un nuevo ADR.
+el riesgo aceptado, cómo se verifica y el acuerdo alcanzado. Las propuestas de Josué Ortiz se conservan en `../adr-propuestas/`; las de Eduardo Ganchala, en su repositorio. Cualquier sustitución posterior se registra con un nuevo ADR.
 
 ## Índice y trazabilidad de propuestas
 

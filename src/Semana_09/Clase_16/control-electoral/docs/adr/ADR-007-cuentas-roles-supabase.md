@@ -74,9 +74,9 @@ obligatorio aun si alguien llama a la API directamente.
 
 ## Trazabilidad
 
-- Propuestas: `adr-edu/ADR-002-supabase-auth-roles.md` (aceptada) · `adr-mio/ADR-007-identidad-cuentas-roles.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: Edge Functions, `auth.service.ts`, guardas]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-002-supabase-auth-roles.md` (aceptada) · `docs/adr-propuestas/ADR-007-identidad-cuentas-roles.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [00aa16a](https://github.com/NW08/Apps_GR1/commit/00aa16a)
 
 ## Consenso del equipo
 

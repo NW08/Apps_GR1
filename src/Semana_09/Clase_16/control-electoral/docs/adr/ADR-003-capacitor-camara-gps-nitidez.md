@@ -88,10 +88,10 @@ recintos sin cobertura, y las fotos de 12 MP pesan 3–6 MB. Debe funcionar en u
 
 ## Trazabilidad
 
-- Propuestas: `adr-mio/ADR-003-capacitor-camara-gps-nitidez.md` (aceptada con modificaciones) ·
-  `adr-edu/ADR-005-capacitor-camara-gps-permisos.md` (sustituida).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: `camera.service.ts`, `geolocation.service.ts`, `image-quality.util.ts`]
+- Propuestas: `docs/adr-propuestas/ADR-003-capacitor-camara-gps-nitidez.md` (aceptada con modificaciones) ·
+  propuesta de Eduardo Ganchala `ADR-005-capacitor-camara-gps-permisos.md` (sustituida).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [06008cd](https://github.com/NW08/Apps_GR1/commit/06008cd)
 
 ## Consenso del equipo
 
