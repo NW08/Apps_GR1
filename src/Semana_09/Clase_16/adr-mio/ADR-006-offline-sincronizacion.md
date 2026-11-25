@@ -100,8 +100,8 @@ veedor debe poder registrar el acta y su foto **sin conexión**, y la app debe e
 
 | Integrante | Postura y argumentos | Objeciones |
 |---|---|---|
-| Josué Ortiz | Caché persistente de Firestore para los datos, cola propia de fotos en `Filesystem` y conflictos por versión con última escritura revisable. | — |
-| Eduardo Ganchala | Persistencia local con Dexie (IndexedDB), cola de pendientes, `@capacitor/filesystem` para las fotos y sincronización con control de versiones. | La caché de Firestore no aplica al no usar Firebase. |
+| Josué Ortiz | Caché persistente de Firestore para los datos, cola propia de fotos en `Filesystem` y conflictos por versión con última escritura revisable. | La caché de Firestore no aplica al no usar Firebase. |
+| Eduardo Ganchala | Persistencia local con Dexie (IndexedDB), cola de pendientes, `@capacitor/filesystem` para las fotos y sincronización con control de versiones. | Ninguna |
 
 **Acuerdo final:** IndexedDB con Dexie para la cola de pendientes y `@capacitor/filesystem` para las fotos, con control de
 versiones para los conflictos. R10 es opcional y cada integrante lo implementa si el tiempo lo permite. ·
