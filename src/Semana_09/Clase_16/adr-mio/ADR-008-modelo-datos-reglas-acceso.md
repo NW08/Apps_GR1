@@ -232,6 +232,7 @@ interfaz del emulador).
 
 **Desacuerdo relevante:** calcular el estado de las mesas y los consolidados con vistas o con triggers.
 
-**Acuerdo final:** esquema normalizado con los votos en una tabla hija y una siembra de datos fijos conocidos (R1). Se usan
-**vistas para las consultas más pesadas, junto con índices**. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** esquema normalizado con los votos en una tabla hija y una siembra de datos fijos conocidos (R1). El **estado
+de la mesa se guarda** al registrar el acta, en lugar de calcularse en cada consulta, y se usan **vistas para las consultas más
+pesadas (dashboard), junto con índices**. ·
+**Minuto del video:** 00:47:03–00:58:01 (consenso 00:55:54–00:58:01)

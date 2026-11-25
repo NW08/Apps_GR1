@@ -122,4 +122,4 @@ El resto se cubre con una prueba manual reproducible. Además, la app debe falla
 
 **Acuerdo final:** pruebas en tres niveles orientadas al backend aceptado (Supabase), con el nivel 3 como pruebas manuales sobre
 el APK final. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 01:09:52–01:17:29 (consenso 01:16:41–01:17:25)

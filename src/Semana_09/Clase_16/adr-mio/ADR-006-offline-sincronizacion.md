@@ -105,4 +105,4 @@ veedor debe poder registrar el acta y su foto **sin conexión**, y la app debe e
 
 **Acuerdo final:** IndexedDB con Dexie para la cola de pendientes y `@capacitor/filesystem` para las fotos, con control de
 versiones para los conflictos. R10 es opcional y cada integrante lo implementa si el tiempo lo permite. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 01:17:30–01:24:44 (consenso 01:24:16–01:24:44)

@@ -85,5 +85,5 @@ obligatorio aun si alguien llama a la API directamente.
 | Eduardo Ganchala | Supabase Auth con Edge Functions, roles en `perfiles` y login por cédula con la RPC `email_por_cedula`. | — |
 | Josué Ortiz | Cloud Functions con *custom claims* y login con cédula. | — |
 
-**Acuerdo final:** se adopta la propuesta de Eduardo sin discusión propia: al elegir Supabase (ADR-002), la propuesta basada en
-Firebase quedó fuera de alcance. En el acta esta fila quedó sin llenar por omisión. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** Josué presentó su propuesta dentro del bloque del backend; al acordarse Supabase (ADR-002) quedó fuera de
+alcance y se adoptó la de Eduardo sin debate adicional. · **Minuto del video:** 00:12:20–00:15:41, dentro del bloque del backend (consenso 00:16:23–00:17:58)

@@ -109,4 +109,4 @@ persistencia de Auth en Capacitor en ADR-007.
 
 **Acuerdo final:** Supabase. No se vio factible gastar dinero habiendo opciones gratuitas y comunitarias que cubren R2, R3 y R8. La
 falta de offline nativo se asume con una cola propia (decisión final ADR-006). ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:05:21–00:18:06 (consenso 00:16:23–00:17:58)

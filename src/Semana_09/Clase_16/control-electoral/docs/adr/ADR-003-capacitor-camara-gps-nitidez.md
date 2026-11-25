@@ -103,4 +103,4 @@ recintos sin cobertura, y las fotos de 12 MP pesan 3–6 MB. Debe funcionar en u
 **Desacuerdo relevante:** permitir o no la galería.
 
 **Acuerdo final:** solo cámara, sin galería, por los requisitos y la verificación de autenticidad; guardado sin GPS con la etiqueta
-«Ubicación no comprobable», porque hay lugares sin conexión; umbral 100 y brillo mínimo 35. · **Minuto del video:** [mm:ss–mm:ss]
+«Ubicación no comprobable», porque hay lugares sin conexión; umbral 100 y brillo mínimo 35. · **Minuto del video:** 00:18:17–00:28:09 (consenso 00:26:24–00:28:09)

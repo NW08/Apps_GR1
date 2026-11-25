@@ -113,4 +113,4 @@ explícita de permisos en Android.
 **Acuerdo final:** Capacitor Camera **solo con la cámara, sin galería**, por los requisitos y la verificación de autenticidad.
 El acta se puede guardar **sin GPS** con la etiqueta «Ubicación no comprobable», porque hay lugares sin conexión ni cobertura.
 Valores iniciales: `UMBRAL_NITIDEZ_POR_DEFECTO = 100` y `BRILLO_MINIMO_POR_DEFECTO = 35`. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:18:17–00:28:09 (consenso 00:26:24–00:28:09)

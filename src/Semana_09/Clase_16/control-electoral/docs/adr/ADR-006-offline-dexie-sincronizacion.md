@@ -70,4 +70,4 @@ Se elige la alternativa **A**:
 | Josué Ortiz | Caché de Firestore, cola de fotos y conflictos por versión. | La caché de Firestore no aplica al no usar Firebase. |
 
 **Acuerdo final:** IndexedDB con Dexie para la cola y `@capacitor/filesystem` para las fotos, con conflictos por versión. R10 es
-opcional e individual. · **Minuto del video:** [mm:ss–mm:ss]
+opcional e individual. · **Minuto del video:** 01:17:30–01:24:44 (consenso 01:24:16–01:24:44)

@@ -133,4 +133,4 @@ cruzadas incómodas y difíciles de probar).
 **Acuerdo final:** signals con errores tipados y guardas funcionales por rol; ambos integrantes de acuerdo. Las propuestas de
 Eduardo sobre estado y navegación (su ADR-006) y sobre formularios (su ADR-007) coinciden con esta decisión y quedan integradas en
 ella. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:38:30–00:47:02 (consenso 00:46:05–00:46:27)

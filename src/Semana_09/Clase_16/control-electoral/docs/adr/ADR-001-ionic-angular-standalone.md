@@ -91,4 +91,4 @@ Se elige **Ionic Angular con componentes standalone** (sin NgModules), TypeScrip
 | Eduardo Ganchala | Angular standalone: formularios reactivos, DI para separar capas y menor riesgo de divergencia entre implementaciones. | Ninguna |
 
 **Acuerdo final:** Ionic Angular standalone con Capacitor, por unanimidad; se prioriza el framework de todo el curso. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:00:43–00:05:06

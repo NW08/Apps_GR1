@@ -132,6 +132,6 @@ Se aplica en **tres niveles**:
 | Josué Ortiz | Cloud Functions (`crearCoordinadorRecinto`, `crearVeedor`) con *custom claims* de rol y recinto, y login con la cédula como identificador visible. | — |
 | Eduardo Ganchala | Supabase Auth con Edge Functions para crear cuentas sin exponer la `service_role` key, roles en la tabla `perfiles` y login por cédula mediante la RPC `email_por_cedula` (su ADR-002). | — |
 
-**Acuerdo final:** se adopta la propuesta de Eduardo sin discusión propia: al elegir Supabase (ADR-002), la propuesta basada en
-Firebase quedó fuera de alcance. En el acta esta fila quedó sin llenar por omisión. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** Josué presentó su propuesta dentro del bloque del backend; al acordarse Supabase (ADR-002) quedó fuera de
+alcance y se adoptó la de Eduardo sin debate adicional. ·
+**Minuto del video:** 00:12:20–00:15:41, dentro del bloque del backend (consenso 00:16:23–00:17:58)

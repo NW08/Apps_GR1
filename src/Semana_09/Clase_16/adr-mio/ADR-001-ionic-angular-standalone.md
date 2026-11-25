@@ -85,4 +85,4 @@ Se elige **Ionic Angular con componentes standalone** (sin NgModules), con **Cap
 
 **Acuerdo final:** Ionic Angular standalone con Capacitor, por unanimidad. Ambos conocen también React, pero se prioriza el framework
 con el que se ha trabajado todo el curso, lo que reduce el riesgo en un plazo de 4 días y facilita la defensa. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:00:43–00:05:06

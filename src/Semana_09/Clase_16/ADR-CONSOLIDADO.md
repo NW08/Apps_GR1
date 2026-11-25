@@ -1,7 +1,7 @@
 # Prueba 2 · Control electoral — ADR definitivos del Equipo 6
 
 **Integrantes:** Eduardo Ganchala · Josué Ortiz
-**Fecha de la deliberación:** 2026-11-24 · **Acta:** [ACTA-CONSENSO.md](ACTA-CONSENSO.md)
+**Fecha de la deliberación:** 2026-11-24 · **Video:** https://youtu.be/Yn3_Y0NRamQ · **Acta:** [ACTA-CONSENSO.md](ACTA-CONSENSO.md)
 
 Documento consolidado de la línea base arquitectónica común. Cada ADR indica de qué propuesta individual proviene, las alternativas,
 el riesgo aceptado, cómo se verifica y el acuerdo alcanzado. Las propuestas originales se conservan en `adr-mio/` (Josué Ortiz) y
@@ -134,7 +134,7 @@ Se elige **Ionic Angular con componentes standalone** (sin NgModules), TypeScrip
 | Eduardo Ganchala | Angular standalone: formularios reactivos, DI para separar capas y menor riesgo de divergencia entre implementaciones. | Ninguna |
 
 **Acuerdo final:** Ionic Angular standalone con Capacitor, por unanimidad; se prioriza el framework de todo el curso. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:00:43–00:05:06
 
 ---
 
@@ -223,7 +223,7 @@ Se elige **Supabase** en el plan **Free**, un proyecto por integrante (entregas 
 **Desacuerdo relevante:** el plan Blaze de Firebase.
 
 **Acuerdo final:** Supabase. No se vio factible gastar dinero habiendo opciones gratuitas y comunitarias que cubren R2, R3 y R8; la
-falta de offline nativo se asume con una cola propia (ADR-006). · **Minuto del video:** [mm:ss–mm:ss]
+falta de offline nativo se asume con una cola propia (ADR-006). · **Minuto del video:** 00:05:21–00:18:06 (consenso 00:16:23–00:17:58)
 
 ---
 
@@ -334,7 +334,7 @@ recintos sin cobertura, y las fotos de 12 MP pesan 3–6 MB. Debe funcionar en u
 **Desacuerdo relevante:** permitir o no la galería.
 
 **Acuerdo final:** solo cámara, sin galería, por los requisitos y la verificación de autenticidad; guardado sin GPS con la etiqueta
-«Ubicación no comprobable», porque hay lugares sin conexión; umbral 100 y brillo mínimo 35. · **Minuto del video:** [mm:ss–mm:ss]
+«Ubicación no comprobable», porque hay lugares sin conexión; umbral 100 y brillo mínimo 35. · **Minuto del video:** 00:18:17–00:28:09 (consenso 00:26:24–00:28:09)
 
 ---
 
@@ -435,7 +435,7 @@ src/app/
 | Josué Ortiz | Capas + carpetas por funcionalidad + repositorios: más fácil de defender, de identificar el código y de saber dónde modificar un cambio o un componente. | Ninguna |
 | Eduardo Ganchala | Capas organizadas por tipo técnico, con repositorios que aíslan Supabase. | Ninguna |
 
-**Acuerdo final:** arquitectura por capas organizada por funcionalidad y con repositorios. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** arquitectura por capas organizada por funcionalidad y con repositorios. · **Minuto del video:** 00:28:10–00:38:29 (consenso 00:36:25–00:38:29)
 
 ---
 
@@ -557,7 +557,7 @@ incómoda y difícil de probar).
 | Josué Ortiz | Signals en *stores*, Reactive Forms tipados, guardas por rol y estado explícito con errores tipados. | Ninguna |
 | Eduardo Ganchala | Signals en servicios con `Estado<T>`, guardas `authGuard`/`rolGuard`/`cambioClaveGuard` y formularios reactivos. | Ninguna |
 
-**Acuerdo final:** signals con errores tipados y guardas, por acuerdo de ambos. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** signals con errores tipados y guardas, por acuerdo de ambos. · **Minuto del video:** 00:38:30–00:47:02 (consenso 00:46:05–00:46:27)
 
 ---
 
@@ -635,7 +635,7 @@ Se elige la alternativa **A**:
 | Josué Ortiz | Caché de Firestore, cola de fotos y conflictos por versión. | La caché de Firestore no aplica al no usar Firebase. |
 
 **Acuerdo final:** IndexedDB con Dexie para la cola y `@capacitor/filesystem` para las fotos, con conflictos por versión. R10 es
-opcional e individual. · **Minuto del video:** [mm:ss–mm:ss]
+opcional e individual. · **Minuto del video:** 01:17:30–01:24:44 (consenso 01:24:16–01:24:44)
 
 ---
 
@@ -728,21 +728,21 @@ obligatorio aun si alguien llama a la API directamente.
 | Eduardo Ganchala | Supabase Auth con Edge Functions, roles en `perfiles` y login por cédula con la RPC `email_por_cedula`. | — |
 | Josué Ortiz | Cloud Functions con *custom claims* y login con cédula. | — |
 
-**Acuerdo final:** se adopta la propuesta de Eduardo sin discusión propia: al elegir Supabase (ADR-002), la propuesta basada en
-Firebase quedó fuera de alcance. En el acta esta fila quedó sin llenar por omisión. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** Josué presentó su propuesta dentro del bloque del backend; al acordarse Supabase (ADR-002) quedó fuera de
+alcance y se adoptó la de Eduardo sin debate adicional. · **Minuto del video:** 00:12:20–00:15:41, dentro del bloque del backend (consenso 00:16:23–00:17:58)
 
 ---
 
 <a id="adr-008"></a>
 
-## ADR-008: Usar un modelo relacional normalizado con votos en tabla hija, políticas RLS por rol y pertenencia, Storage privado y vistas con índices para las consultas pesadas
+## ADR-008: Usar un modelo relacional normalizado con votos en tabla hija, políticas RLS por rol y pertenencia, Storage privado estado de mesa guardado y vistas con índices para las consultas pesadas
 
 | Campo | Valor |
 |---|---|
 | **Estado** | Aceptado |
 | **Fecha** | 2026-11-24 |
 | **Autor(es) y equipo** | Equipo 6: Eduardo Ganchala, Josué Ortiz |
-| **Origen** | Propuesta de Eduardo Ganchala (su ADR-003), con el acuerdo del debate sobre vistas e índices. Rechaza la propuesta de Josué Ortiz (su ADR-008, Firestore y Security Rules). |
+| **Origen** | Propuesta de Eduardo Ganchala (su ADR-003), con el acuerdo del debate: estado de mesa guardado y vistas con índices. Rechaza la propuesta de Josué Ortiz (su ADR-008, Firestore y Security Rules). |
 | **Requisitos relacionados** | R1 (datos iniciales), R4 (avance, GPS y dashboard), R5/R6 (mesas, asignación y actas), R7 (foto y GPS como campos), R8 (persistencia de datos e imágenes; aislamiento entre veedores). |
 
 ### Contexto
@@ -763,10 +763,12 @@ escribir mesas ajenas, aunque llame a la API directamente.
 
 **Estado de las mesas y consolidados**
 
-| Criterio | **A. Vistas + índices** | B. Triggers que recalculan y guardan |
+| Criterio | A. Calcularlo en una vista en cada consulta | **B. Guardarlo en `jrv.estado` y recalcularlo al registrar el acta** |
 |---|---|---|
-| Consistencia | Siempre derivado de los datos. | Puede desincronizarse al corregir un acta. |
-| Lectura | Costo de consulta, mitigado con índices. | Muy rápida. |
+| Consistencia | Siempre derivado de los datos. | Depende de recalcularlo en cada escritura del acta. |
+| Lectura | Costo en cada consulta. | Lectura directa de la columna. |
+
+Para los consolidados del dashboard se mantienen las vistas (ADR-009).
 
 **Fotos:** bucket público (simple, URLs abiertas) frente a bucket **privado** con URLs firmadas (acceso por políticas).
 
@@ -776,7 +778,7 @@ escribir mesas ajenas, aunque llame a la API directamente.
 
 - `recintos(id, provincia, canton, parroquia, nombre, num_jrv, lat, lng)`; al crear un recinto se generan sus `num_jrv` mesas.
 - `perfiles(id = auth.uid, cedula unique, nombres, apellidos, telefono, email, rol, recinto_id, creado_por, debe_cambiar_clave)`.
-- `jrv(id, recinto_id, numero, veedor_id null)`.
+- `jrv(id, recinto_id, numero, veedor_id null, estado)`.
 - `organizaciones(id, nombre, lista)` · `candidaturas(id, organizacion_id, dignidad: alcalde|prefecto, nombre)`.
 - `actas(id, jrv_id, dignidad, nulos, blancos, total_sufragantes, foto_path, lat, lng, precision_m, capturado_en,
   ubicacion_comprobable, estado: VALIDADA|OBSERVADA|CORREGIDA, observacion, version, client_uuid unique, actualizado_por,
@@ -787,8 +789,9 @@ escribir mesas ajenas, aunque llame a la API directamente.
 `version` y guarda la anterior en `acta_historial`. Un trigger rechaza el acta si `Σ votos + nulos + blancos ≠ total_sufragantes`,
 salvo que esté `OBSERVADA` con observación (ADR-005).
 
-**Vistas e índices** (acuerdo del debate): el estado de cada mesa (`PENDIENTE`, `PARCIAL`, `COMPLETA`, `OBSERVADA`) **se deriva en una
-vista** a partir de sus actas, y las consultas pesadas del dashboard son vistas con `security_invoker = true` (ADR-009). Índices en
+**Estado de la mesa, vistas e índices** (acuerdo del debate): el estado de cada mesa (`PENDIENTE`, `PARCIAL`, `COMPLETA`,
+`OBSERVADA`) **se guarda en `jrv.estado`** y lo recalcula un trigger cada vez que se inserta o corrige un acta; las consultas pesadas
+del dashboard son vistas con `security_invoker = true` (ADR-009). Índices en
 `jrv(recinto_id)`, `jrv(veedor_id)`, `actas(jrv_id)`, `acta_votos(acta_id)` y `perfiles(recinto_id)`.
 
 **Políticas RLS** (todas exigen además `debe_cambiar_clave = false`, ADR-007):
@@ -839,8 +842,8 @@ organizaciones ficticias; cinco candidaturas a la alcaldía y cinco a la prefect
 
 **Desacuerdo relevante:** calcular el estado de las mesas y los consolidados con vistas o con triggers.
 
-**Acuerdo final:** esquema normalizado con votos en tabla hija y siembra de datos fijos conocidos; **vistas para las consultas más
-pesadas, junto con índices**. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** esquema normalizado con votos en tabla hija y siembra de datos fijos conocidos; el **estado de la mesa se guarda**
+al registrar el acta y se usan **vistas para las consultas más pesadas, junto con índices**. · **Minuto del video:** 00:47:03–00:58:01 (consenso 00:55:54–00:58:01)
 
 ---
 
@@ -930,7 +933,7 @@ correctas, rendimiento con conexión limitada, seguridad por rol, pocas dependen
 **Desacuerdo relevante:** cómo mostrar las actas observadas.
 
 **Acuerdo final:** se cuentan las actas observadas pero se marcan, con un filtro para excluirlas; el mapa usa la API pública de
-OpenStreetMap. · **Minuto del video:** [mm:ss–mm:ss]
+OpenStreetMap. · **Minuto del video:** 00:58:02–01:09:51 (consenso 01:08:34–01:09:40)
 
 ---
 
@@ -1034,4 +1037,4 @@ manual reproducible, y la app debe fallar de forma controlada con mensajes útil
 **Desacuerdo relevante:** qué es lo mínimo que hay que probar.
 
 **Acuerdo final:** pruebas en tres niveles orientadas a Supabase, con el nivel 3 como pruebas manuales sobre el APK final. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 01:09:52–01:17:29 (consenso 01:16:41–01:17:25)

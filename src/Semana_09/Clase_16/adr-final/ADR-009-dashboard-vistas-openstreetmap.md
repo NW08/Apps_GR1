@@ -82,4 +82,4 @@ correctas, rendimiento con conexión limitada, seguridad por rol, pocas dependen
 **Desacuerdo relevante:** cómo mostrar las actas observadas.
 
 **Acuerdo final:** se cuentan las actas observadas pero se marcan, con un filtro para excluirlas; el mapa usa la API pública de
-OpenStreetMap. · **Minuto del video:** [mm:ss–mm:ss]
+OpenStreetMap. · **Minuto del video:** 00:58:02–01:09:51 (consenso 01:08:34–01:09:40)

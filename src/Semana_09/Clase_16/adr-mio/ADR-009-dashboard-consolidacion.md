@@ -95,4 +95,4 @@ apertura consume lecturas y datos móviles. Firestore no tiene `GROUP BY`.
 
 **Acuerdo final:** las actas observadas se cuentan pero se marcan, con un filtro para excluirlas. El mapa de coordenadas usa la
 API pública de OpenStreetMap. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:58:02–01:09:51 (consenso 01:08:34–01:09:40)

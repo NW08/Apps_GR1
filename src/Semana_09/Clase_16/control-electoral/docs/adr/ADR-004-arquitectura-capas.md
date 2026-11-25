@@ -93,4 +93,4 @@ src/app/
 | Josué Ortiz | Capas + carpetas por funcionalidad + repositorios: más fácil de defender, de identificar el código y de saber dónde modificar un cambio o un componente. | Ninguna |
 | Eduardo Ganchala | Capas organizadas por tipo técnico, con repositorios que aíslan Supabase. | Ninguna |
 
-**Acuerdo final:** arquitectura por capas organizada por funcionalidad y con repositorios. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** arquitectura por capas organizada por funcionalidad y con repositorios. · **Minuto del video:** 00:28:10–00:38:29 (consenso 00:36:25–00:38:29)

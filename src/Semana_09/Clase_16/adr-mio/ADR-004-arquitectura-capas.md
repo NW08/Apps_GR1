@@ -111,4 +111,4 @@ src/app/
 
 **Acuerdo final:** arquitectura por capas organizada por funcionalidad y con repositorios. Se elige la organización por
 funcionalidad porque facilita la defensa, ubicar el código de cada rol y saber dónde hacer un cambio. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 00:28:10–00:38:29 (consenso 00:36:25–00:38:29)

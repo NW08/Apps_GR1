@@ -114,4 +114,4 @@ incómoda y difícil de probar).
 | Josué Ortiz | Signals en *stores*, Reactive Forms tipados, guardas por rol y estado explícito con errores tipados. | Ninguna |
 | Eduardo Ganchala | Signals en servicios con `Estado<T>`, guardas `authGuard`/`rolGuard`/`cambioClaveGuard` y formularios reactivos. | Ninguna |
 
-**Acuerdo final:** signals con errores tipados y guardas, por acuerdo de ambos. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** signals con errores tipados y guardas, por acuerdo de ambos. · **Minuto del video:** 00:38:30–00:47:02 (consenso 00:46:05–00:46:27)

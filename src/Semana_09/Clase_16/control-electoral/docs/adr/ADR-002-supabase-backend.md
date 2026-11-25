@@ -81,4 +81,4 @@ Se elige **Supabase** en el plan **Free**, un proyecto por integrante (entregas 
 **Desacuerdo relevante:** el plan Blaze de Firebase.
 
 **Acuerdo final:** Supabase. No se vio factible gastar dinero habiendo opciones gratuitas y comunitarias que cubren R2, R3 y R8; la
-falta de offline nativo se asume con una cola propia (ADR-006). · **Minuto del video:** [mm:ss–mm:ss]
+falta de offline nativo se asume con una cola propia (ADR-006). · **Minuto del video:** 00:05:21–00:18:06 (consenso 00:16:23–00:17:58)

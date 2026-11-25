@@ -96,4 +96,4 @@ manual reproducible, y la app debe fallar de forma controlada con mensajes útil
 **Desacuerdo relevante:** qué es lo mínimo que hay que probar.
 
 **Acuerdo final:** pruebas en tres niveles orientadas a Supabase, con el nivel 3 como pruebas manuales sobre el APK final. ·
-**Minuto del video:** [mm:ss–mm:ss]
+**Minuto del video:** 01:09:52–01:17:29 (consenso 01:16:41–01:17:25)

@@ -1,11 +1,11 @@
-# ADR-008: Usar un modelo relacional normalizado con votos en tabla hija, políticas RLS por rol y pertenencia, Storage privado y vistas con índices para las consultas pesadas
+# ADR-008: Usar un modelo relacional normalizado con votos en tabla hija, políticas RLS por rol y pertenencia, Storage privado estado de mesa guardado y vistas con índices para las consultas pesadas
 
 | Campo | Valor |
 |---|---|
 | **Estado** | Aceptado |
 | **Fecha** | 2026-11-24 |
 | **Autor(es) y equipo** | Equipo 6: Eduardo Ganchala, Josué Ortiz |
-| **Origen** | Propuesta de Eduardo Ganchala (su ADR-003), con el acuerdo del debate sobre vistas e índices. Rechaza la propuesta de Josué Ortiz (su ADR-008, Firestore y Security Rules). |
+| **Origen** | Propuesta de Eduardo Ganchala (su ADR-003), con el acuerdo del debate: estado de mesa guardado y vistas con índices. Rechaza la propuesta de Josué Ortiz (su ADR-008, Firestore y Security Rules). |
 | **Requisitos relacionados** | R1 (datos iniciales), R4 (avance, GPS y dashboard), R5/R6 (mesas, asignación y actas), R7 (foto y GPS como campos), R8 (persistencia de datos e imágenes; aislamiento entre veedores). |
 
 ## Contexto
@@ -26,10 +26,12 @@ escribir mesas ajenas, aunque llame a la API directamente.
 
 **Estado de las mesas y consolidados**
 
-| Criterio | **A. Vistas + índices** | B. Triggers que recalculan y guardan |
+| Criterio | A. Calcularlo en una vista en cada consulta | **B. Guardarlo en `jrv.estado` y recalcularlo al registrar el acta** |
 |---|---|---|
-| Consistencia | Siempre derivado de los datos. | Puede desincronizarse al corregir un acta. |
-| Lectura | Costo de consulta, mitigado con índices. | Muy rápida. |
+| Consistencia | Siempre derivado de los datos. | Depende de recalcularlo en cada escritura del acta. |
+| Lectura | Costo en cada consulta. | Lectura directa de la columna. |
+
+Para los consolidados del dashboard se mantienen las vistas (ADR-009).
 
 **Fotos:** bucket público (simple, URLs abiertas) frente a bucket **privado** con URLs firmadas (acceso por políticas).
 
@@ -39,7 +41,7 @@ escribir mesas ajenas, aunque llame a la API directamente.
 
 - `recintos(id, provincia, canton, parroquia, nombre, num_jrv, lat, lng)`; al crear un recinto se generan sus `num_jrv` mesas.
 - `perfiles(id = auth.uid, cedula unique, nombres, apellidos, telefono, email, rol, recinto_id, creado_por, debe_cambiar_clave)`.
-- `jrv(id, recinto_id, numero, veedor_id null)`.
+- `jrv(id, recinto_id, numero, veedor_id null, estado)`.
 - `organizaciones(id, nombre, lista)` · `candidaturas(id, organizacion_id, dignidad: alcalde|prefecto, nombre)`.
 - `actas(id, jrv_id, dignidad, nulos, blancos, total_sufragantes, foto_path, lat, lng, precision_m, capturado_en,
   ubicacion_comprobable, estado: VALIDADA|OBSERVADA|CORREGIDA, observacion, version, client_uuid unique, actualizado_por,
@@ -50,8 +52,9 @@ escribir mesas ajenas, aunque llame a la API directamente.
 `version` y guarda la anterior en `acta_historial`. Un trigger rechaza el acta si `Σ votos + nulos + blancos ≠ total_sufragantes`,
 salvo que esté `OBSERVADA` con observación (ADR-005).
 
-**Vistas e índices** (acuerdo del debate): el estado de cada mesa (`PENDIENTE`, `PARCIAL`, `COMPLETA`, `OBSERVADA`) **se deriva en una
-vista** a partir de sus actas, y las consultas pesadas del dashboard son vistas con `security_invoker = true` (ADR-009). Índices en
+**Estado de la mesa, vistas e índices** (acuerdo del debate): el estado de cada mesa (`PENDIENTE`, `PARCIAL`, `COMPLETA`,
+`OBSERVADA`) **se guarda en `jrv.estado`** y lo recalcula un trigger cada vez que se inserta o corrige un acta; las consultas pesadas
+del dashboard son vistas con `security_invoker = true` (ADR-009). Índices en
 `jrv(recinto_id)`, `jrv(veedor_id)`, `actas(jrv_id)`, `acta_votos(acta_id)` y `perfiles(recinto_id)`.
 
 **Políticas RLS** (todas exigen además `debe_cambiar_clave = false`, ADR-007):
@@ -102,5 +105,5 @@ organizaciones ficticias; cinco candidaturas a la alcaldía y cinco a la prefect
 
 **Desacuerdo relevante:** calcular el estado de las mesas y los consolidados con vistas o con triggers.
 
-**Acuerdo final:** esquema normalizado con votos en tabla hija y siembra de datos fijos conocidos; **vistas para las consultas más
-pesadas, junto con índices**. · **Minuto del video:** [mm:ss–mm:ss]
+**Acuerdo final:** esquema normalizado con votos en tabla hija y siembra de datos fijos conocidos; el **estado de la mesa se guarda**
+al registrar el acta y se usan **vistas para las consultas más pesadas, junto con índices**. · **Minuto del video:** 00:47:03–00:58:01 (consenso 00:55:54–00:58:01)
