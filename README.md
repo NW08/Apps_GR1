@@ -10,6 +10,7 @@ Cada carpeta corresponde a un proyecto independiente con su propio README.md don
 
 | #   | Proyecto                                                | Descripción                                                   | Novedad                         |
 | --- | ------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------- |
+| 16  | [`Control Electoral`](./src/Semana_09/Clase_16/control-electoral/) | Prueba 2: escrutinio con roles, actas con foto, GPS y dashboard. | Supabase RLS + Edge Functions   |
 | 15  | [`novaSync`](./src/Semana_08/Clase_14/)                 | Mensajería en tiempo real con salas, multimedia y GPS.        | Supabase + Firebase RTDB        |
 | 14  | [`Ionic - Sensores`](./src/Semana_07/Clase_13/)         | Posición del celular: vertical, horizontal, diagonal.         | Capacitor Motion                |
 | 13  | [`TalentFlow S.A.`](./src/Semana_07/Clase_12/)          | Registro y consulta de perfiles profesionales (MVP).          | Firebase Cloud Firestore        |

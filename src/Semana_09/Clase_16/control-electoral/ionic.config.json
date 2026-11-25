@@ -1,0 +1,7 @@
+{
+  "name": "control-electoral",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
