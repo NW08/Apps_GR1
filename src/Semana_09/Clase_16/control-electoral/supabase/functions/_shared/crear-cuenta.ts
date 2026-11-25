@@ -89,7 +89,7 @@ export async function crearCuenta(
 ): Promise<{ id: string; correoEnviado: boolean }> {
   const admin = clienteAdmin();
 
-  // Cédula duplicada → 409 antes de tocar Auth.
+  // Cédula duplicada: 409 antes de tocar Auth.
   const { data: existente } = await admin.from('perfiles').select('id').eq('cedula', datos.cedula).maybeSingle();
   if (existente) throw new ErrorHttp(409, 'Ya existe una cuenta con esa cédula');
 

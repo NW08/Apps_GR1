@@ -118,7 +118,9 @@ Thumbs.db
 /src/Semana_07/Clase_13/ionic-sensores/node_modules
 /src/Semana_08/Clase_14/nova/android
 /src/Semana_08/Clase_14/nova/node_modules
-/src/Semana_09/Clase_16/control-electoral/android
+# control-electoral versiona su android/ (permisos y wrapper Gradle 9.1); los artefactos los excluye su propio .gitignore
+!/src/Semana_09/Clase_16/control-electoral/android/
+!/src/Semana_09/Clase_16/control-electoral/android/gradle/wrapper/gradle-wrapper.jar
 /src/Semana_09/Clase_16/control-electoral/node_modules
 
 # APKs de entrega (excepciones a *.apk)
@@ -128,3 +130,4 @@ Thumbs.db
 !/src/Semana_04/Clase_06/poke/PokeAPP-v1.0.0.apk
 !/src/Semana_07/Clase_12/TalentFlow/app-debug.apk
 !/src/Semana_08/Clase_14/nova/app-debug.apk
+!/src/Semana_09/Clase_16/control-electoral/app-debug.apk
