@@ -122,7 +122,7 @@ Se aplica en **tres niveles**:
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
+- Commit del ADR: [7bcce3d](https://github.com/NW08/Apps_GR1/commit/7bcce3d)
 - Commit de implementación: no aplica (propuesta rechazada); la implementación sigue la decisión final ADR-007 (Supabase).
 
 ## Consenso del equipo

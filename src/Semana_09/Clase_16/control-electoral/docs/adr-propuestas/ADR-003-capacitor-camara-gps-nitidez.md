@@ -98,8 +98,8 @@ explícita de permisos en Android.
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: `camera.service.ts`, `geolocation.service.ts`, `image-quality.util.ts`]
+- Commit del ADR: [8687660](https://github.com/NW08/Apps_GR1/commit/8687660)
+- Commit de implementación: [06008cd](https://github.com/NW08/Apps_GR1/commit/06008cd) (según la decisión final ADR-003)
 
 ## Consenso del equipo
 

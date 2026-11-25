@@ -108,8 +108,8 @@ El resto se cubre con una prueba manual reproducible. Además, la app debe falla
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace]
+- Commit del ADR: [7bcce3d](https://github.com/NW08/Apps_GR1/commit/7bcce3d)
+- Commit de implementación: [be0ad16](https://github.com/NW08/Apps_GR1/commit/be0ad16) (según la decisión final ADR-010)
 
 ## Consenso del equipo
 

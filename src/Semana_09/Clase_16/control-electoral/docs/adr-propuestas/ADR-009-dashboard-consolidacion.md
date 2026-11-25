@@ -81,7 +81,7 @@ apertura consume lecturas y datos móviles. Firestore no tiene `GROUP BY`.
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
+- Commit del ADR: [7bcce3d](https://github.com/NW08/Apps_GR1/commit/7bcce3d)
 - Commit de implementación: no aplica (propuesta rechazada); la implementación sigue la decisión final ADR-009.
 
 ## Consenso del equipo

@@ -73,8 +73,8 @@ Se elige **Ionic Angular con componentes standalone** (sin NgModules), con **Cap
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace al commit que crea el proyecto Ionic en el repositorio individual]
+- Commit del ADR: [7a2beb2](https://github.com/NW08/Apps_GR1/commit/7a2beb2)
+- Commit de implementación: [9b229e5](https://github.com/NW08/Apps_GR1/commit/9b229e5) (según la decisión final ADR-001)
 
 ## Consenso del equipo
 

@@ -93,7 +93,7 @@ veedor debe poder registrar el acta y su foto **sin conexión**, y la app debe e
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
+- Commit del ADR: [8687660](https://github.com/NW08/Apps_GR1/commit/8687660)
 - Commit de implementación: no aplica (propuesta rechazada); si se implementa R10, sigue la decisión final ADR-006.
 
 ## Consenso del equipo

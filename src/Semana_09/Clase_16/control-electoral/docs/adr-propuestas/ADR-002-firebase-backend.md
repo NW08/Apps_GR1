@@ -95,7 +95,7 @@ persistencia de Auth en Capacitor en ADR-007.
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
+- Commit del ADR: [7a2beb2](https://github.com/NW08/Apps_GR1/commit/7a2beb2)
 - Commit de implementación: no aplica (propuesta rechazada); la implementación sigue la decisión final ADR-002 (Supabase).
 
 ## Consenso del equipo

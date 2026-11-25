@@ -121,9 +121,9 @@ Se elige **Ionic Angular con componentes standalone** (sin NgModules), TypeScrip
 
 ### Trazabilidad
 
-- Propuestas: `adr-mio/ADR-001-ionic-angular-standalone.md` · `adr-edu/ADR-001-ionic-angular-standalone.md`.
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace al commit que crea el proyecto Ionic en el repositorio individual]
+- Propuestas: `docs/adr-propuestas/ADR-001-ionic-angular-standalone.md` · propuesta de Eduardo Ganchala `ADR-001-ionic-angular-standalone.md`.
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [9b229e5](https://github.com/NW08/Apps_GR1/commit/9b229e5)
 
 ### Consenso del equipo
 
@@ -208,9 +208,9 @@ Se elige **Supabase** en el plan **Free**, un proyecto por integrante (entregas 
 
 ### Trazabilidad
 
-- Propuestas: `adr-edu/ADR-002-supabase-auth-roles.md` (aceptada) · `adr-mio/ADR-002-firebase-backend.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: cliente de Supabase y primera migración]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-002-supabase-auth-roles.md` (aceptada) · `docs/adr-propuestas/ADR-002-firebase-backend.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [d3a09fe](https://github.com/NW08/Apps_GR1/commit/d3a09fe)
 
 ### Consenso del equipo
 
@@ -318,10 +318,10 @@ recintos sin cobertura, y las fotos de 12 MP pesan 3–6 MB. Debe funcionar en u
 
 ### Trazabilidad
 
-- Propuestas: `adr-mio/ADR-003-capacitor-camara-gps-nitidez.md` (aceptada con modificaciones) ·
-  `adr-edu/ADR-005-capacitor-camara-gps-permisos.md` (sustituida).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: `camera.service.ts`, `geolocation.service.ts`, `image-quality.util.ts`]
+- Propuestas: `docs/adr-propuestas/ADR-003-capacitor-camara-gps-nitidez.md` (aceptada con modificaciones) ·
+  propuesta de Eduardo Ganchala `ADR-005-capacitor-camara-gps-permisos.md` (sustituida).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [06008cd](https://github.com/NW08/Apps_GR1/commit/06008cd)
 
 ### Consenso del equipo
 
@@ -423,9 +423,9 @@ src/app/
 
 ### Trazabilidad
 
-- Propuestas: `adr-mio/ADR-004-arquitectura-capas.md` (aceptada) · `adr-edu/ADR-004-arquitectura-por-capas.md` (sustituida).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: esqueleto de carpetas y primer repositorio]
+- Propuestas: `docs/adr-propuestas/ADR-004-arquitectura-capas.md` (aceptada) · propuesta de Eduardo Ganchala `ADR-004-arquitectura-por-capas.md` (sustituida).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [a560c2e](https://github.com/NW08/Apps_GR1/commit/a560c2e)
 
 ### Consenso del equipo
 
@@ -544,10 +544,10 @@ incómoda y difícil de probar).
 
 ### Trazabilidad
 
-- Propuestas: `adr-mio/ADR-005-estado-formularios-navegacion-errores.md` (aceptada) · `adr-edu/ADR-006-estado-navegacion.md` y
-  `adr-edu/ADR-007-formularios-validacion-negocio.md` (integradas).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace]
+- Propuestas: `docs/adr-propuestas/ADR-005-estado-formularios-navegacion-errores.md` (aceptada) · propuesta de Eduardo Ganchala `ADR-006-estado-navegacion.md` y
+  propuesta de Eduardo Ganchala `ADR-007-formularios-validacion-negocio.md` (integradas).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [a560c2e](https://github.com/NW08/Apps_GR1/commit/a560c2e)
 
 ### Consenso del equipo
 
@@ -622,9 +622,9 @@ Se elige la alternativa **A**:
 
 ### Trazabilidad
 
-- Propuestas: `adr-edu/ADR-009-offline-cola-sincronizacion.md` (aceptada) · `adr-mio/ADR-006-offline-sincronizacion.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace, si se implementa R10]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-009-offline-cola-sincronizacion.md` (aceptada) · `docs/adr-propuestas/ADR-006-offline-sincronizacion.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: no aplica (R10 opcional, no implementado)
 
 ### Consenso del equipo
 
@@ -716,9 +716,9 @@ obligatorio aun si alguien llama a la API directamente.
 
 ### Trazabilidad
 
-- Propuestas: `adr-edu/ADR-002-supabase-auth-roles.md` (aceptada) · `adr-mio/ADR-007-identidad-cuentas-roles.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: Edge Functions, `auth.service.ts`, guardas]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-002-supabase-auth-roles.md` (aceptada) · `docs/adr-propuestas/ADR-007-identidad-cuentas-roles.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [00aa16a](https://github.com/NW08/Apps_GR1/commit/00aa16a)
 
 ### Consenso del equipo
 
@@ -828,9 +828,9 @@ organizaciones ficticias; cinco candidaturas a la alcaldía y cinco a la prefect
 
 ### Trazabilidad
 
-- Propuestas: `adr-edu/ADR-003-modelo-datos-storage-rls.md` (aceptada) · `adr-mio/ADR-008-modelo-datos-reglas-acceso.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: `supabase/migrations`, `supabase/seed.sql`]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-003-modelo-datos-storage-rls.md` (aceptada) · `docs/adr-propuestas/ADR-008-modelo-datos-reglas-acceso.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [d3a09fe](https://github.com/NW08/Apps_GR1/commit/d3a09fe)
 
 ### Consenso del equipo
 
@@ -918,9 +918,9 @@ correctas, rendimiento con conexión limitada, seguridad por rol, pocas dependen
 
 ### Trazabilidad
 
-- Propuestas: `adr-edu/ADR-010-dashboard.md` (aceptada con modificaciones) · `adr-mio/ADR-009-dashboard-consolidacion.md` (rechazada).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: vistas, `DashboardRepository`, `dashboard.page.ts`, mapa GPS]
+- Propuestas: propuesta de Eduardo Ganchala `ADR-010-dashboard.md` (aceptada con modificaciones) · `docs/adr-propuestas/ADR-009-dashboard-consolidacion.md` (rechazada).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [b3654b3](https://github.com/NW08/Apps_GR1/commit/b3654b3)
 
 ### Consenso del equipo
 
@@ -1022,9 +1022,9 @@ manual reproducible, y la app debe fallar de forma controlada con mensajes útil
 
 ### Trazabilidad
 
-- Propuestas: `adr-mio/ADR-010-pruebas-errores-monitoreo.md` (aceptada) · `adr-edu/ADR-008-pruebas-errores-monitoreo.md` (sustituida).
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace: specs, `scripts/test-rls`, `docs/pruebas-manuales.md`]
+- Propuestas: `docs/adr-propuestas/ADR-010-pruebas-errores-monitoreo.md` (aceptada) · propuesta de Eduardo Ganchala `ADR-008-pruebas-errores-monitoreo.md` (sustituida).
+- Commit del ADR: [b0a29cb](https://github.com/NW08/Apps_GR1/commit/b0a29cb) · minutos del video: [caeff15](https://github.com/NW08/Apps_GR1/commit/caeff15)
+- Commit de implementación: [be0ad16](https://github.com/NW08/Apps_GR1/commit/be0ad16)
 
 ### Consenso del equipo
 

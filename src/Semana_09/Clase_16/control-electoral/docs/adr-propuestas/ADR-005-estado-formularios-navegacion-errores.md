@@ -120,8 +120,8 @@ cruzadas incómodas y difíciles de probar).
 
 ## Trazabilidad
 
-- Commit del ADR: [enlace]
-- Commit de implementación: [enlace]
+- Commit del ADR: [8687660](https://github.com/NW08/Apps_GR1/commit/8687660)
+- Commit de implementación: [a560c2e](https://github.com/NW08/Apps_GR1/commit/a560c2e) (según la decisión final ADR-005)
 
 ## Consenso del equipo
 
