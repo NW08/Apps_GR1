@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'control-electoral',
-  webDir: 'www'
+  appId: 'ec.edu.epn.controlelectoral',
+  appName: 'Control Electoral',
+  webDir: 'www',
 };
 
 export default config;

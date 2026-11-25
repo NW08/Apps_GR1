@@ -1,0 +1,189 @@
+.auth-content {
+  --background: radial-gradient(120% 80% at 50% 0%, #22201c 0%, #0f0e0d 55%, #080807 100%);
+  --color: var(--ce-texto);
+}
+
+.auth-escena {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-tarjeta {
+  width: 100%;
+  max-width: 360px;
+  padding: 32px 24px 24px;
+  border-radius: 20px;
+  background: rgba(22, 21, 19, 0.78);
+  border: 1px solid var(--ce-borde);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  text-align: center;
+  color: var(--ce-texto);
+  animation: auth-aparecer 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  h1 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  form > * {
+    animation: auth-aparecer 0.5s ease both;
+  }
+  form > *:nth-child(1) { animation-delay: 0.12s; }
+  form > *:nth-child(2) { animation-delay: 0.2s; }
+  form > *:nth-child(3) { animation-delay: 0.28s; }
+  form > *:nth-child(4) { animation-delay: 0.36s; }
+  form > *:nth-child(5) { animation-delay: 0.44s; }
+}
+
+.auth-marca {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--ce-texto);
+  color: #111110;
+  font-size: 28px;
+  animation: auth-latido 3.2s ease-in-out infinite;
+}
+
+.auth-sub {
+  margin: 6px 0 24px;
+  color: var(--ce-tenue);
+  font-size: 0.9rem;
+}
+
+.auth-campo {
+  --background: #0e0d0c;
+  --color: var(--ce-texto);
+  --placeholder-color: var(--ce-tenue);
+  --border-color: #34312c;
+  --border-radius: 12px;
+  --highlight-color-focused: var(--ce-beige);
+  --highlight-color-valid: var(--ce-beige);
+  --highlight-color-invalid: var(--ce-error);
+  margin-bottom: 14px;
+  text-align: left;
+  transition: transform 0.2s ease;
+
+  &.has-focus {
+    transform: translateY(-1px);
+  }
+}
+
+.auth-error {
+  margin: 0 0 12px;
+  color: var(--ce-error);
+  font-size: 0.85rem;
+  animation: auth-sacudir 0.35s ease;
+}
+
+.auth-boton {
+  --background: var(--ce-texto);
+  --background-hover: var(--ce-beige);
+  --background-activated: var(--ce-beige);
+  --color: #111110;
+  --border-radius: 12px;
+  --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  height: 48px;
+  margin-top: 4px;
+  font-weight: 600;
+  text-transform: none;
+  transition: transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.auth-secundario {
+  --color: var(--ce-tenue);
+  margin-top: 10px;
+  text-transform: none;
+  font-size: 0.85rem;
+}
+
+.auth-enlace {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--ce-beige);
+  font-size: 0.88rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--ce-beige);
+  }
+}
+
+.auth-nota {
+  margin: 16px 0 0;
+  color: #6f6b63;
+  font-size: 0.75rem;
+}
+
+.auth-requisitos {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  text-align: left;
+  font-size: 0.8rem;
+  color: var(--ce-tenue);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    transition: color 0.25s ease;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid currentColor;
+      transition: background 0.25s ease;
+    }
+
+    &.ok {
+      color: var(--ce-beige);
+
+      &::before {
+        background: currentColor;
+      }
+    }
+  }
+}
+
+@keyframes auth-aparecer {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes auth-latido {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(214, 198, 162, 0.35); }
+  50% { box-shadow: 0 0 0 10px rgba(214, 198, 162, 0); }
+}
+
+@keyframes auth-sacudir {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-tarjeta,
+  .auth-tarjeta *,
+  .auth-marca {
+    animation: none !important;
+    transition: none !important;
+  }
+}

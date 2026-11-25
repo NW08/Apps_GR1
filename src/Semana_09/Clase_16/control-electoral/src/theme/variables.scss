@@ -1,2 +1,43 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+:root {
+  --ce-fondo: #0b0b0a;
+  --ce-superficie: #161513;
+  --ce-borde: rgba(236, 231, 220, 0.1);
+  --ce-texto: #ece7dc;
+  --ce-tenue: #9a958b;
+  --ce-beige: #d6c6a2;
+  --ce-error: #e8907f;
+
+  --ion-color-primary: #d6c6a2;
+  --ion-color-primary-rgb: 214, 198, 162;
+  --ion-color-primary-contrast: #111110;
+  --ion-color-primary-contrast-rgb: 17, 17, 16;
+  --ion-color-primary-shade: #bcae8f;
+  --ion-color-primary-tint: #dacbab;
+
+  --ion-color-medium: #9a958b;
+  --ion-color-medium-rgb: 154, 149, 139;
+  --ion-color-medium-contrast: #111110;
+  --ion-color-medium-contrast-rgb: 17, 17, 16;
+  --ion-color-medium-shade: #88837a;
+  --ion-color-medium-tint: #a4a096;
+
+  --ion-color-danger: #e8907f;
+  --ion-color-danger-rgb: 232, 144, 127;
+  --ion-color-danger-contrast: #111110;
+  --ion-color-danger-contrast-rgb: 17, 17, 16;
+  --ion-color-danger-shade: #cc7f70;
+  --ion-color-danger-tint: #ea9b8c;
+}
+
+:root.ion-palette-dark,
+:root {
+  --ion-background-color: #0b0b0a;
+  --ion-background-color-rgb: 11, 11, 10;
+  --ion-text-color: #ece7dc;
+  --ion-text-color-rgb: 236, 231, 220;
+  --ion-toolbar-background: #121110;
+  --ion-item-background: #161513;
+  --ion-card-background: #161513;
+  --ion-tab-bar-background: #121110;
+  --ion-border-color: rgba(236, 231, 220, 0.1);
+}
